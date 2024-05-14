@@ -5,11 +5,11 @@ const app = express();
 const cors = require("cors");
 
 // 라우터선언
-const appealRouter = require("./routers/appealRouter")
-const circleRouter = require("./routers/circleRouter")
-const indexRouter = require("./routers/indexRouter")
-const petRouter = require("./routers/petRouter")
-const userRouter = require("./routers/userRouter")
+const appealRouter = require("./routers/appealRouter");
+const circleRouter = require("./routers/circleRouter");
+const indexRouter = require("./routers/indexRouter");
+const petRouter = require("./routers/petRouter");
+const userRouter = require("./routers/userRouter");
 
 app.use(cors());
 app.use("/uploads", express.static("uploads"));
@@ -26,7 +26,7 @@ const server = async function () {
   } catch (error) {
     console.log("====!!데이터베이스_연결실패!!====");
   }
-  try{
+  try {
     app.use("/appeal", appealRouter);
     app.use("/circles", circleRouter);
     app.use("/index", indexRouter);
@@ -34,8 +34,8 @@ const server = async function () {
     app.use("/user", userRouter);
 
     app.listen(4000);
-  }  catch (error){
-    console.log("===서버open실패===")
+  } catch (error) {
+    console.log("===서버open실패===");
   }
 };
 
