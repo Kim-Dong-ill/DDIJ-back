@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+const {default: mongoose} = require("mongoose");
 
-class UserLocation extends Component {
-    render() {
-        return (
-            <div>
-                
-            </div>
-        );
+const UserLocationSchema = new mongoose.Schema({
+    User_id: {
+        type:  mongoose.Types.ObjectId,
+        ref: "User"
+    },
+    Loc_id: {
+        type:  mongoose.Types.ObjectId,
+        ref: "Location"
     }
-}
-
-UserLocation.propTypes = {};
-
-export default UserLocation;
+});
+const UserLocation = mongoose.model("userlocation", UserLocationSchema);
+module.exports = UserLocation;

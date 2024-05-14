@@ -1,13 +1,15 @@
-const mongoose = require("mongoose");
+const {default: mongoose} = require("mongoose");
 
-const CircleLocationSchema = mongoose.Schema({
-    WorkingCircle_id: {
-        type: Number,
-
+const CircleLocationSchema = new mongoose.Schema({
+    WorkingCircle_id:{
+        type:  mongoose.Types.ObjectId,
+        ref: "WorkingCircle"
     },
+
     Loc_id: {
-        type: Number,
-    }
+        type:  mongoose.Types.ObjectId,
+        ref: "Location"
+    },
 });
 const CircleLocation = mongoose.model("circleLocation", CircleLocationSchema);
 module.exports = CircleLocation;

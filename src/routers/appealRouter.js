@@ -1,4 +1,3 @@
-import React from 'react';
 const express = require("express");
 const AppealRouter = express.Router();
 

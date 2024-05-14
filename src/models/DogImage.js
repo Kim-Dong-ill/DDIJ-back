@@ -1,15 +1,13 @@
-const mongoose = require("mongoose");
+const {default: mongoose} = require("mongoose");
 
-const DogImageSchema = mongoose.Schema({
+const DogImageSchema = new mongoose.Schema({
     Pet_id: {
-        type: Number
-    },
-    DogImage_id: {
-        type: Number,
-        unique: true
+        type:  mongoose.Types.ObjectId,
+        ref: "Pet"
     },
     Image_id:{
-        type:Number
+        type:  mongoose.Types.ObjectId,
+        ref: "Image"
     }
 });
 const DogImage = mongoose.model("dogimage", DogImageSchema);

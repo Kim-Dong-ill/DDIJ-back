@@ -1,20 +1,19 @@
-const mongoose = require("mongoose");
+const {default: mongoose} = require("mongoose");
 
-const CommentSchema = mongoose.Schema({
+const CommentSchema = new mongoose.Schema({
     Post_id: {
-        type: Number
+        type:  mongoose.Types.ObjectId,
+        ref: "MyDogPost"
     },
-    Comment_id: {
-        type: Number,
-        unique: true
-    },
+
     content: {
         type: String,
         maxLength: 300,
         required:true
     },
     User_id: {
-        type: Number
+        type: mongoose.Types.ObjectId,
+        ref: "User"
     },
     createdAt: Date,
 });

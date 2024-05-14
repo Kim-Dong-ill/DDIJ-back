@@ -1,16 +1,14 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+const {default: mongoose} = require("mongoose");
 
-class PostImage extends Component {
-    render() {
-        return (
-            <div>
-                
-            </div>
-        );
-    }
-}
-
-PostImage.propTypes = {};
-
-export default PostImage;
+const PostImageSchema = new mongoose.Schema({
+    Post_id: {
+        type:  mongoose.Types.ObjectId,
+        ref: "Post"
+    },
+    Image_id:{
+        type:  mongoose.Types.ObjectId,
+        ref: "Image"
+    },
+});
+const PostImage = mongoose.model("postimage", PostImageSchema);
+module.exports = PostImage;

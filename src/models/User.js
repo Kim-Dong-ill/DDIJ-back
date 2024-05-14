@@ -1,25 +1,49 @@
-const mongoose = require("mongoose");
+const {default: mongoose} = require("mongoose");
 
-const userSchema = mongoose.Schema({
+const UserSchema = new mongoose.Schema({
+    Pet_id: [{
+        type:  mongoose.Types.ObjectId,
+        ref: "Pet"
+    }],
+    main_pet:{
+        type:  mongoose.Types.ObjectId,
+        ref: "Pet"
+    },
     name: {
         type: String,
-        maxLength: 50,
+        required: true,
+        maxLength: 50
     },
     email: {
         type: String,
-        trim: true,
-        unique: true,
+        required:true,
+        maxLength: 50
+    },
+    nickName: {
+        type: String,
+        required:true,
+        maxLength: 10
     },
     password: {
         type: String,
-        minLength: 4,
+        required:true,
+        maxLength: 50
     },
-    role: {
+    role: {             // 0-> 관리자, 1-> 사용자 .....
         type: Number,
-        default: 0,
+        default:1
     },
-    image: String,
-    createdAt: Date,
+    isHavePet: {
+        type: Boolean,
+        required: true,
+        default:false
+    },
+    howManyPet: {
+        type: Number,
+        required: true,
+        default:0
+},
+    createAt: Date
 });
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("user", UserSchema);
 module.exports = User;

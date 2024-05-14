@@ -1,14 +1,10 @@
-const mongoose = require("mongoose");
+const {default: mongoose} = require("mongoose");
 
-const LiveWorkingCircleSchema = mongoose.Schema({
-    LiveWorkingCircle_id: {
-        type: Number,
-        required : true,
-        unique:true
-    },
+const LiveWorkingCircleSchema = new mongoose.Schema({
     WorkingCircle_id: {
-        type: Number,
-        unique: true
+        type:  mongoose.Types.ObjectId,
+        ref: "WorkingCircle",
+        required:true
     },
     isLive: {
         type: Boolean,
