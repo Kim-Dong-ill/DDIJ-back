@@ -1,5 +1,5 @@
 const express = require("express");
-const MyDogPost = require("../models/MyDogPost");
+const AppealPost = require("../models/AppealPost");
 const appealRouter = express.Router();
 
 // AppealRouter.get("/:petid", async (req, res) => {
@@ -13,12 +13,12 @@ const appealRouter = express.Router();
 //   }
 // });
 
-appealRouter.post("/:petid", async (req, res) => {
+appealRouter.post("/:petId", async (req, res) => {
   try {
-    const { petid } = req.params;
-    const { text } = req.body;
-    const mydogpost = await new MyDogPost({ petid, text }).save();
-    return res.status(200).send({ mydogpost });
+    const { petId } = req.params;
+    const { text, userId } = req.body;
+    const appealPost = await new AppealPost({ petId, text, userId }).save();
+    return res.status(200).send({ appealPost });
   } catch (error) {
     res.status(500).send(error.message);
   }
