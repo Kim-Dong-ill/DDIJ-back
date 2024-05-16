@@ -3,6 +3,7 @@ const { default: mongoose } = require("mongoose");
 const dotenv = require("dotenv");
 const app = express();
 const cors = require("cors");
+app.use(express.json());
 
 // 라우터선언
 const appealRouter = require("./routers/appealRouter");
