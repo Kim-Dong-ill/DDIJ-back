@@ -3,6 +3,8 @@ const UserRouter = express.Router();
 const { hash, compare } = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Pet = require("../models/Pet");
+const { default: mongoose } = require("mongoose");
 
 UserRouter.get("/", async (req, res) => {
   try {
@@ -50,13 +52,43 @@ UserRouter.get("/auth", async (req, res) => {
 });
 
 UserRouter.post("/register", async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
+    const options = { session };
     const temp = {
       message: "register_post.",
     };
-    return res.status(200).send(temp);
+    const user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      nickName: req.body.nickName,
+      password: req.body.password,
+      adress: req.body.adress,
+    });
+    const pet = new Pet({
+      pName: req.body.pName,
+      // image:
+      pGender: req.body.pGender,
+      pBreed: req.body.pBreed,
+      pCharOne: req.body.pChar,
+      pAge: req.body.pAge,
+      vaccine: req.body.vaccine,
+      neuter: req.body.neuter,
+      rabies: req.body.rabies,
+    });
+    await user.save(options);
+    await pet.save(options);
+    // await Promise.all([user.save(), pet.save()]);
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return res.status(200).send({ temp, user, pet });
   } catch (error) {
-    res.status(500).send(error.message);
+    await session.abortTransaction();
+    session.endSession();
+    return res.status(500).send(error.message);
   }
 });
 
