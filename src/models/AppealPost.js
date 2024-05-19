@@ -1,23 +1,25 @@
 const mongoose = require("mongoose");
 
-const AppealPostSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Types.ObjectId,
-    // _id 쓰겠다는 의미?
-    ref: "user",
-    // 참조 데이터 __ 스키마 export해올 때 "___"요기다 적은거
-  },
+const AppealPostSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "user",
+    },
 
-  pet: {
-    type: mongoose.Types.ObjectId,
-    ref: "pet",
+    mainPet: {
+      type: mongoose.Types.ObjectId,
+      ref: "mainPet",
+    },
+    text: {
+      type: String,
+      required: true,
+    },
+
+    createdAt: Date,
+    // image: {}, // 얘는 잘 모름
   },
-  text: {
-    type: String,
-    required: true,
-  },
-  createdAt: Date,
-  // image: {}, // 얘는 잘 모름
-});
+  { timestamps: true }
+);
 const AppealPost = mongoose.model("appealPost", AppealPostSchema);
 module.exports = AppealPost;

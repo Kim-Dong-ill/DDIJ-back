@@ -1,10 +1,6 @@
 const { default: mongoose } = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  main_pet: {
-    type: mongoose.Types.ObjectId,
-    ref: "Pet",
-  },
   name: {
     type: String,
     required: true,
@@ -30,7 +26,7 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     default: 1,
   },
-  adress: {
+  address: {
     type: String,
     required: true,
   },

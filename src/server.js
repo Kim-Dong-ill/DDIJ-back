@@ -11,6 +11,7 @@ const circleRouter = require("./routers/circleRouter");
 const indexRouter = require("./routers/indexRouter");
 const petRouter = require("./routers/petRouter");
 const userRouter = require("./routers/userRouter");
+const mainPetRouter = require("./routers/mainPetRouter");
 
 app.use(cors());
 app.use("/uploads", express.static("uploads"));
@@ -33,6 +34,7 @@ const server = async function () {
     app.use("/index", indexRouter);
     app.use("/pet", petRouter);
     app.use("/user", userRouter);
+    app.use("/mainpet", mainPetRouter);
 
     app.listen(4000);
   } catch (error) {

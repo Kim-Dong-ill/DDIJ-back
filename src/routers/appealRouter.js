@@ -1,45 +1,68 @@
 const express = require("express");
 const AppealPost = require("../models/AppealPost");
+const AppealComment = require("../models/AppealComment");
 const appealRouter = express.Router();
 
-// AppealRouter.get("/:petid", async (req, res) => {
-//   try {
-//     const temp = {
-//       message: "자랑글 불러오기 -> 이때 댓글도 불러와야함.",
-//     };
-//     return res.status(200).send(temp);
-//   } catch (error) {
-//     res.status(500).send(error.message);
-//   }
-// });
-
-appealRouter.post("/:petId", async (req, res) => {
+// appealPost 관련된거 - post
+appealRouter.post("/:userId", async (req, res) => {
   try {
-    const { petId } = req.params;
-    const { text, userId } = req.body;
-    const appealPost = await new AppealPost({ petId, text, userId }).save();
+    const { userId } = req.params;
+    const { text, mainPetId } = req.body;
+
+    const appealPost = await new AppealPost({
+      user: userId,
+      mainPet: mainPetId,
+      text: text,
+      createdAt: new Date(),
+    }).save();
     return res.status(200).send({ appealPost });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
-appealRouter.get("/:petid", async (req, res) => {
+
+//appealPost 연습용!!! - get
+appealRouter.get("/:userId", async (req, res) => {
   try {
+    const { userId } = req.params;
+    const appealData = await AppealPost.find({}).sort({ createdAt: -1 });
+    return res.status(200).send({ appealData });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
+// -=========================================================================
 
-// AppealRouter.post("/:petid/comment", async (req, res) => {
-//   try {
-//     const { petid } = req.params;
-//     const temp = {
-//       message: "댓글작성.",
-//     };
-//     return res.status(200).send(temp);
-//   } catch (error) {
-//     res.status(500).send(error.message);
-//   }
-// });
+// comment 관련된거 - post
+appealRouter.post("/:userId/comment", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { text, appealPostId } = req.body;
+    console.log(appealPostId);
+    const appealComment = await new AppealComment({
+      appealPost: appealPostId,
+      user: userId,
+      text: text,
+      createdAt: new Date(),
+      // 왼쪽이 스키마랑 이름 똑같아야함.. 오른쪽은 위에서 내가 써준 변수들
+      // 오른쪽꺼가 포스트맨쓸때 써야할값
+    }).save();
+    return res.status(200).send({ appealComment });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+// comment 관련된거 - get
+appealRouter.get("/:userId/comment", async (req, res) => {
+  try {
+    const { appealPostId } = req.query;
+    const appealComment = await AppealComment.find({
+      appealPost: appealPostId,
+    }).sort({ createdAt: -1 });
+    return res.status(200).send({ appealComment });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
 
 module.exports = appealRouter;
