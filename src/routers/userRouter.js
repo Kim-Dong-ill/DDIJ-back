@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Pet = require("../models/Pet");
 const { default: mongoose } = require("mongoose");
+const auth = require("../middleware/auth");
+const upload = require("../middleware/imageUploads");
 
 UserRouter.get("/", async (req, res) => {
   try {
@@ -23,7 +25,37 @@ UserRouter.post("/login", async (req, res) => {
     const temp = {
       message: "login_post.",
     };
-    return res.status(200).send(temp);
+    const email = req.body.email;
+    const password = req.body.password;
+
+    const user = await User.findOne({ email: email });
+    console.log("user", user);
+    if (!user) {
+      return res
+        .status(400)
+        .send({ message: "입력하신 정보를 다시 확인해주세요." });
+    }
+
+    const isMatch = await compare(password, user.password);
+    console.log("isMatch", isMatch);
+    if (!isMatch) {
+      return res
+        .status(400)
+        .send({ message: "입력하신 정보를 다시 확인해주세요." });
+    }
+
+    const payload = {
+      userId: user._id.toHexString(),
+      email: user.email,
+      role: user.role,
+    };
+    const accessToken = jwt.sign(payload, process.env.SECRET_KEY, {
+      expiresIn: "24h",
+    });
+
+    return res
+      .status(200)
+      .send({ temp, user, accessToken, message: "오늘도 놀아주개!!" });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -40,33 +72,48 @@ UserRouter.post("/logout", async (req, res) => {
   }
 });
 
-UserRouter.get("/auth", async (req, res) => {
+UserRouter.get("/auth", auth, async (req, res) => {
   try {
     const temp = {
       message: "auth_get.",
     };
-    return res.status(200).send(temp);
+    console.log(req.user);
+    const user = {
+      id: req.user.id,
+      email: req.user.email,
+      name: req.user.name,
+      nickName: req.user.nickName,
+      address: req.user.address,
+      role: req.user.role,
+      image: req.user.image,
+    };
+    return res.status(200).send({ temp, user });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
-UserRouter.post("/register", async (req, res) => {
+UserRouter.post("/register", upload.single("image"), async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+
   try {
+    console.log(req.file);
     const options = { session };
     const temp = {
       message: "register_post.",
     };
+    const password = await hash(req.body.password, 10);
     const user = new User({
       name: req.body.name,
       email: req.body.email,
       nickName: req.body.nickName,
-      password: req.body.password,
-      adress: req.body.adress,
+      password,
+      address: req.body.address,
     });
     const pet = new Pet({
+      user: user._id,
+      index: 1,
       pName: req.body.pName,
       // image:
       pGender: req.body.pGender,
@@ -79,7 +126,9 @@ UserRouter.post("/register", async (req, res) => {
     });
     await user.save(options);
     await pet.save(options);
-    // await Promise.all([user.save(), pet.save()]);
+    // console.log("Pet saved", pet);
+
+    // await Promise.all([user.save(options), pet.save(options)]);
 
     await session.commitTransaction();
     session.endSession();
@@ -103,22 +152,24 @@ UserRouter.post("/chkvalue", async (req, res) => {
   }
 });
 
-UserRouter.get("/:userid", async (req, res) => {
+UserRouter.get("/:userId", async (req, res) => {
   try {
-    let { userid } = req.params;
+    let { userId } = req.params;
+    console.log(userId);
 
+    const myPet = await Pet.find({ user: userId });
     const temp = {
       message: "search_user.",
     };
-    return res.status(200).send(temp);
+    return res.status(200).send({ temp, myPet });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
-UserRouter.put("/:userid/update", async (req, res) => {
+UserRouter.put("/:userId/update", async (req, res) => {
   try {
-    let { userid } = req.params;
+    let { userId } = req.params;
 
     const temp = {
       message: "update_user.",
@@ -129,9 +180,9 @@ UserRouter.put("/:userid/update", async (req, res) => {
   }
 });
 
-UserRouter.delete("/signout/:userid", async (req, res) => {
+UserRouter.delete("/signout/:userId", async (req, res) => {
   try {
-    let { userid } = req.params;
+    let { userId } = req.params;
 
     const temp = {
       message: "delete_user.",
