@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Pet = require("../models/Pet");
 const { default: mongoose } = require("mongoose");
+const auth = require("../middleware/auth");
 
 UserRouter.get("/", async (req, res) => {
   try {
@@ -70,12 +71,22 @@ UserRouter.post("/logout", async (req, res) => {
   }
 });
 
-UserRouter.get("/auth", async (req, res) => {
+UserRouter.get("/auth", auth, async (req, res) => {
   try {
     const temp = {
       message: "auth_get.",
     };
-    return res.status(200).send(temp);
+    console.log(req.user);
+    const user = {
+      id: req.user.id,
+      email: req.user.email,
+      name: req.user.name,
+      nickName: req.user.nickName,
+      address: req.user.address,
+      role: req.user.role,
+      image: req.user.image,
+    };
+    return res.status(200).send({ temp, user });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -84,6 +95,7 @@ UserRouter.get("/auth", async (req, res) => {
 UserRouter.post("/register", async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+
   try {
     const options = { session };
     const temp = {
