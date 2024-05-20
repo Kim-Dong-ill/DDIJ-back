@@ -6,6 +6,7 @@ const User = require("../models/User");
 const Pet = require("../models/Pet");
 const { default: mongoose } = require("mongoose");
 const auth = require("../middleware/auth");
+const upload = require("../middleware/imageUploads");
 
 UserRouter.get("/", async (req, res) => {
   try {
@@ -92,11 +93,12 @@ UserRouter.get("/auth", auth, async (req, res) => {
   }
 });
 
-UserRouter.post("/register", async (req, res) => {
+UserRouter.post("/register", upload.single("image"), async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
+    console.log(req.file);
     const options = { session };
     const temp = {
       message: "register_post.",
