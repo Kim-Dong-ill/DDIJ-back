@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 
+
 const PetSchema = new mongoose.Schema(
   {
     user: {
@@ -61,5 +62,6 @@ const PetSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 const Pet = mongoose.model("pet", PetSchema);
 module.exports = Pet;
