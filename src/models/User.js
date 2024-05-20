@@ -30,6 +30,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  myPet: {
+    type: mongoose.Types.ObjectId,
+    ref: "pet",
+  },
 
   createAt: Date,
 });
