@@ -178,7 +178,22 @@ UserRouter.post("/register", async (req, res) => {
   }
 });
 
-UserRouter.post("/checkValue", async (req, res) => {
+//이메일 중복 체크
+UserRouter.post("/checkemail", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.emailValue });
+    if (user) {
+      return res.send({ errorMsg: "사용중인 이메일입니다." });
+    }
+    return res.status(200).send({ message: "사용 가능한 이메일입니다." });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
+});
+
+//닉네임 중복체크
+UserRouter.post("/checknickname", async (req, res) => {
   try {
     const temp = {
       message: "checkVal_post.",
@@ -191,6 +206,7 @@ UserRouter.post("/checkValue", async (req, res) => {
     }
     return res.status(200).send({ temp, message: "사용 가능한 닉네임입니다." });
   } catch (error) {
+    console.log(error);
     res.status(500).send(error.message);
   }
 });
