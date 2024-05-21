@@ -1,6 +1,5 @@
 const { default: mongoose } = require("mongoose");
 
-
 const PetSchema = new mongoose.Schema(
   {
     user: {
@@ -17,10 +16,7 @@ const PetSchema = new mongoose.Schema(
       required: true,
       maxLength: 20,
     },
-    image: {
-      type: mongoose.Types.ObjectId,
-      ref: "DogImage",
-    },
+    image: {},
     pGender: {
       type: String,
       default: "남",
