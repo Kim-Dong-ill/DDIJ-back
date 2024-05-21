@@ -25,7 +25,10 @@ appealRouter.post("/:userId", async (req, res) => {
 appealRouter.get("/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const appealData = await AppealPost.find({}).sort({ createdAt: -1 });
+
+    const appealData = await AppealPost.find({ user: userId }).sort({
+      createdAt: -1,
+    });
     return res.status(200).send({ appealData });
   } catch (error) {
     res.status(500).send(error.message);
