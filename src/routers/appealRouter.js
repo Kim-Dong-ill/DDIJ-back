@@ -3,7 +3,7 @@ const AppealRouter = express.Router();
 const upload = require("../middleware/imageUploads");
 const Pet = require("../models/Pet");
 
-AppealRouter.get("/:petid", async (req, res) => {
+AppealRouter.get("/:userId", async (req, res) => {
   try {
     const temp = {
       message: "자랑글 불러오기 -> 이때 댓글도 불러와야함.",
@@ -36,16 +36,20 @@ AppealRouter.post("/:petid", async (req, res) => {
   }
 });
 
-AppealRouter.post("/:petid/comment", async (req, res) => {
-  try {
-    const { petid } = req.params;
-    const temp = {
-      message: "댓글작성.",
-    };
-    return res.status(200).send(temp);
-  } catch (error) {
-    res.status(500).send(error.message);
+AppealRouter.post(
+  "/:petid/comment",
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      const { petid } = req.params;
+      const temp = {
+        message: "댓글작성.",
+      };
+      return res.status(200).send(temp);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
   }
-});
+);
 
 module.exports = AppealRouter;
