@@ -93,20 +93,32 @@ UserRouter.get("/auth", auth, async (req, res) => {
   }
 });
 
-UserRouter.post("/register", upload.single("image"), async (req, res) => {
+// image
+UserRouter.post("/register/image", upload.single("image"), async (req, res) => {
+  try {
+    console.log(req.file.filename);
+    return res.status(200).send(req.file.filename);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+UserRouter.post("/register", async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
-
+  console.log(req.body);
   try {
-    console.log(req.file);
+    // console.log(req.file.filename);
     const options = { session };
     const temp = {
       message: "register_post.",
     };
+
     const password = await hash(req.body.password, 10);
     const user = new User({
       name: req.body.name,
       email: req.body.email,
+
       nickName: req.body.nickName,
       password,
       address: req.body.address,
@@ -115,7 +127,7 @@ UserRouter.post("/register", upload.single("image"), async (req, res) => {
       user: user._id,
       index: 1,
       pName: req.body.pName,
-      // image:
+      image: req.body.image,
       pGender: req.body.pGender,
       pBreed: req.body.pBreed,
       pCharOne: req.body.pChar,
