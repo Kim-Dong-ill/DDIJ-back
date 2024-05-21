@@ -74,9 +74,9 @@ UserRouter.post("/logout", async (req, res) => {
 
 UserRouter.get("/auth", auth, async (req, res) => {
   try {
-    const temp = {
-      message: "auth_get.",
-    };
+    // const temp = {
+    //   message: "auth_get.",
+    // };
     console.log(req.user);
     const user = {
       id: req.user.id,
@@ -87,7 +87,8 @@ UserRouter.get("/auth", auth, async (req, res) => {
       role: req.user.role,
       image: req.user.image,
     };
-    return res.status(200).send({ temp, user });
+    // return res.status(200).send({ temp, user });
+    return res.status(200).send({ user });
   } catch (error) {
     res.status(500).send(error.message);
   }
