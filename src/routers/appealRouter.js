@@ -60,7 +60,14 @@ appealRouter.get("/:userId/comment", async (req, res) => {
     const { appealPostId } = req.query;
     const appealComment = await AppealComment.find({
       appealPost: appealPostId,
-    }).sort({ createdAt: -1 });
+    })
+      .populate([
+        {
+          path: "user",
+          select: "nickName", // 사용자 데이터 중 'email'과 'name' 필드만 선택
+        },
+      ])
+      .sort({ createdAt: -1 });
     return res.status(200).send({ appealComment });
   } catch (error) {
     res.status(500).send(error.message);
