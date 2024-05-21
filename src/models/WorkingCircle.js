@@ -2,12 +2,10 @@ const { mongoose, Types } = require("mongoose");
 
 const WorkingCircleSchema = new mongoose.Schema({
   title: {
-    // 추가한건데 맞나..?
     type: String,
     // required: true,
   },
   content: {
-    // 추가한건데 맞나..?
     type: String,
     // required: true,
   },
@@ -21,7 +19,7 @@ const WorkingCircleSchema = new mongoose.Schema({
   },
   now: {
     type: Number,
-    // required: true,
+    required: true,
     default: 0,
   },
   max: {
