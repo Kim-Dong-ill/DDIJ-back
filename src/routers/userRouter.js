@@ -9,6 +9,7 @@ const auth = require("../middleware/auth");
 const upload = require("../middleware/imageUploads");
 const path = require("path");
 const fs = require("fs");
+const { log } = require("console");
 
 UserRouter.get("/", async (req, res) => {
   try {
@@ -22,6 +23,7 @@ UserRouter.get("/", async (req, res) => {
   }
 });
 
+//로그인 start
 UserRouter.post("/login", async (req, res) => {
   console.log("로그인");
   try {
@@ -64,6 +66,7 @@ UserRouter.post("/login", async (req, res) => {
   }
 });
 
+//로그아웃 start
 UserRouter.post("/logout", async (req, res) => {
   try {
     const temp = {
@@ -75,6 +78,7 @@ UserRouter.post("/logout", async (req, res) => {
   }
 });
 
+//auth인증 start
 UserRouter.get("/auth", auth, async (req, res) => {
   try {
     // const temp = {
@@ -123,6 +127,7 @@ UserRouter.post("/register/image", upload.single("image"), async (req, res) => {
   }
 });
 
+//회원가입
 UserRouter.post("/register", async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -173,12 +178,18 @@ UserRouter.post("/register", async (req, res) => {
   }
 });
 
-UserRouter.post("/chkvalue", async (req, res) => {
+UserRouter.post("/checkValue", async (req, res) => {
   try {
     const temp = {
       message: "checkVal_post.",
     };
-    return res.status(200).send(temp);
+    console.log(req.body.nickValue); //checkNick:qqq
+    const user = await User.findOne({ nickName: req.body.nickValue });
+    console.log(user);
+    if (user) {
+      return res.send({ errorMsg: "사용중인 닉네임입니다." });
+    }
+    return res.status(200).send({ temp, message: "사용 가능한 닉네임입니다." });
   } catch (error) {
     res.status(500).send(error.message);
   }
