@@ -21,6 +21,7 @@ UserRouter.get("/", async (req, res) => {
 });
 
 UserRouter.post("/login", async (req, res) => {
+  console.log("로그인");
   try {
     const temp = {
       message: "login_post.",
