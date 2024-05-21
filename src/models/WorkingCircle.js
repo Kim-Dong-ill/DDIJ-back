@@ -1,35 +1,47 @@
-const { mongoose,Types} = require("mongoose");
+const { mongoose, Types } = require("mongoose");
 
 const WorkingCircleSchema = new mongoose.Schema({
-    start_loc:{
-        type: [Number],
-        required: true
-},
-    end_loc:{
-        type: [Number],
-        required: true
-},
-    now: {
-        type: Number,
-        required: true,
-        default: 0
+  title: {
+    // 추가한건데 맞나..?
+    type: String,
+    // required: true,
+  },
+  content: {
+    // 추가한건데 맞나..?
+    type: String,
+    // required: true,
+  },
+  start_loc: {
+    type: [Number],
+    required: true,
+  },
+  end_loc: {
+    type: [Number],
+    required: true,
+  },
+  now: {
+    type: Number,
+    // required: true,
+    default: 0,
+  },
+  max: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  startTime: {
+    type: Date,
+  },
+  usingTime: {
+    type: Number,
+  },
+  UserId: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
     },
-    max: {
-        type: Number,
-        required: true,
-        default: 0
-    },
-    startTime: {
-        type: Date
-    },
-    usingTime: {
-        type: Number
-    },
-    UserId:[{
-        type: mongoose.Types.ObjectId,
-        ref: "User"
-    }],
-    createAt: Date
+  ],
+  createAt: Date,
 });
 const WorkingCircle = mongoose.model("workingcircle", WorkingCircleSchema);
 module.exports = WorkingCircle;
