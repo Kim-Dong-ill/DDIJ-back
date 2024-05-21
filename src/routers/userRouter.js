@@ -7,6 +7,8 @@ const Pet = require("../models/Pet");
 const { default: mongoose } = require("mongoose");
 const auth = require("../middleware/auth");
 const upload = require("../middleware/imageUploads");
+const path = require("path");
+const fs = require("fs");
 
 UserRouter.get("/", async (req, res) => {
   try {
@@ -95,13 +97,29 @@ UserRouter.get("/auth", auth, async (req, res) => {
   }
 });
 
-// image
+//반려견 이미지 파일삭제
+UserRouter.delete("/register/image/:image", async (req, res) => {
+  try {
+    const { image } = req.params;
+    const filePath = path.join(__dirname, "..", "..", "uploads", image);
+
+    // 비동기 방식으로 파일 삭제
+    await fs.promises.unlink(filePath);
+
+    return res.status(200).send({ image });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// 반려견image 업로드
 UserRouter.post("/register/image", upload.single("image"), async (req, res) => {
   try {
     console.log(req.file.filename);
     return res.status(200).send(req.file.filename);
   } catch (error) {
     console.log(error);
+    return res.status(500).send({ message: "Error deleting file" });
   }
 });
 
