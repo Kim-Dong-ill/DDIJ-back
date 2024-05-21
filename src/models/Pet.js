@@ -1,45 +1,67 @@
-const {default: mongoose} = require("mongoose");
+const { default: mongoose } = require("mongoose");
 
-const PetSchema = new mongoose.Schema({
-    User_id: {
-        type:  mongoose.Types.ObjectId,
-        ref: "User"
+
+const PetSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Types.ObjectId,
+      required: true,
+      ref: "user",
     },
-    petName: {
-        type: String,
-        required: true,
-        maxLength: 20
+    index: {
+      type: Number,
+      required: true,
     },
-    isHaveImage: {
-        type: Boolean,    //true -> have image, false -> NOT
-        default: false,
-        required:true
+    pName: {
+      type: String,
+      required: true,
+      maxLength: 20,
     },
-    image:{
-        type:  mongoose.Types.ObjectId,
-        ref: "DogImage"
+    image: {
+      type: mongoose.Types.ObjectId,
+      ref: "DogImage",
     },
-    gender: {
-        type: Boolean,    //true -> male, false -> female
-        default: false,
-        required:true
+    pGender: {
+      type: String,
+      default: "남",
+      required: true,
     },
-    breed: {
-        type: String,
-        default: "dog",
-        required:true,
-        maxLength: 20
+    pBreed: {
+      type: String,
+      default: "dog",
+      required: true,
+      maxLength: 20,
     },
-    age: {
-        type: Number,
-        required:true
+    pCharOne: {
+      type: String,
+      required: true,
+      // maxLength: 30,
+    },
+    pAge: {
+      type: Number,
+      required: true,
     },
     vaccine: {
-        type: Number,
-        required: true,
-        default:0
+      type: Boolean,
+      required: true,
+      default: false,
     },
-    createAt: Date
-});
+    neuter: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    rabies: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    createAt: Date,
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const Pet = mongoose.model("pet", PetSchema);
 module.exports = Pet;
