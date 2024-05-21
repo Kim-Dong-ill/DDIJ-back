@@ -31,5 +31,5 @@ const WorkingCircleSchema = new mongoose.Schema({
     }],
     createAt: Date
 });
-const WorkingCircle = mongoose.model("workingcircle", WorkingCircleSchema);
-module.exports = WorkingCircle;
+const Circle = mongoose.model("workingcircle", WorkingCircleSchema);
+module.exports = Circle;

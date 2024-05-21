@@ -10,5 +10,5 @@ const DogImageSchema = new mongoose.Schema({
         ref: "Image"
     }
 });
-const DogImage = mongoose.model("dogimage", DogImageSchema);
-module.exports = DogImage;
+const PetImage = mongoose.model("dogimage", DogImageSchema);
+module.exports = PetImage;
