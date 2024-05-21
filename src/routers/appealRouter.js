@@ -21,16 +21,6 @@ appealRouter.post("/:userId", async (req, res) => {
   }
 });
 
-AppealRouter.post("/image", upload.single("image"), async (req, res) => {
-  try {
-    console.log("파일 업로드 성공");
-    console.log(req.file);
-    return res.send(req.file.filename);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
-
 //appealPost 연습용!!! - get
 appealRouter.get("/:userId", async (req, res) => {
   try {
@@ -75,4 +65,4 @@ appealRouter.get("/:userId/comment", async (req, res) => {
   }
 });
 
-module.exports = AppealRouter;
+module.exports = appealRouter;
