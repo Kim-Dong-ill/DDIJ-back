@@ -9,7 +9,6 @@ const auth = require("../middleware/auth");
 const upload = require("../middleware/imageUploads");
 const path = require("path");
 const fs = require("fs");
-const { log } = require("console");
 
 UserRouter.get("/", async (req, res) => {
   try {
