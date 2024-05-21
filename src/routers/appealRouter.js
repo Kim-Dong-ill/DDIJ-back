@@ -39,8 +39,7 @@ appealRouter.get("/:userId", async (req, res) => {
 // comment 관련된거 - post
 appealRouter.post("/:userId/comment", async (req, res) => {
   try {
-    const { userId } = req.params;
-    const { text, appealPostId } = req.body;
+    const { text, appealPostId, userId } = req.body;
     console.log(appealPostId);
     const appealComment = await new AppealComment({
       appealPost: appealPostId,
