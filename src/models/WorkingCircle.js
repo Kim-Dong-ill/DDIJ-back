@@ -19,7 +19,7 @@ const WorkingCircleSchema = new mongoose.Schema({
   },
   now: {
     type: Number,
-    required: true,
+    // required: true,
     default: 0,
   },
   max: {
