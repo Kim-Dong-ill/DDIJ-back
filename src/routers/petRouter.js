@@ -83,10 +83,9 @@ petRouter.post("/:userId", async (req, res) => {
 });
 
 // 강아지정보 로드 -> 자랑하개에서 써먹을라고 시작햇음 240521_KED
-petRouter.get("/pet/list/:userid", async (req, res) => {
+petRouter.get("/pet/list/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-
     const petList = await Pet.find({ user: userId });
     return res.status(200).send({ petList });
   } catch (error) {
