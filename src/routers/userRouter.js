@@ -9,6 +9,8 @@ const auth = require("../middleware/auth");
 const upload = require("../middleware/imageUploads");
 const path = require("path");
 const fs = require("fs");
+const AppealPost = require("../models/AppealPost");
+const AppealComment = require("../models/AppealComment");
 
 UserRouter.get("/", async (req, res) => {
   try {
@@ -243,7 +245,14 @@ UserRouter.put("/:userId/update", async (req, res) => {
 UserRouter.delete("/signout/:userId", async (req, res) => {
   try {
     let { userId } = req.params;
+    //나중에 Promis.all로 한번에
+    const user = await User.findOne({ _id: userId }); //유저 삭제
+    const pet = await Pet.find({ user: userId }); //반려견 삭제
+    const post = await AppealPost.find({ user: userId }); //자랑하게글 삭제
+    const postComment = await AppealComment.find({ user: userId }); //자랑하게 댓글 삭제
+    //모임 댓글 삭제
 
+    console.log(pet);
     const temp = {
       message: "delete_user.",
     };
