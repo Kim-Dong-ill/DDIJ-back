@@ -8,13 +8,26 @@ const CircleRouter = express.Router();
 
 CircleRouter.get("/:userid", async (req, res) => {
   try {
-    let { userid } = req.params;
+    const { userid } = req.params;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
-    // let workingCircle = req.params;
+    // 전체 모임리스트를 페이지네이션해 조회
+    const allCircles = await WorkingCircle.find()
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+
+    // 유저가 포함된 모임 리스트를 조회
+    const userCircles = await WorkingCircle.find({ UserId: userid }).exec();
 
     const temp = {
       message:
         "모든 써클 리스트를 조회한다. 이때 유저가 포함된 모임은 따로 분류한다. pageination에 대한 고민이 필요",
+      allCircles: allCircles,
+      userCircles: userCircles,
+      currentPage: page, // 현재페이지 번호 page: default 1
+      totalPages: Math.ceil((await WorkingCircle.countDocuments()) / limit),
     };
     return res.status(200).send(temp);
   } catch (error) {
@@ -55,6 +68,7 @@ CircleRouter.put("/:circleid", async (req, res) => {
       content: req.body.content,
       start_loc: req.body.startPoint,
       end_loc: req.body.endPoint,
+      startDate: req.body.startDate,
       startTime: req.body.startTime,
       usingTime: req.body.usingTime,
       max: req.body.max,
@@ -77,6 +91,7 @@ CircleRouter.put("/:circleid", async (req, res) => {
 
     const temp = {
       message: "모임 정보 수정.",
+      updatedCircle,
     };
     return res.status(200).send(temp);
   } catch (error) {
@@ -84,12 +99,20 @@ CircleRouter.put("/:circleid", async (req, res) => {
   }
 });
 
+// 모임 삭제
 CircleRouter.delete("/:circleid", async (req, res) => {
   try {
-    let { circleid } = req.params;
+    const { circleid } = req.params;
+
+    const deleteCircle = await WorkingCircle.findByIdAndDelete(circleid); // 모임정보 삭제
+
+    if (!deleteCircle) {
+      return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
+    }
 
     const temp = {
       message: "모임 정보 삭제.",
+      deleteCircle,
     };
     return res.status(200).send(temp);
   } catch (error) {
@@ -99,10 +122,33 @@ CircleRouter.delete("/:circleid", async (req, res) => {
 
 CircleRouter.post("/:circleid/join", async (req, res) => {
   try {
-    let { circleid } = req.params;
+    const { circleid } = req.params;
+    const { userid } = req.body;
+
+    // 모임 정보 찾기
+    const circle = await WorkingCircle.findById(circleid);
+
+    if (!circle) {
+      return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
+    }
+
+    // 유저가 이미 모임에 참석했는지 확인
+    if (circle.UserId.includes(userid)) {
+      return res.status(400).send({ message: "이미 모임에 참석했습니다." });
+    }
+
+    // 유저 추가
+    circle.UserId.push(userid);
+
+    // 현재 참석자 수 업데이트
+    circle.now = circle.UserId.length;
+
+    // 변경 사항 저장
+    await circle.save();
 
     const temp = {
       message: "모임 참석.",
+      circle,
     };
     return res.status(200).send(temp);
   } catch (error) {
@@ -112,10 +158,35 @@ CircleRouter.post("/:circleid/join", async (req, res) => {
 
 CircleRouter.post("/:circleid/cancel", async (req, res) => {
   try {
-    let { circleid } = req.params;
+    const { circleid } = req.params;
+    const { userid } = req.body;
+
+    // 모임 정보 찾기
+    const circle = await WorkingCircle.findById(circleid);
+    if (!circle) {
+      return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
+    }
+
+    // 유저가 모임에 참석했는지 확인
+    const userIndex = circle.UserId.indexOf(userid);
+    if (userIndex === -1) {
+      return res
+        .status(400)
+        .send({ message: "유저가 모임에 참석하지 않았습니다." });
+    }
+
+    // 유저 제거
+    circle.UserId.splice(userIndex, 1);
+
+    // 현재 참석자 수 업데이트
+    circle.now = circle.UserId.length;
+
+    // 변경 사항 저장
+    await circle.save();
 
     const temp = {
       message: "모임 취소.",
+      circle,
     };
     return res.status(200).send(temp);
   } catch (error) {
@@ -129,11 +200,12 @@ CircleRouter.post("/new", async (req, res) => {
     // const workingCircle = await new WorkingCircle(req.body).save();
     // console.log(workingCircle);
 
-    const workingCircle = new WorkingCircle({
+    const workingCircle = await new WorkingCircle({
       title: req.body.title,
       content: req.body.content,
       start_loc: req.body.startPoint,
       end_loc: req.body.endPoint,
+      startDate: req.body.startDate,
       startTime: req.body.startTime,
       usingTime: req.body.usingTime,
       max: req.body.max,
@@ -141,6 +213,7 @@ CircleRouter.post("/new", async (req, res) => {
 
     const temp = {
       message: "모임 생성.",
+      workingCircle,
     };
     return res.status(200).send(temp);
   } catch (error) {
@@ -148,15 +221,15 @@ CircleRouter.post("/new", async (req, res) => {
   }
 });
 
-CircleRouter.post("/new/check", async (req, res) => {
-  try {
-    const temp = {
-      message: "모임 중복조회.",
-    };
-    return res.status(200).send(temp);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
+// CircleRouter.post("/new/check", async (req, res) => {
+//   try {
+//     const temp = {
+//       message: "모임 중복조회.",
+//     };
+//     return res.status(200).send(temp);
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
 
 module.exports = CircleRouter;

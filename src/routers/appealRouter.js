@@ -1,6 +1,8 @@
 const express = require("express");
 const AppealPost = require("../models/AppealPost");
 const AppealComment = require("../models/AppealComment");
+const PostImage = require("../models/PostImage");
+const upload = require("../middleware/imageUploads");
 const appealRouter = express.Router();
 
 // appealPost 관련된거 - post
@@ -12,6 +14,7 @@ appealRouter.post("/:userId", async (req, res) => {
     const appealPost = await new AppealPost({
       user: userId,
       mainPet: mainPetId,
+      image: req.body.image,
       text: text,
       createdAt: new Date(),
     }).save();
@@ -69,6 +72,19 @@ appealRouter.get("/:userId/comment", async (req, res) => {
       ])
       .sort({ createdAt: -1 });
     return res.status(200).send({ appealComment });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// 이미지
+appealRouter.post("/:userId/image", upload.array("image"), async (req, res) => {
+  try {
+    const images = req.files.map((file) => file.filename);
+    console.log("jaehee", images);
+
+    // return res.status(200).send(req.file.filename);
+    return res.status(200).send({ images });
   } catch (error) {
     res.status(500).send(error.message);
   }
