@@ -3,35 +3,40 @@ const { mongoose, Types } = require("mongoose");
 const WorkingCircleSchema = new mongoose.Schema({
   title: {
     type: String,
-    // required: true,
+    required: true,
   },
   content: {
     type: String,
-    // required: true,
-  },
-  start_loc: {
-    type: [Number],
     required: true,
   },
-  end_loc: {
-    type: [Number],
-    required: true,
-  },
-  now: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
+  // start_loc: {
+  //   type: [Number],
+  //   required: true,
+  // },
+  // end_loc: {
+  //   type: [Number],
+  //   required: true,
+  // },
+  // now: {
+  //   type: Number,
+  //   // required: true,
+  //   default: 0,
+  // },
   max: {
-    type: Number,
+    type: String,
     required: true,
     default: 0,
+  },
+  startDate: {
+    type: Date,
+    required: true,
   },
   startTime: {
-    type: Date,
+    type: String,
   },
   usingTime: {
-    type: Number,
+    type: String,
+    required: true,
   },
   UserId: [
     {
