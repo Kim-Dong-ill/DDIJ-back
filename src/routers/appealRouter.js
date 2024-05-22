@@ -3,6 +3,8 @@ const AppealPost = require("../models/AppealPost");
 const AppealComment = require("../models/AppealComment");
 const PostImage = require("../models/PostImage");
 const upload = require("../middleware/imageUploads");
+const path = require("path");
+const fs = require("fs");
 const appealRouter = express.Router();
 
 // appealPost 관련된거 - post
@@ -71,7 +73,7 @@ appealRouter.get("/:userId/comment", async (req, res) => {
   }
 });
 
-// 이미지
+// 댕댕 이미지 업로드
 appealRouter.post("/:userId/image", upload.array("image"), async (req, res) => {
   try {
     const images = req.files.map((file) => file.filename);
@@ -84,4 +86,19 @@ appealRouter.post("/:userId/image", upload.array("image"), async (req, res) => {
   }
 });
 
+// 댕댕 이미지 삭제
+appealRouter.delete("/:userId/image/:image", async (req, res) => {
+  try {
+    const { image } = req.params;
+    const filePath = path.join(__dirname, "..", "..", "uploads", image);
+    console.log("삭제", image);
+
+    // 비동기 방식으로 파일 삭제
+    await fs.promises.unlink(filePath);
+
+    return res.status(200).send({ image });
+  } catch (error) {
+    console.log(error);
+  }
+});
 module.exports = appealRouter;
