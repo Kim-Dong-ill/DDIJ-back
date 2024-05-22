@@ -146,7 +146,7 @@ UserRouter.post("/register", async (req, res) => {
     const user = new User({
       name: req.body.name,
       email: req.body.email,
-
+      coords: req.body.coords,
       nickName: req.body.nickName,
       password,
       address: req.body.address,
