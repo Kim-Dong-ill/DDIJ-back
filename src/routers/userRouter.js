@@ -7,6 +7,10 @@ const Pet = require("../models/Pet");
 const { default: mongoose } = require("mongoose");
 const auth = require("../middleware/auth");
 const upload = require("../middleware/imageUploads");
+const path = require("path");
+const fs = require("fs");
+const AppealPost = require("../models/AppealPost");
+const AppealComment = require("../models/AppealComment");
 
 UserRouter.get("/", async (req, res) => {
   try {
@@ -20,6 +24,7 @@ UserRouter.get("/", async (req, res) => {
   }
 });
 
+//로그인 start
 UserRouter.post("/login", async (req, res) => {
   console.log("로그인");
   try {
@@ -62,17 +67,21 @@ UserRouter.post("/login", async (req, res) => {
   }
 });
 
+//로그아웃 start
 UserRouter.post("/logout", async (req, res) => {
   try {
     const temp = {
       message: "logout_post.",
     };
-    return res.status(200).send(temp);
+    return res
+      .status(200)
+      .send({ temp, message: "😻😻 다음에 또 놀러오개!! 😻😻" });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
+//auth인증 start
 UserRouter.get("/auth", auth, async (req, res) => {
   try {
     // const temp = {
@@ -95,16 +104,33 @@ UserRouter.get("/auth", auth, async (req, res) => {
   }
 });
 
-// image
+//반려견 이미지 파일삭제
+UserRouter.delete("/register/image/:image", async (req, res) => {
+  try {
+    const { image } = req.params;
+    const filePath = path.join(__dirname, "..", "..", "uploads", image);
+
+    // 비동기 방식으로 파일 삭제
+    await fs.promises.unlink(filePath);
+
+    return res.status(200).send({ image });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// 반려견image 업로드
 UserRouter.post("/register/image", upload.single("image"), async (req, res) => {
   try {
     console.log(req.file.filename);
     return res.status(200).send(req.file.filename);
   } catch (error) {
     console.log(error);
+    return res.status(500).send({ message: "Error deleting file" });
   }
 });
 
+//회원가입
 UserRouter.post("/register", async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -155,13 +181,35 @@ UserRouter.post("/register", async (req, res) => {
   }
 });
 
-UserRouter.post("/chkvalue", async (req, res) => {
+//이메일 중복 체크
+UserRouter.post("/checkemail", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.emailValue });
+    if (user) {
+      return res.send({ errorMsg: "사용중인 이메일입니다." });
+    }
+    return res.status(200).send({ message: "사용 가능한 이메일입니다." });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
+});
+
+//닉네임 중복체크
+UserRouter.post("/checknickname", async (req, res) => {
   try {
     const temp = {
       message: "checkVal_post.",
     };
-    return res.status(200).send(temp);
+    console.log(req.body.nickValue); //checkNick:qqq
+    const user = await User.findOne({ nickName: req.body.nickValue });
+    console.log(user);
+    if (user) {
+      return res.send({ errorMsg: "사용중인 닉네임입니다." });
+    }
+    return res.status(200).send({ temp, message: "사용 가능한 닉네임입니다." });
   } catch (error) {
+    console.log(error);
     res.status(500).send(error.message);
   }
 });
@@ -197,7 +245,14 @@ UserRouter.put("/:userId/update", async (req, res) => {
 UserRouter.delete("/signout/:userId", async (req, res) => {
   try {
     let { userId } = req.params;
+    //나중에 Promis.all로 한번에
+    const user = await User.findOne({ _id: userId }); //유저 삭제
+    const pet = await Pet.find({ user: userId }); //반려견 삭제
+    const post = await AppealPost.find({ user: userId }); //자랑하게글 삭제
+    const postComment = await AppealComment.find({ user: userId }); //자랑하게 댓글 삭제
+    //모임 댓글 삭제
 
+    console.log(pet);
     const temp = {
       message: "delete_user.",
     };
