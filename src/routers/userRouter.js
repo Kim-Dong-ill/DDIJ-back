@@ -214,20 +214,25 @@ UserRouter.post("/checknickname", async (req, res) => {
   }
 });
 
-UserRouter.get("/:userId", async (req, res) => {
-  try {
-    let { userId } = req.params;
-    console.log(userId);
-
-    const myPet = await Pet.find({ user: userId });
-    const temp = {
-      message: "search_user.",
-    };
-    return res.status(200).send({ temp, myPet });
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
+//axios안쓰고 유저 정보 가져올 수 있어서 사용 안함
+// UserRouter.get("/:userId", async (req, res) => {
+//   try {
+//     let { userId } = req.params;
+//     if (!mongoose.isValidObjectId(userId)) {
+//       return res.status(400).send({ error: "유저가 없습니다." });
+//     }
+//     const user = await User.findOne({ _id: userId });
+//     if (!user) {
+//       return res.status(400).send({ message: "유저가 없습니다." });
+//     }
+//     const temp = {
+//       message: "search_user.",
+//     };
+//     return res.status(200).send({ temp, user });
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
 
 UserRouter.put("/:userId/update", async (req, res) => {
   try {
