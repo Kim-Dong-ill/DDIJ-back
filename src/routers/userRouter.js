@@ -71,7 +71,9 @@ UserRouter.post("/logout", async (req, res) => {
     const temp = {
       message: "logout_post.",
     };
-    return res.status(200).send(temp);
+    return res
+      .status(200)
+      .send({ temp, message: "😻😻 다음에 또 놀러오개!! 😻😻" });
   } catch (error) {
     res.status(500).send(error.message);
   }
