@@ -1,9 +1,8 @@
 const express = require("express");
-const Pet = require("../models/Pet");
-const User = require("../models/User");
+const Pet = require("../models/Pet");                      //나중에 pet으로 변경
+const User = require("../models/User");                    //나중에 user로 변경
 const { default: mongoose } = require("mongoose");
-const CircleLocation = require("../models/CircleLocation");
-const WorkingCircle = require("../models/WorkingCircle");
+const Circle = require("../models/CircleTEST");           //나중에 circle로 변경
 const CircleRouter = express.Router();
 
 CircleRouter.get("/:userid", async (req, res) => {
@@ -13,21 +12,19 @@ CircleRouter.get("/:userid", async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
 
     // 전체 모임리스트를 페이지네이션해 조회
-    const allCircles = await WorkingCircle.find()
+    const allCircles = await Circle.find()
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();
 
     // 유저가 포함된 모임 리스트를 조회
-    const userCircles = await WorkingCircle.find({ UserId: userid }).exec();
+    const userCircles = await Circle.find({ UserId: userid }).exec();
 
     const temp = {
-      message:
-        "모든 써클 리스트를 조회한다. 이때 유저가 포함된 모임은 따로 분류한다. pageination에 대한 고민이 필요",
       allCircles: allCircles,
       userCircles: userCircles,
       currentPage: page, // 현재페이지 번호 page: default 1
-      totalPages: Math.ceil((await WorkingCircle.countDocuments()) / limit),
+      totalPages: Math.ceil((await Circle.countDocuments()) / limit),
     };
     return res.status(200).send(temp);
   } catch (error) {
@@ -42,7 +39,7 @@ CircleRouter.get("/detail/:circleid", async (req, res) => {
     const { circleid } = req.params;
 
     // 해당하는 모임정보
-    const circle = await WorkingCircle.findById(circleid);
+    const circle = await Circle.findById(circleid);
 
     if (!circle) {
       return res.status(404).json({ message: "모임을 찾을 수 없습니다." });
@@ -75,7 +72,7 @@ CircleRouter.put("/:circleid", async (req, res) => {
     };
 
     // circleid의 모임을 updatedCircle객체로 수정 후 수정된 문서를 반환 , runValidators를통해 스키마 유효성 검사
-    const result = await WorkingCircle.findByIdAndUpdate(
+    const result = await Circle.findByIdAndUpdate(
       circleid,
       updatedCircle,
       {
@@ -104,7 +101,7 @@ CircleRouter.delete("/:circleid", async (req, res) => {
   try {
     const { circleid } = req.params;
 
-    const deleteCircle = await WorkingCircle.findByIdAndDelete(circleid); // 모임정보 삭제
+    const deleteCircle = await Circle.findByIdAndDelete(circleid); // 모임정보 삭제
 
     if (!deleteCircle) {
       return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
@@ -126,7 +123,7 @@ CircleRouter.post("/:circleid/join", async (req, res) => {
     const { userid } = req.body;
 
     // 모임 정보 찾기
-    const circle = await WorkingCircle.findById(circleid);
+    const circle = await Circle.findById(circleid);
 
     if (!circle) {
       return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
@@ -162,7 +159,7 @@ CircleRouter.post("/:circleid/cancel", async (req, res) => {
     const { userid } = req.body;
 
     // 모임 정보 찾기
-    const circle = await WorkingCircle.findById(circleid);
+    const circle = await Circle.findById(circleid);
     if (!circle) {
       return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
     }
@@ -200,7 +197,7 @@ CircleRouter.post("/new", async (req, res) => {
     // const workingCircle = await new WorkingCircle(req.body).save();
     // console.log(workingCircle);
 
-    const workingCircle = await new WorkingCircle({
+    const workingCircle = await new Circle({
       title: req.body.title,
       content: req.body.content,
       start_loc: req.body.startPoint,

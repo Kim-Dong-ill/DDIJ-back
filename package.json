@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "faker": "^6.6.6",
     "jsonwebtoken": "^9.0.2",
     "mime-type": "^4.0.0",
     "mongoose": "^8.3.4",
@@ -22,6 +23,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "nodemon": "^3.1.0"
   }
 }

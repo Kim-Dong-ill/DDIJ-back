@@ -1,0 +1,134 @@
+[
+  {
+    "Users": [
+      {
+        "$oid": "664d520e1fea5d6d9c5fbd9e"
+      },
+      {
+        "$oid": "664ebe1e498107d35a2499e1"
+      },
+      {
+        "$oid": "664ebedc498107d35a2499ec"
+      },
+      {
+        "$oid": "664c4171a9e4f2a9a11b291c"
+      },
+      {
+        "$oid": "664ebddd498107d35a2499d7"
+      }
+    ],
+    "name": "왈왈",
+    "text": "Lorem ipsum dolor sit amet.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91195834322995,
+        37.50471594694458
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91349282200828,
+        37.50619151486964
+      ]
+    },
+    "startTime": "2024-05-24T07:22:56.171Z",
+    "usingTime": 108000000,
+    "complete": false,
+    "neuter": true,
+    "rabies": true,
+    "createdAt": {
+      "$date": "2024-05-23T04:10:24.823Z"
+    },
+    "__v": 0
+  },
+  {
+    "Users": [
+      {
+        "$oid": "664ec05d498107d35a2499ff"
+      },
+      {
+        "$oid": "664c0efa83556c598837895e"
+      },
+      {
+        "$oid": "664850ac7e731434e79d383c"
+      },
+      {
+        "$oid": "664c05be84c5bf0fa6df9100"
+      },
+      {
+        "$oid": "664850a57e731434e79d383b"
+      }
+    ],
+    "name": "산책 모임",
+    "text": "Consectetur adipiscing elit.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91462041367295,
+        37.50450581967678
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91612405815605,
+        37.50724876845031
+      ]
+    },
+    "startTime": "2024-05-25T11:12:34.567Z",
+    "usingTime": 108000000,
+    "complete": false,
+    "neuter": false,
+    "rabies": false,
+    "createdAt": {
+      "$date": "2024-05-23T05:15:30.823Z"
+    },
+    "__v": 0
+  },
+  {
+    "Users": [
+      {
+        "$oid": "664c4171a9e4f2a9a11b291c"
+      },
+      {
+        "$oid": "664bfe3884c5bf0fa6df90d5"
+      },
+      {
+        "$oid": "664c0efa83556c598837895e"
+      },
+      {
+        "$oid": "664850ac7e731434e79d383c"
+      },
+      {
+        "$oid": "664ebddd498107d35a2499d3"
+      }
+    ],
+    "name": "강아지 모임",
+    "text": "Sed do eiusmod tempor incididunt.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91093716462413,
+        37.50629952715073
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91312348917598,
+        37.50538276568735
+      ]
+    },
+    "startTime": "2024-05-26T14:45:12.678Z",
+    "usingTime": 108000000,
+    "complete": false,
+    "neuter": true,
+    "rabies": true,
+    "createdAt": {
+      "$date": "2024-05-23T06:20:36.823Z"
+    },
+    "__v": 0
+  }
+]
