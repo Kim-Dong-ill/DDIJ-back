@@ -73,13 +73,14 @@ petRouter.post("/:userId", async (req, res) => {
 // 강아지정보 로드 -> 자랑하개에서 써먹을라고 시작햇음 240521_KED
 petRouter.get("/pet/list/:userId", async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.body;
     const petList = await Pet.find({ user: userId });
     return res.status(200).send({ petList });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
+//
 
 // 강아지 index값 수정하려고 만든 api -> 대표강아지 설정시 이용합니다.
 petRouter.patch("/mainpetindex", async (req, res) => {
@@ -87,8 +88,10 @@ petRouter.patch("/mainpetindex", async (req, res) => {
     const { petId1, petId2 } = req.body; // 요청 본문에서 두 개의 petId를 가져옴
 
     // 두 개의 petId를 사용해 각각의 펫을 찾음
-    const pet1 = await Pet.findById(petId1);
-    const pet2 = await Pet.findById(petId2);
+    // const pet1 = await Pet.findById(petId1);
+    // const pet2 = await Pet.findById(petId2);
+    const pet1 = await Pet.findOne({ _id: petId1 }); // 수정
+    const pet2 = await Pet.findOne({ _id: petId2 }); // 수정
 
     // 각각의 펫이 존재하는지 확인
     if (!pet1 || !pet2) {
@@ -107,7 +110,8 @@ petRouter.patch("/mainpetindex", async (req, res) => {
     // 업데이트된 펫 정보를 응답
     return res.status(200).send({ pet1, pet2 });
   } catch (error) {
-    res.status(500).send(error.message); // 오류 발생 시 500 에러 응답
+    console.error("Server Error:", error); // 오류 메시지 로그 기록
+    res.status(500).send(error.message);
   }
 });
 
