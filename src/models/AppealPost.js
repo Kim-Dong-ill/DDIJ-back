@@ -15,9 +15,13 @@ const AppealPostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    images: [
+      {
+        type: String,
+      },
+    ],
 
     createdAt: Date,
-    // image: {}, // 얘는 잘 모름
   },
   { timestamps: true }
 );

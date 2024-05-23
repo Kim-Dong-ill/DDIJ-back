@@ -1,5 +1,6 @@
 const express = require("express");
 const Pet = require("../models/Pet");
+const upload = require("../middleware/imageUploads");
 const petRouter = express.Router();
 
 petRouter.get("/list/:userId", async (req, res) => {
@@ -24,18 +25,15 @@ petRouter.get("/list/:userId", async (req, res) => {
 //   }
 // });
 
-// petRouter.post("/modimg/:petId", async (req, res) => {
+// petRouter.post("/modimg/:petId", upload.single("image"), async (req, res) => {
 //   try {
-//     let { petId } = req.params;
-//     const temp = {
-//       message: "펫이미지수정",
-//     };
-//     return res.status(200).send(temp);
+//     const image = req.file.filename; // req.file 업로드된 파일
+//     return res.status(200).send({ image });
 //   } catch (error) {
-//     res.status(500).send(error.message);
+//     console.log(error);
+//     return res.status(500).send(error.message);
 //   }
 // });
-
 // petRouter.delete("/:petId", async (req, res) => {
 //   try {
 //     let { petId } = req.params;

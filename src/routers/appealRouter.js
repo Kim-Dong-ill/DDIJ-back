@@ -12,11 +12,12 @@ appealRouter.post("/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     const { text, mainPetId } = req.body;
+    const images = req.files.map((file) => file.filename);
 
     const appealPost = await new AppealPost({
       user: userId,
       mainPet: mainPetId,
-      image: req.body.image,
+      images: images,
       text: text,
       createdAt: new Date(),
     }).save();
@@ -76,10 +77,7 @@ appealRouter.get("/:userId/comment", async (req, res) => {
 // 댕댕 이미지 업로드
 appealRouter.post("/:userId/image", upload.array("image"), async (req, res) => {
   try {
-    const images = req.files.map((file) => file.filename);
-    console.log("jaehee", images);
-
-    // return res.status(200).send(req.file.filename);
+    const images = req.files.map((file) => file.filename); // req.files : 업로드 된 파일
     return res.status(200).send({ images });
   } catch (error) {
     res.status(500).send(error.message);
@@ -93,7 +91,6 @@ appealRouter.delete("/:userId/image/:image", async (req, res) => {
     const filePath = path.join(__dirname, "..", "..", "uploads", image);
     console.log("삭제", image);
 
-    // 비동기 방식으로 파일 삭제
     await fs.promises.unlink(filePath);
 
     return res.status(200).send({ image });
