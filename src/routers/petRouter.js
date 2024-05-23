@@ -5,7 +5,7 @@ const petRouter = express.Router();
 petRouter.get("/list/:userId", async (req, res) => {
   try {
     let { userId } = req.params;
-    const myPetList = await Pet.find({ user: userId });
+    const myPetList = await Pet.find({ user: userId }).sort({ index: -1 });
     return res.status(200).send({ myPetList });
   } catch (error) {
     res.status(500).send(error.message);
@@ -110,8 +110,6 @@ petRouter.patch("/mainpetindex", async (req, res) => {
     res.status(500).send(error.message); // 오류 발생 시 500 에러 응답
   }
 });
-
-module.exports = petRouter;
 
 module.exports = petRouter;
 
