@@ -1,6 +1,6 @@
 const { mongoose, Types } = require("mongoose");
 
-const circleTESTchema = new mongoose.Schema({
+const circleTESTSchema = new mongoose.Schema({
     name: {
         type: String,
         // required: true,
@@ -17,5 +17,5 @@ const circleTESTchema = new mongoose.Schema({
         }
     }
 });
-const circleTEST = mongoose.model("circletest", circleTESTchema);
+const circleTEST = mongoose.model("circletest", circleTESTSchema);
 module.exports = circleTEST;

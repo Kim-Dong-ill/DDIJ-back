@@ -2,6 +2,8 @@ const express = require("express");
 const IndexRouter = express.Router();
 const User = require("../models/userTEST");
 const Circle =require("../models/circleTEST")
+const Pet =require("../models/PetTEST")
+const PetImg =require("../models/PetImageTestTEST")
 
 IndexRouter.post("/:userid", async (req, res) => {
     try {
@@ -21,6 +23,11 @@ IndexRouter.post("/:userid", async (req, res) => {
                 },
             },
         ])
+        let tempUserId = nearUser.map(user => user._id.toString());
+        console.log((tempUserId))
+        const pet = await User.findById({ user: { $in: tempUserId } }).exec();
+        // pet에서 userid로 추출한다음, 그들중 대표펫을 찾아내어 img주소를 가져와 id와 맵핑한다.
+
         const nearCircle = await Circle.aggregate([
             {
                 $geoNear:{

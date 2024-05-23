@@ -1,9 +1,14 @@
 const { mongoose, Types } = require("mongoose");
 
-const userTESTchema = new mongoose.Schema({
+const userTESTSchema = new mongoose.Schema({
     name: {
         type: String
     },
+    Pets:[ {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "Pet"
+    }],
     location: {
         type: {
             type: String,
@@ -16,5 +21,5 @@ const userTESTchema = new mongoose.Schema({
         }
     }
 });
-const userTEST = mongoose.model("usertest", userTESTchema);
+const userTEST = mongoose.model("usertest", userTESTSchema);
 module.exports = userTEST;

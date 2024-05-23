@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
   },
-
+//[pet]있는게 좋을거같음
   {
     timestamps: true,
   }
