@@ -6,6 +6,27 @@ const CircleLocation = require("../models/CircleLocation");
 const WorkingCircle = require("../models/WorkingCircle");
 const CircleRouter = express.Router();
 
+// 모든 모임리스트 조회
+CircleRouter.get("/", async (req, res) => {
+  try {
+    let { page } = req.query;
+    page = parseInt(page);
+    const totalCnt = await WorkingCircle.countDocuments({});
+    const circles = await WorkingCircle.find({})
+      .skip(page * 5)
+      .limit(5)
+      .populate({
+        path: "user",
+        select: "title startTime startPoint ",
+      });
+    return res.status(200).send({ circles, totalCnt });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// userid에관한 모임리스트 조회
 CircleRouter.get("/:userid", async (req, res) => {
   try {
     const { userid } = req.params;
