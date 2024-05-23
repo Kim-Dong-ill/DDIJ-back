@@ -237,6 +237,7 @@ UserRouter.post("/checknickname", async (req, res) => {
 //   }
 // });
 
+//유저 수정
 UserRouter.patch("/:userId/update", async (req, res) => {
   try {
     let { userId } = req.params;
