@@ -201,13 +201,16 @@ UserRouter.post("/checknickname", async (req, res) => {
     const temp = {
       message: "checkVal_post.",
     };
+
     console.log(req.body.nickValue); //checkNick:qqq
     const user = await User.findOne({ nickName: req.body.nickValue });
     console.log(user);
     if (user) {
-      return res.send({ errorMsg: "사용중인 닉네임입니다." });
+      return res.send({ errorMsg: "사용중인 닉네임입니다.", nickState: false });
     }
-    return res.status(200).send({ temp, message: "사용 가능한 닉네임입니다." });
+    return res
+      .status(200)
+      .send({ temp, message: "사용 가능한 닉네임입니다.", nickState: true });
   } catch (error) {
     console.log(error);
     res.status(500).send(error.message);
@@ -234,16 +237,45 @@ UserRouter.post("/checknickname", async (req, res) => {
 //   }
 // });
 
-UserRouter.put("/:userId/update", async (req, res) => {
+UserRouter.patch("/:userId/update", async (req, res) => {
   try {
     let { userId } = req.params;
-
     const temp = {
       message: "update_user.",
     };
-    return res.status(200).send(temp);
+    if (!req.body.password) {
+      const user = await User.findByIdAndUpdate(
+        userId,
+        {
+          $set: {
+            name: req.body.name,
+            nickName: req.body.nickName,
+            address: req.body.address,
+            coords: req.body.coords,
+          },
+        },
+        {
+          new: true,
+        }
+      );
+      console.log(user);
+      return res.status(200).send({ temp, user });
+    } else {
+      const password = await hash(req.body.password, 10);
+      const user = await User.findByIdAndUpdate(userId, {
+        $set: {
+          name: req.body.name,
+          nickName: req.body.nickName,
+          password,
+          address: req.body.address,
+          coords: req.body.coords,
+        },
+      });
+      console.log(user);
+      return res.status(200).send({ temp, user });
+    }
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.status(500).send(error.message);
   }
 });
 
@@ -263,7 +295,28 @@ UserRouter.delete("/signout/:userId", async (req, res) => {
     };
     return res.status(200).send(temp);
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.status(500).send(error.message);
+  }
+});
+
+//유저 수정 비밀번호 확인
+UserRouter.post("/checkpassword", async (req, res) => {
+  try {
+    const password = req.body.defaultP;
+    const userId = req.body.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(400)
+        .send({ message: "유저가 없습니다.", passwordState: false });
+    }
+    const isMatch = await compare(password, user.password);
+    if (isMatch) {
+      return res.send({ message: "일치합니다.", passwordState: true });
+    }
+    return res.send({ errMsg: "다시 입력해주세요.", passwordState: false });
+  } catch (error) {
+    return res.status(500).send(error.message);
   }
 });
 
