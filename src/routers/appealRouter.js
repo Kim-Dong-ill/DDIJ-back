@@ -77,7 +77,7 @@ appealRouter.post("/:userId/image", upload.array("image"), async (req, res) => {
     const images = req.files.map((file) => file.filename);
     console.log("jaehee", images);
 
-    // return res.status(200).send(req.file.filename);
+    // return res.status(200).send(req.file.filename); 야
     return res.status(200).send({ images });
   } catch (error) {
     res.status(500).send(error.message);
