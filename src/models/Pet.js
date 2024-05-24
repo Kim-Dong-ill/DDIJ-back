@@ -20,7 +20,7 @@ const PetSchema = new mongoose.Schema(
     image: {},
     pGender: {
       type: String,
-      default: "남",
+      default: "male",
       required: true,
     },
     pBreed: {
