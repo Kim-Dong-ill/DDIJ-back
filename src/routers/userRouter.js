@@ -59,9 +59,11 @@ UserRouter.post("/login", async (req, res) => {
       expiresIn: "24h",
     });
 
+    const pets = await Pet.find({ user: user._id });
+
     return res
       .status(200)
-      .send({ temp, user, accessToken, message: "오늘도 놀아주개!!" });
+      .send({ temp, user, pets, accessToken, message: "오늘도 놀아주개!!" });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -88,6 +90,7 @@ UserRouter.get("/auth", auth, async (req, res) => {
     //   message: "auth_get.",
     // };
     console.log(req.user);
+    // console.log("=================", req.pets[0]);
     const user = {
       id: req.user.id,
       email: req.user.email,
@@ -97,8 +100,32 @@ UserRouter.get("/auth", auth, async (req, res) => {
       role: req.user.role,
       image: req.user.image,
     };
+
+    // req.pets.map((item, idx) => {
+    //   console.log("$$$$$$", item);
+    //   const pet = item;
+    // });
+    const pets = [];
+    req.pets.forEach((item, idx) => {
+      // console.log("$$$$$$", item);
+      pets.push(item);
+    });
+    console.log("%%%%%%%%%%%", pets);
+    // const pets = {
+    //   id: req.pets[0].id,
+    //   pName: req.pets[0].pName,
+    //   image: req.pets[0].image,
+    //   pGender: req.pets[0].pGender,
+    //   pBreed: req.pets[0].pBreed,
+    //   pCharOne: req.pets[0].pCharOne,
+    //   pAge: req.pets[0].pAge,
+    //   vaccine: req.pets[0].vaccine,
+    //   neuter: req.pets[0].neuter,
+    //   rabies: req.pets[0].rabies,
+    // };
+    // console.log("//////////////", pets);
     // return res.status(200).send({ temp, user });
-    return res.status(200).send({ user });
+    return res.status(200).send({ user, pets });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -237,6 +264,7 @@ UserRouter.post("/checknickname", async (req, res) => {
 //   }
 // });
 
+//유저 수정
 UserRouter.patch("/:userId/update", async (req, res) => {
   try {
     let { userId } = req.params;

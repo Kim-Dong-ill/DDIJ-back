@@ -43,7 +43,7 @@ petRouter.post("/:userId", async (req, res) => {
     const {
       index,
       pName,
-      // image들어올예정
+      image,
       pGender,
       pBreed,
       pCharOne,
@@ -56,6 +56,7 @@ petRouter.post("/:userId", async (req, res) => {
       index,
       user: userId,
       pName,
+      image,
       pGender,
       pBreed,
       pCharOne,
@@ -113,6 +114,23 @@ petRouter.patch("/mainpetindex", async (req, res) => {
   } catch (error) {
     console.error("Server Error:", error); // 오류 메시지 로그 기록
     res.status(500).send(error.message);
+  }
+});
+
+//마이펫이지 수정관련
+petRouter.get("/modify/:petId", async (req, res) => {
+  try {
+    const { petId } = req.params;
+
+    const pet = await Pet.findOne({ _id: petId });
+    if (!pet) {
+      return res.send({ message: "반려견이 없습니다." });
+    }
+
+    return res.send({ pet });
+  } catch (error) {
+    console.error("Server Error:", error); // 오류 메시지 로그 기록
+    return res.status(500).send(error.message);
   }
 });
 
