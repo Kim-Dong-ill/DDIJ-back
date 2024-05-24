@@ -115,6 +115,23 @@ petRouter.patch("/mainpetindex", async (req, res) => {
   }
 });
 
+//마이펫이지 수정관련
+petRouter.get("/modify/:petId", async (req, res) => {
+  try {
+    const { petId } = req.params;
+
+    const pet = await Pet.findOne({ _id: petId });
+    if (!pet) {
+      return res.send({ message: "반려견이 없습니다." });
+    }
+
+    return res.send({ pet });
+  } catch (error) {
+    console.error("Server Error:", error); // 오류 메시지 로그 기록
+    return res.status(500).send(error.message);
+  }
+});
+
 module.exports = petRouter;
 
 // 유저 유저수정 펫리스트보기 펫리스트수정 제외하고 나머지..?
