@@ -6,15 +6,11 @@ const AppealPostSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "user",
     },
-
-    mainPet: {
-      type: mongoose.Types.ObjectId,
-      ref: "mainPet",
-    },
     text: {
       type: String,
       required: true,
     },
+    images: [],
 
     createdAt: Date,
     // image: {}, // 얘는 잘 모름
