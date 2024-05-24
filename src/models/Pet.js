@@ -10,6 +10,7 @@ const PetSchema = new mongoose.Schema(
     index: {
       type: Number,
       required: true,
+      // 대표견은 무조건 1, 나머지 무조건 0
     },
     pName: {
       type: String,

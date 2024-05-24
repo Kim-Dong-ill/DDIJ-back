@@ -59,9 +59,11 @@ UserRouter.post("/login", async (req, res) => {
       expiresIn: "24h",
     });
 
+    const pets = await Pet.find({ user: user._id });
+
     return res
       .status(200)
-      .send({ temp, user, accessToken, message: "오늘도 놀아주개!!" });
+      .send({ temp, user, pets, accessToken, message: "오늘도 놀아주개!!" });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -88,6 +90,7 @@ UserRouter.get("/auth", auth, async (req, res) => {
     //   message: "auth_get.",
     // };
     console.log(req.user);
+    // console.log("=================", req.pets[0]);
     const user = {
       id: req.user.id,
       email: req.user.email,
@@ -97,8 +100,32 @@ UserRouter.get("/auth", auth, async (req, res) => {
       role: req.user.role,
       image: req.user.image,
     };
+
+    // req.pets.map((item, idx) => {
+    //   console.log("$$$$$$", item);
+    //   const pet = item;
+    // });
+    const pets = [];
+    req.pets.forEach((item, idx) => {
+      // console.log("$$$$$$", item);
+      pets.push(item);
+    });
+    console.log("%%%%%%%%%%%", pets);
+    // const pets = {
+    //   id: req.pets[0].id,
+    //   pName: req.pets[0].pName,
+    //   image: req.pets[0].image,
+    //   pGender: req.pets[0].pGender,
+    //   pBreed: req.pets[0].pBreed,
+    //   pCharOne: req.pets[0].pCharOne,
+    //   pAge: req.pets[0].pAge,
+    //   vaccine: req.pets[0].vaccine,
+    //   neuter: req.pets[0].neuter,
+    //   rabies: req.pets[0].rabies,
+    // };
+    // console.log("//////////////", pets);
     // return res.status(200).send({ temp, user });
-    return res.status(200).send({ user });
+    return res.status(200).send({ user, pets });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -146,7 +173,7 @@ UserRouter.post("/register", async (req, res) => {
     const user = new User({
       name: req.body.name,
       email: req.body.email,
-
+      coords: req.body.coords,
       nickName: req.body.nickName,
       password,
       address: req.body.address,
@@ -201,44 +228,82 @@ UserRouter.post("/checknickname", async (req, res) => {
     const temp = {
       message: "checkVal_post.",
     };
+
     console.log(req.body.nickValue); //checkNick:qqq
     const user = await User.findOne({ nickName: req.body.nickValue });
     console.log(user);
     if (user) {
-      return res.send({ errorMsg: "사용중인 닉네임입니다." });
+      return res.send({ errorMsg: "사용중인 닉네임입니다.", nickState: false });
     }
-    return res.status(200).send({ temp, message: "사용 가능한 닉네임입니다." });
+    return res
+      .status(200)
+      .send({ temp, message: "사용 가능한 닉네임입니다.", nickState: true });
   } catch (error) {
     console.log(error);
     res.status(500).send(error.message);
   }
 });
 
-UserRouter.get("/:userId", async (req, res) => {
+//axios안쓰고 유저 정보 가져올 수 있어서 사용 안함
+// UserRouter.get("/:userId", async (req, res) => {
+//   try {
+//     let { userId } = req.params;
+//     if (!mongoose.isValidObjectId(userId)) {
+//       return res.status(400).send({ error: "유저가 없습니다." });
+//     }
+//     const user = await User.findOne({ _id: userId });
+//     if (!user) {
+//       return res.status(400).send({ message: "유저가 없습니다." });
+//     }
+//     const temp = {
+//       message: "search_user.",
+//     };
+//     return res.status(200).send({ temp, user });
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
+
+//유저 수정
+UserRouter.patch("/:userId/update", async (req, res) => {
   try {
     let { userId } = req.params;
-    console.log(userId);
-
-    const myPet = await Pet.find({ user: userId });
-    const temp = {
-      message: "search_user.",
-    };
-    return res.status(200).send({ temp, myPet });
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
-
-UserRouter.put("/:userId/update", async (req, res) => {
-  try {
-    let { userId } = req.params;
-
     const temp = {
       message: "update_user.",
     };
-    return res.status(200).send(temp);
+    if (!req.body.password) {
+      const user = await User.findByIdAndUpdate(
+        userId,
+        {
+          $set: {
+            name: req.body.name,
+            nickName: req.body.nickName,
+            address: req.body.address,
+            coords: req.body.coords,
+          },
+        },
+        {
+          new: true,
+        }
+      );
+      console.log(user);
+      return res.status(200).send({ temp, user });
+    } else {
+      const password = await hash(req.body.password, 10);
+      const user = await User.findByIdAndUpdate(userId, {
+        $set: {
+          name: req.body.name,
+          nickName: req.body.nickName,
+          password,
+          address: req.body.address,
+          coords: req.body.coords,
+        },
+      });
+      console.log(user);
+      return res.status(200).send({ temp, user });
+    }
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.status(500).send(error.message);
   }
 });
 
@@ -258,7 +323,28 @@ UserRouter.delete("/signout/:userId", async (req, res) => {
     };
     return res.status(200).send(temp);
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.status(500).send(error.message);
+  }
+});
+
+//유저 수정 비밀번호 확인
+UserRouter.post("/checkpassword", async (req, res) => {
+  try {
+    const password = req.body.defaultP;
+    const userId = req.body.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(400)
+        .send({ message: "유저가 없습니다.", passwordState: false });
+    }
+    const isMatch = await compare(password, user.password);
+    if (isMatch) {
+      return res.send({ message: "일치합니다.", passwordState: true });
+    }
+    return res.send({ errMsg: "다시 입력해주세요.", passwordState: false });
+  } catch (error) {
+    return res.status(500).send(error.message);
   }
 });
 
