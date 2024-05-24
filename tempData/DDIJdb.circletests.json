@@ -1,140 +1,291 @@
-[{
-  "_id": {
-    "$oid": "664dac8316199924e549d28c"
+[
+  {
+    "Users": [
+      {
+        "$oid": "665038eabc4b9b0a9463d7c0"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7ba"
+      }
+    ],
+    "name": "왈왈",
+    "text": "Lorem ipsum dolor sit amet.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91195834322995,
+        37.50471594694458
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91349282200828,
+        37.50619151486964
+      ]
+    },
+    "startTime": "2024-05-24T07:22:56.171Z",
+    "usingTime": 1200000,
+    "complete": true,
+    "createdAt": {
+      "$date": "2024-05-23T04:10:24.823Z"
+    },
+    "__v": 0
   },
-  "name": "왈왈",
-  "startLoc": {
-    "type": "Point",
-    "coordinates": [
-      126.91192202056288,
-      37.50322769288572
-    ]
+  {
+    "Users": [
+      {
+        "$oid": "665038eabc4b9b0a9463d7ba"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c2"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c0"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7bb"
+      }
+    ],
+    "name": "산책 모임",
+    "text": "Consectetur adipiscing elit.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91462041367295,
+        37.50450581967678
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91612405815604,
+        37.50724876845031
+      ]
+    },
+    "startTime": "2024-05-25T11:12:34.567Z",
+    "usingTime": 1800000,
+    "complete": false,
+    "createdAt": {
+      "$date": "2024-05-23T05:15:30.823Z"
+    },
+    "__v": 0
   },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664dacaf16199924e549d28e"
+  {
+    "Users": [
+      {
+        "$oid": "665038eabc4b9b0a9463d7c3"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c2"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7be"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7bd"
+      }
+    ],
+    "name": "강아지 모임",
+    "text": "Sed do eiusmod tempor incididunt.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91093716462413,
+        37.50629952715073
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91312348917597,
+        37.50538276568735
+      ]
+    },
+    "startTime": "2024-05-26T14:45:12.678Z",
+    "usingTime": 600000,
+    "complete": false,
+    "createdAt": {
+      "$date": "2024-05-23T06:20:36.823Z"
+    },
+    "__v": 0
   },
-  "name": "멍멍",
-  "startLoc": {
-    "type": "Point",
-    "coordinates": [
-      126.92205235404623,
-      37.50604594798402
-    ]
+  {
+    "Users": [
+
+      {
+        "$oid": "665038eabc4b9b0a9463d7bd"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c1"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c3"
+      }
+    ],
+    "name": "댕댕이",
+    "text": "Ut labore et dolore magna aliqua.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91572643713647,
+        37.50426754611196
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91735614596546,
+        37.50458654743368
+      ]
+    },
+    "startTime": "2024-05-27T09:33:22.789Z",
+    "usingTime": 1500000,
+    "complete": false,
+    "createdAt": {
+      "$date": "2024-05-23T07:30:48.823Z"
+    },
+    "__v": 0
   },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664dacd216199924e549d290"
+  {
+    "Users": [
+      {
+        "$oid": "665038eabc4b9b0a9463d7c1"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c2"
+      }
+    ],
+    "name": "멍멍",
+    "text": "Ut enim ad minim veniam.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91281754789692,
+        37.50718654753347
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91562894834271,
+        37.50688927341163
+      ]
+    },
+    "startTime": "2024-05-28T16:54:43.345Z",
+    "usingTime": 1200000,
+    "complete": false,
+    "createdAt": {
+      "$date": "2024-05-23T08:40:50.823Z"
+    },
+    "__v": 0
   },
-  "name": "월월",
-  "startLoc": {
-    "type": "Point",
-    "coordinates": [
-      126.94277059988386,
-      37.50793189266587
-    ]
+  {
+    "Users": [
+      {
+        "$oid": "665038eabc4b9b0a9463d7ba"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c2"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c3"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7bd"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7bf"
+      }
+    ],
+    "name": "왈왈",
+    "text": "Lorem ipsum dolor sit amet.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91195834322995,
+        37.50471594694458
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91349282200828,
+        37.50619151486964
+      ]
+    },
+    "startTime": "2024-05-24T07:22:56.171Z",
+    "usingTime": 300000,
+    "complete": true,
+    "createdAt": {
+      "$date": "2024-05-23T04:10:24.823Z"
+    },
+    "__v": 0
   },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664dacef16199924e549d292"
+  {
+    "Users": [
+      {
+        "$oid": "665038eabc4b9b0a9463d7bb"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c1"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c3"
+      }
+    ],
+    "name": "산책 모임",
+    "text": "Consectetur adipiscing elit.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91462041367295,
+        37.50450581967678
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91612405815604,
+        37.50724876845031
+      ]
+    },
+    "startTime": "2024-05-25T11:12:34.567Z",
+    "usingTime": 1200000,
+    "complete": false,
+    "createdAt": {
+      "$date": "2024-05-23T05:15:30.823Z"
+    },
+    "__v": 0
   },
-  "name": "먕먕",
-  "startLoc": {
-    "type": "Point",
-    "coordinates": [
-      126.94422612825058,
-      37.497408843403846
-    ]
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664dad0316199924e549d294"
-  },
-  "name": "같이걷자",
-  "startLoc": {
-    "type": "Point",
-    "coordinates": [
-      126.93435628879563,
-      37.50742295368114
-    ]
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664dad1616199924e549d296"
-  },
-  "name": "댕댕",
-  "startLoc": {
-    "type": "Point",
-    "coordinates": [
-      126.94304782034749,
-      37.50032754125927
-    ]
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664dad6516199924e549d298"
-  },
-  "name": "으르렁",
-  "startLoc": {
-    "type": "Point",
-    "coordinates": [
-      126.90238938485692,
-      37.49359745628661
-    ]
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664dad7916199924e549d29a"
-  },
-  "name": "쿠르릉",
-  "startLoc": {
-    "type": "Point",
-    "coordinates": [
-      126.88943082837179,
-      37.477980582692794
-    ]
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664dad9716199924e549d29c"
-  },
-  "name": "댕댕일주",
-  "startLoc": {
-    "type": "Point",
-    "coordinates": [
-      126.95159149604402,
-      37.50952160519573
-    ]
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664dadb316199924e549d29e"
-  },
-  "name": "노량진경찰서투어",
-  "startLoc": {
-    "type": "Point",
-    "coordinates": [
-      126.94312891550172,
-      37.51268936912877
-    ]
-  },
-  "__v": 0
-}]
+  {
+    "Users": [
+      {
+        "$oid": "665038eabc4b9b0a9463d7c3"
+      }
+    ],
+    "name": "강아지 모임",
+    "text": "Sed do eiusmod tempor incididunt.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91093716462413,
+        37.50629952715073
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91312348917597,
+        37.50538276568735
+      ]
+    },
+    "startTime": "2024-05-26T14:45:12.678Z",
+    "usingTime": 1800000,
+    "complete": false,
+    "createdAt": {
+      "$date": "2024-05-23T06:20:36.823Z"
+    },
+    "__v": 0
+  }
+]

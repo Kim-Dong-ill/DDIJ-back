@@ -1,17 +1,7 @@
 const { default: mongoose } = require("mongoose");
 
 const ImageSchema = new mongoose.Schema({
-  ImageName: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  ImagePath: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  key: {
+key: {
     type: String,
     // required: false,
   },

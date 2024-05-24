@@ -2,19 +2,10 @@
   {
     "Users": [
       {
-        "$oid": "664d520e1fea5d6d9c5fbd9e"
+        "$oid": "665038eabc4b9b0a9463d7c0"
       },
       {
-        "$oid": "664ebe1e498107d35a2499e1"
-      },
-      {
-        "$oid": "664ebedc498107d35a2499ec"
-      },
-      {
-        "$oid": "664c4171a9e4f2a9a11b291c"
-      },
-      {
-        "$oid": "664ebddd498107d35a2499d7"
+        "$oid": "665038eabc4b9b0a9463d7ba"
       }
     ],
     "name": "왈왈",
@@ -46,19 +37,16 @@
   {
     "Users": [
       {
-        "$oid": "664ec05d498107d35a2499ff"
+        "$oid": "665038eabc4b9b0a9463d7ba"
       },
       {
-        "$oid": "664c0efa83556c598837895e"
+        "$oid": "665038eabc4b9b0a9463d7c2"
       },
       {
-        "$oid": "664850ac7e731434e79d383c"
+        "$oid": "665038eabc4b9b0a9463d7c0"
       },
       {
-        "$oid": "664c05be84c5bf0fa6df9100"
-      },
-      {
-        "$oid": "664850a57e731434e79d383b"
+        "$oid": "665038eabc4b9b0a9463d7bb"
       }
     ],
     "name": "산책 모임",
@@ -90,19 +78,16 @@
   {
     "Users": [
       {
-        "$oid": "664c4171a9e4f2a9a11b291c"
+        "$oid": "665038eabc4b9b0a9463d7c3"
       },
       {
-        "$oid": "664bfe3884c5bf0fa6df90d5"
+        "$oid": "665038eabc4b9b0a9463d7c2"
       },
       {
-        "$oid": "664c0efa83556c598837895e"
+        "$oid": "665038eabc4b9b0a9463d7be"
       },
       {
-        "$oid": "664850ac7e731434e79d383c"
-      },
-      {
-        "$oid": "664ebddd498107d35a2499d3"
+        "$oid": "665038eabc4b9b0a9463d7bd"
       }
     ],
     "name": "강아지 모임",

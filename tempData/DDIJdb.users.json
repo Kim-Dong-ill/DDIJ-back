@@ -1,219 +1,227 @@
 [{
   "_id": {
-    "$oid": "664c4171a9e4f2a9a11b291c"
+    "$oid": "665038eabc4b9b0a9463d7ba"
   },
-  "name": "bosco",
-  "email": "dk960227@hanmail.net",
-  "nickName": "admin",
-  "password": "qwer1234",
-  "role": "1",
-  "address": "서울"
-},
-{
-  "_id": {
-    "$oid": "664ebddd498107d35a2499d3"
-  },
-  "name": "최동규요",
-  "email": "admin@a.com",
-  "nickName": "admins",
-  "password": "$2a$10$PyLrdFPG7hkUt8GqvTxXJuWA18AURiKBuXD5jWZaWb.F4q.w0XdM.",
-  "role": 1,
-  "address": "서울 금천구 가산디지털2로 98",
-  "createdAt": {
-    "$date": "2024-05-23T03:54:05.567Z"
-  },
-  "updatedAt": {
-    "$date": "2024-05-23T03:54:05.567Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664ebddd498107d35a2499d7"
-  },
-  "name": "최동규요",
-  "email": "admin@a.com",
-  "nickName": "admins",
-  "password": "$2a$10$xPJx0j4CCuG4uTXnOwhdYe20tyCkOZuu2oZt1fMB1oVAiyqMTPPFa",
-  "role": 1,
-  "address": "서울 금천구 가산디지털2로 98",
-  "createdAt": {
-    "$date": "2024-05-23T03:54:05.721Z"
-  },
-  "updatedAt": {
-    "$date": "2024-05-23T03:54:05.721Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664ebe1e498107d35a2499dd"
-  },
-  "name": "최동규임",
-  "email": "ad@ad.cin",
-  "nickName": "qwer",
-  "password": "$2a$10$O/gruZoVwqWvYAD84gRKaudZNWIricAMw0fZol1qX4o/RWgMoCcIi",
-  "role": 1,
-  "address": "경기 성남시 수정구 분당내곡로 375",
-  "createdAt": {
-    "$date": "2024-05-23T03:55:10.425Z"
-  },
-  "updatedAt": {
-    "$date": "2024-05-23T03:55:10.425Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664ebe1e498107d35a2499e1"
-  },
-  "name": "최동규임",
-  "email": "ad@ad.cin",
-  "nickName": "qwer",
-  "password": "$2a$10$6RUO5Bg4OaRUmDiT9tiyIOkrba0kodB3okQFdZxHB6D/FTOYHy0vm",
-  "role": 1,
-  "address": "경기 성남시 수정구 분당내곡로 375",
-  "createdAt": {
-    "$date": "2024-05-23T03:55:10.586Z"
-  },
-  "updatedAt": {
-    "$date": "2024-05-23T03:55:10.586Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664ebedc498107d35a2499ec"
-  },
-  "name": "bo",
-  "email": "admin@ad.c",
-  "nickName": "adminst",
-  "password": "$2a$10$39ab1uFAY/Aoy3rLDbd7v.GGk/5pxxKLJy/HDS/kROzMDHG5VkwTe",
-  "role": 1,
-  "address": "서울 금천구 가산로5길 14",
-  "createdAt": {
-    "$date": "2024-05-23T03:58:20.410Z"
-  },
-  "updatedAt": {
-    "$date": "2024-05-23T03:58:20.410Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664ec05d498107d35a2499ff"
-  },
-  "name": "김동일",
-  "email": "kim@naver.com",
-  "nickName": "김동일짱",
-  "password": "$2a$10$fIs3Rx73IY7kbMKqnY.YweVWgYHVytMY6lOhcCj0u.7h6P6JKhXzG",
-  "role": 1,
-  "address": "서울 강서구 방화대로23길 3-1",
-  "createdAt": {
-    "$date": "2024-05-23T04:04:45.837Z"
-  },
-  "updatedAt": {
-    "$date": "2024-05-23T04:04:45.837Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "664850a57e731434e79d383b"
-  },
-  "name": "Alice Johnson",
-  "email": "alice@example.com",
-  "nickName": "alicej",
+  "name": "이철수",
+  "email": "chulsoo1@example.com",
+  "nickName": "Chul-su",
   "password": "password123",
   "role": 1,
-  "address": "123 Apple Street, City, Country",
-  "createAt": {
-    "$date": "2024-05-17T00:00:00.000Z"
-  }
+  "address": "서울특별시 동작구 상도로 265-14",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      126.947429,
+      37.504531
+    ]
+  },
+  "mainPet": "664ebddd498107d35a2499d4",
+  "pets": [
+    "664ebddd498107d35a2499d4"
+  ]
 },
 {
   "_id": {
-    "$oid": "664850ac7e731434e79d383c"
+    "$oid": "665038eabc4b9b0a9463d7bb"
   },
-  "name": "Bob Smith",
-  "email": "bob@example.com",
-  "nickName": "bobsmith",
+  "name": "김민지",
+  "email": "minji2@example.com",
+  "nickName": "Min-ji",
+  "password": "password234",
+  "role": 1,
+  "address": "서울특별시 동작구 상도로34다길",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      126.945912,
+      37.502789
+    ]
+  },
+  "mainPet": "664ebddd498107d35a2499d8",
+  "pets": [
+    "664ebddd498107d35a2499d8",
+    "664ebe1e498107d35a2499de",
+    "664ebe1e498107d35a2499e2"
+  ]
+},
+{
+  "_id": {
+    "$oid": "665038eabc4b9b0a9463d7bc"
+  },
+  "name": "박준호",
+  "email": "junho3@example.com",
+  "nickName": "Jun-ho",
+  "password": "password345",
+  "role": 1,
+  "address": "서울특별시 동작구 상도동 235-9",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      126.939923,
+      37.498921
+    ]
+  },
+  "mainPet": "664ebedc498107d35a2499ed",
+  "pets": [
+    "664ebedc498107d35a2499ed"
+  ]
+},
+{
+  "_id": {
+    "$oid": "665038eabc4b9b0a9463d7bd"
+  },
+  "name": "최수미",
+  "email": "soomi4@example.com",
+  "nickName": "Soo-mi",
   "password": "password456",
   "role": 1,
-  "address": "456 Orange Avenue, City, Country",
-  "createAt": {
-    "$date": "2024-05-17T00:00:00.000Z"
-  }
+  "address": "서울특별시 동작구 상도동 175-9",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      126.940224,
+      37.503707
+    ]
+  },
+  "mainPet": "664ec05d498107d35a249a00",
+  "pets": [
+    "664ec05d498107d35a249a00",
+    "664b43622d5cade194dfcafa"
+  ]
 },
 {
   "_id": {
-    "$oid": "664bfe3884c5bf0fa6df90d5"
+    "$oid": "665038eabc4b9b0a9463d7be"
   },
-  "name": "qqqq",
-  "email": "qorhvk@qorhvk.com",
-  "nickName": "qorhvk",
-  "password": "$2a$10$FceJ8IOe7R7JxSFFekr6euBLrlOQ6sRSXUx8DP9.JrPzHtI/28h8O",
+  "name": "정우성",
+  "email": "woosung5@example.com",
+  "nickName": "Woo-sung",
+  "password": "password567",
   "role": 1,
-  "address": "ehddlf",
-  "createdAt": {
-    "$date": "2024-05-21T01:51:52.649Z"
+  "address": "서울특별시 동작구 노량진동 225-3",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      126.941294,
+      37.509008
+    ]
   },
-  "updatedAt": {
-    "$date": "2024-05-21T01:51:52.649Z"
-  },
-  "__v": 0
+  "mainPet": "664b43cf2d5cade194dfcaff",
+  "pets": [
+    "664b43cf2d5cade194dfcaff"
+  ]
 },
 {
   "_id": {
-    "$oid": "664c05be84c5bf0fa6df9100"
+    "$oid": "665038eabc4b9b0a9463d7bf"
   },
-  "name": "배고파",
-  "email": "vlrhsgo@vlrhsgo.com",
-  "nickName": "1",
-  "password": "$2a$10$iAn.NWY3FaYtGxAIkvONuesgDkbR.pnBywzHRG1Ed913tlcauY93K",
+  "name": "한지민",
+  "email": "jimin6@example.com",
+  "nickName": "Ji-min",
+  "password": "password678",
   "role": 1,
-  "address": "서울 성북구 아리랑로 3",
-  "createdAt": {
-    "$date": "2024-05-21T02:23:58.133Z"
+  "address": "서울특별시 동작구 상도제1동 710-2번지",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      126.946902,
+      37.502902
+    ]
   },
-  "updatedAt": {
-    "$date": "2024-05-21T02:23:58.133Z"
-  },
-  "__v": 0
+  "mainPet": "664bfe3884c5bf0fa6df90d6",
+  "pets": [
+    "664bfe3884c5bf0fa6df90d6",
+    "664c05be84c5bf0fa6df9101",
+    "664c0efa83556c598837895f"
+  ]
 },
 {
   "_id": {
-    "$oid": "664c0efa83556c598837895e"
+    "$oid": "665038eabc4b9b0a9463d7c0"
   },
-  "name": "whffu",
-  "email": "whffu@whffu.com",
-  "nickName": "whffu",
-  "password": "$2a$10$Mh1bmQYFN6dVJntKvkcbuuP/52SX1F8uhB3ZgBQhosA422.QRkeJq",
+  "name": "강다현",
+  "email": "dahyun7@example.com",
+  "nickName": "Da-hyun",
+  "password": "password789",
   "role": 1,
-  "address": "서울 금천구 가마산로 70",
-  "createdAt": {
-    "$date": "2024-05-21T03:03:22.721Z"
+  "address": "서울특별시 동작구 상도1동 712번지",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      126.94683,
+      37.502938
+    ]
   },
-  "updatedAt": {
-    "$date": "2024-05-21T03:03:22.721Z"
-  },
-  "__v": 0
+  "mainPet": "664bfe4a84c5bf0fa6df90db",
+  "pets": [
+    "664bfe4a84c5bf0fa6df90db",
+    "664c05be84c5bf0fa6df9101"
+  ]
 },
 {
   "_id": {
-    "$oid": "664d520e1fea5d6d9c5fbd9e"
+    "$oid": "665038eabc4b9b0a9463d7c1"
   },
-  "name": "신창훈",
-  "email": "tlsckdgns@tlsckdgns.com",
-  "nickName": "김으뜸꼬붕",
-  "password": "$2a$10$DjbGG2ZCeDgPoDmuCY5HLOlxRir0WJlvOv93oeOEzMYM2yLLXyyqW",
+  "name": "신동우",
+  "email": "dongwoo8@example.com",
+  "nickName": "Dong-woo",
+  "password": "password890",
   "role": 1,
-  "address": "경기 안양시 동안구 귀인로 155",
-  "createdAt": {
-    "$date": "2024-05-22T02:01:50.458Z"
+  "address": "서울특별시 동작구 상도1동 707-1번지",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      126.947121,
+      37.503231
+    ]
   },
-  "updatedAt": {
-    "$date": "2024-05-22T02:01:50.458Z"
+  "mainPet": "664d520e1fea5d6d9c5fbd9f",
+  "pets": [
+    "664d520e1fea5d6d9c5fbd9f",
+    "664da0181ed9992e4d18e38d"
+  ]
+},
+{
+  "_id": {
+    "$oid": "665038eabc4b9b0a9463d7c2"
   },
-  "__v": 0
+  "name": "윤세영",
+  "email": "seyoung9@example.com",
+  "nickName": "Se-young",
+  "password": "password901",
+  "role": 1,
+  "address": "서울특별시 동작구 상도로",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      126.947369,
+      37.503513
+    ]
+  },
+  "mainPet": "664ec1b01458f140f200bece",
+  "pets": [
+    "664ec1b01458f140f200bece"
+  ]
+},
+{
+  "_id": {
+    "$oid": "665038eabc4b9b0a9463d7c3"
+  },
+  "name": "정재희",
+  "email": "jaehee10@example.com",
+  "nickName": "Jae-hee",
+  "password": "password1010",
+  "role": 1,
+  "address": "서울특별시 동작구 상도1동 700",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      126.947617,
+      37.503796
+    ]
+  },
+  "mainPet": "664ebddd498107d35a2499d4",
+  "pets": [
+    "664ebe1e498107d35a2499de"
+  ]
 }]

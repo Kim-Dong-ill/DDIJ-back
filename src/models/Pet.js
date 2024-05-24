@@ -10,6 +10,7 @@ const PetSchema = new mongoose.Schema(
     index: {
       type: Number,
       required: true,
+        default: 0
       // 대표견은 무조건 1, 나머지 무조건 0
     },
     pName: {
@@ -17,7 +18,6 @@ const PetSchema = new mongoose.Schema(
       required: true,
       maxLength: 20,
     },
-    image: {},
     pGender: {
       type: String,
       default: "남",

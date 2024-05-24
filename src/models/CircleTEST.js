@@ -1,4 +1,5 @@
 const { mongoose, Types } = require("mongoose");
+const User = require("./User")
 const CircleTESTSchema = new mongoose.Schema({
   Users:[{
     type: mongoose.Types.ObjectId,
