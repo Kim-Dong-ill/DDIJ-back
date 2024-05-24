@@ -43,6 +43,7 @@ petRouter.post("/:userId", async (req, res) => {
     const {
       index,
       pName,
+      // image들어올예정
       pGender,
       pBreed,
       pCharOne,
