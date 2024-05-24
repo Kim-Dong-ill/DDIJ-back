@@ -16,7 +16,7 @@ CircleRouter.get("/", async (req, res) => {
       .skip(page * 5)
       .limit(5)
       .populate({
-        path: "user",
+        path: "UserId",
         select: "title startTime startPoint ",
       });
     return res.status(200).send({ circles, totalCnt });
