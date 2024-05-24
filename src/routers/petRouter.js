@@ -46,7 +46,7 @@ petRouter.get("/list/:userId", async (req, res) => {
 //   } catch (error) {
 //     res.status(500).send(error.message);
 //   }
-// });
+// }); 먀
 
 // KED 240519 시작
 petRouter.post("/:userId", async (req, res) => {
