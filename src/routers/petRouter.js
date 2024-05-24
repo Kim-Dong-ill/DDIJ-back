@@ -55,6 +55,7 @@ petRouter.post("/:userId", async (req, res) => {
     const {
       index,
       pName,
+      image,
       pGender,
       pBreed,
       pCharOne,
@@ -67,6 +68,7 @@ petRouter.post("/:userId", async (req, res) => {
       index,
       user: userId,
       pName,
+      image,
       pGender,
       pBreed,
       pCharOne,
