@@ -1,9 +1,9 @@
-const { default: mongoose } = require("mongoose");
+const { default: mongoose, Types } = require("mongoose");
 
 const PetSchema = new mongoose.Schema(
   {
     user: {
-      type: mongoose.Types.ObjectId,
+      type: Types.ObjectId,
       required: true,
       ref: "user",
     },

@@ -1,6 +1,9 @@
 const express = require("express");
 const Pet = require("../models/Pet");
+const upload = require("../middleware/imageUploads");
 const petRouter = express.Router();
+const path = require("path");
+const fs = require("fs");
 
 petRouter.get("/list/:userId", async (req, res) => {
   try {
@@ -118,16 +121,64 @@ petRouter.patch("/mainpetindex", async (req, res) => {
 });
 
 //마이펫이지 수정관련
-petRouter.get("/modify/:petId", async (req, res) => {
+petRouter.put("/modify", async (req, res) => {
   try {
-    const { petId } = req.params;
+    const petData = req.body;
+    // console.log("--------------------", petData);
 
-    const pet = await Pet.findOne({ _id: petId });
-    if (!pet) {
-      return res.send({ message: "반려견이 없습니다." });
-    }
+    const fetchPet = await Pet.findByIdAndUpdate(
+      petData._id,
+      {
+        $set: {
+          pName: petData.pName,
+          image: petData.image,
+          pBreed: petData.pBreed,
+          pCharOne: petData.pCharOne,
+          pAge: petData.pAge,
+          vaccine: petData.vaccine,
+          neuter: petData.neuter,
+          rabies: petData.rabies,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    console.log(")))))))))))))))))", fetchPet);
+    // const pet = await Pet.findOne({ _id: petId });
+    // if (!pet) {
+    //   return res.send({ message: "반려견이 없습니다." });
+    // }
 
-    return res.send({ pet });
+    return res.send(petData);
+  } catch (error) {
+    console.error("Server Error:", error); // 오류 메시지 로그 기록
+    return res.status(500).send(error.message);
+  }
+});
+
+//마이펫 이미지 파일 업로드
+petRouter.post("/modify/image", upload.single("image"), async (req, res) => {
+  try {
+    const fetchImage = req.file.filename;
+
+    return res.status(200).send({ fetchImage });
+  } catch (error) {
+    console.error("Server Error:", error); // 오류 메시지 로그 기록
+    return res.status(500).send(error.message);
+  }
+});
+
+//마이펫 이미지 파일 삭제
+petRouter.delete("/modify/image/:petImage", async (req, res) => {
+  try {
+    const { petImage } = req.params;
+    const filePath = path.join(__dirname, "..", "..", "uploads", petImage);
+
+    // 비동기 방식으로 파일 삭제
+    await fs.promises.unlink(filePath);
+
+    return res.status(200).send({ petImage });
   } catch (error) {
     console.error("Server Error:", error); // 오류 메시지 로그 기록
     return res.status(500).send(error.message);
