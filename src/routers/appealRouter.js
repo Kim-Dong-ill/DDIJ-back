@@ -3,6 +3,8 @@ const AppealPost = require("../models/AppealPost");
 const AppealComment = require("../models/AppealComment");
 const PostImage = require("../models/PostImage");
 const upload = require("../middleware/imageUploads");
+const path = require("path");
+const fs = require("fs");
 const appealRouter = express.Router();
 
 // appealPost 관련된거 - post
