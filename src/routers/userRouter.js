@@ -101,30 +101,12 @@ UserRouter.get("/auth", auth, async (req, res) => {
       image: req.user.image,
     };
 
-    // req.pets.map((item, idx) => {
-    //   console.log("$$$$$$", item);
-    //   const pet = item;
-    // });
     const pets = [];
     req.pets.forEach((item, idx) => {
-      // console.log("$$$$$$", item);
       pets.push(item);
     });
     console.log("%%%%%%%%%%%", pets);
-    // const pets = {
-    //   id: req.pets[0].id,
-    //   pName: req.pets[0].pName,
-    //   image: req.pets[0].image,
-    //   pGender: req.pets[0].pGender,
-    //   pBreed: req.pets[0].pBreed,
-    //   pCharOne: req.pets[0].pCharOne,
-    //   pAge: req.pets[0].pAge,
-    //   vaccine: req.pets[0].vaccine,
-    //   neuter: req.pets[0].neuter,
-    //   rabies: req.pets[0].rabies,
-    // };
-    // console.log("//////////////", pets);
-    // return res.status(200).send({ temp, user });
+
     return res.status(200).send({ user, pets });
   } catch (error) {
     res.status(500).send(error.message);
