@@ -1,6 +1,9 @@
 const express = require("express");
 const Pet = require("../models/Pet");
 const upload = require("../middleware/imageUploads");
+const PostImage = require("../models/PostImage");
+const path = require("path");
+const fs = require("fs");
 const petRouter = express.Router();
 const path = require("path");
 const fs = require("fs");
@@ -39,7 +42,7 @@ petRouter.get("/list/:userId", async (req, res) => {
 //   }
 // });
 
-// KED 240519 시작
+// KED 240519 시작_펫추가
 petRouter.post("/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
@@ -182,6 +185,16 @@ petRouter.delete("/modify/image/:petImage", async (req, res) => {
   } catch (error) {
     console.error("Server Error:", error); // 오류 메시지 로그 기록
     return res.status(500).send(error.message);
+  }
+});
+
+// 펫추가시 이미지 하나 추가하려고 만든거..ㅜㅜ
+petRouter.post("/:userId/image", upload.single("image"), async (req, res) => {
+  try {
+    console.log(req.file.filename);
+    return res.status(200).send(req.file.filename);
+  } catch (error) {
+    res.status(500).send(error.message);
   }
 });
 
