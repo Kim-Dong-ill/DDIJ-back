@@ -95,4 +95,14 @@ petRouter.get("/pet/list/:userId", async (req, res) => {
   }
 });
 
+// appealRouter.delete("/pet/:petid", async (req, res) => {
+//   try {
+//     const { image } = req.params;
+
+//     return res.status(200).send({ image });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
 module.exports = petRouter;
