@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Pet = require("../models/Pet");
 
 let auth = async (req, res, next) => {
   //next는 middleware끼리 이동할때 끝나면 다음 next로 이동가능
@@ -12,11 +13,13 @@ let auth = async (req, res, next) => {
   try {
     const decode = jwt.verify(token, process.env.SECRET_KEY); //토큰 복호화해서 userId등등 뽑아낼거임
     const user = await User.findOne({ _id: decode.userId });
+    const pets = await Pet.find({ user: decode.userId });
 
     if (!user) {
       return res.status(400).send("없는 유저입니다.");
     }
     req.user = user;
+    req.pets = pets;
 
     next();
   } catch (error) {

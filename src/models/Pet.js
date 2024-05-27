@@ -1,15 +1,16 @@
-const { default: mongoose } = require("mongoose");
+const { default: mongoose, Types } = require("mongoose");
 
 const PetSchema = new mongoose.Schema(
   {
     user: {
-      type: mongoose.Types.ObjectId,
+      type: Types.ObjectId,
       required: true,
       ref: "user",
     },
     index: {
       type: Number,
       required: true,
+      // 대표견은 무조건 1, 나머지 무조건 0
     },
     pName: {
       type: String,
@@ -19,7 +20,7 @@ const PetSchema = new mongoose.Schema(
     image: {},
     pGender: {
       type: String,
-      default: "남",
+      default: "male",
       required: true,
     },
     pBreed: {
