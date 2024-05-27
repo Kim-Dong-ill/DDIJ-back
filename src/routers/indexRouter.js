@@ -18,7 +18,7 @@ IndexRouter.get("/:userid", async (req, res) => {
 IndexRouter.post("/location", async (req, res) => {
   try {
     const { lat, lon } = req.body;
-    console.log(lat, lon);
+    console.log("!!!!!!!!!!!!!!!!!!", lat, lon);
 
     // 현재 위치에서 2km 이내의 레스토랑 데이터 조회
     const users = await User.aggregate([
