@@ -5,8 +5,6 @@ const PostImage = require("../models/PostImage");
 const path = require("path");
 const fs = require("fs");
 const petRouter = express.Router();
-const path = require("path");
-const fs = require("fs");
 
 petRouter.get("/list/:userId", async (req, res) => {
   try {
@@ -195,6 +193,21 @@ petRouter.post("/:userId/image", upload.single("image"), async (req, res) => {
     return res.status(200).send(req.file.filename);
   } catch (error) {
     res.status(500).send(error.message);
+  }
+});
+
+petRouter.delete("/list/:userId/:petId", async (req, res) => {
+  try {
+    const { petId } = req.params;
+
+    // 펫 삭제
+    const petDelete = await Pet.findByIdAndDelete(petId);
+    console.log("펫 삭제 성공!?!?!?!?!:", petDelete);
+
+    return res.status(200).send({ petDelete });
+  } catch (error) {
+    console.log("펫 삭제 실패ㅜㅜㅜ", error);
+    return res.status(500).send(error.message);
   }
 });
 
