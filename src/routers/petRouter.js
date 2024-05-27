@@ -5,8 +5,6 @@ const PostImage = require("../models/PostImage");
 const path = require("path");
 const fs = require("fs");
 const petRouter = express.Router();
-const path = require("path");
-const fs = require("fs");
 
 petRouter.get("/list/:userId", async (req, res) => {
   try {
