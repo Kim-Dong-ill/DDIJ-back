@@ -48,7 +48,7 @@ IndexRouter.post("/geolocation", async (req, res) => {
 IndexRouter.post("/location", async (req, res) => {
   try {
     const { lat, lon } = req.body;
-    console.log(lat, lon);
+    console.log("!!!!!!!!!!!!!!!!!!", lat, lon);
 
     const users = await User.aggregate([
       {

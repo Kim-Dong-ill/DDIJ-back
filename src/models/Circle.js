@@ -29,7 +29,12 @@ const CircleSchema = new mongoose.Schema(
     },
     endLoc: {
       type: String,
-      required: true,
+      // required: true,
+    },
+    startDate: {
+      type: Date,
+      //   required: true,
+      default: 0,
     },
     startTime: {
       type: Date,
@@ -38,12 +43,14 @@ const CircleSchema = new mongoose.Schema(
     },
     usingTime: {
       type: String,
-      required: true,
+      // required: true,
     },
-    peoples: {},
+    peoples: {
+      type: Number,
+    },
     complete: {
       type: Boolean,
-      required: true,
+      // required: true,
       default: false,
     },
   },

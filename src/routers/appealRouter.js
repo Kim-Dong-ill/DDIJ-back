@@ -2,6 +2,7 @@ const express = require("express");
 const AppealPost = require("../models/AppealPost");
 const AppealComment = require("../models/AppealComment");
 const PostImage = require("../models/PostImage");
+const Pet = require("../models/Pet.js");
 const upload = require("../middleware/imageUploads");
 const path = require("path");
 const fs = require("fs");
@@ -13,9 +14,9 @@ appealRouter.post("/:userId", async (req, res) => {
     const { userId } = req.params;
     const text = req.body.text;
     const images = req.body.images;
-    console.log("바디", req.body);
-    console.log("이미지", images);
-    console.log("텍스트", text);
+    // console.log("바디", req.body);
+    // console.log("이미지", images);
+    // console.log("텍스트", text);
 
     const appealPost = await new AppealPost({
       user: userId,
@@ -24,7 +25,7 @@ appealRouter.post("/:userId", async (req, res) => {
       text: text,
       createdAt: new Date(),
     }).save();
-    console.log("자랑하개", appealPost);
+    // console.log("자랑하개", appealPost);
     return res.status(200).send({ appealPost });
   } catch (error) {
     res.status(500).send(error.message);
@@ -50,12 +51,15 @@ appealRouter.get("/:userId", async (req, res) => {
 appealRouter.post("/:userId/comment", async (req, res) => {
   try {
     const { text, appealPostId, userId } = req.body;
-    console.log(appealPostId);
+    const pet = await Pet.findOne({ user: userId, index: 1 });
+    const petImage = pet ? pet.image : "";
+
     const appealComment = await new AppealComment({
       appealPost: appealPostId,
       user: userId,
       text: text,
       createdAt: new Date(),
+      petImage: petImage,
       // 왼쪽이 스키마랑 이름 똑같아야함.. 오른쪽은 위에서 내가 써준 변수들
       // 오른쪽꺼가 포스트맨쓸때 써야할값
     }).save();
@@ -78,6 +82,7 @@ appealRouter.get("/:userId/comment", async (req, res) => {
         },
       ])
       .sort({ createdAt: -1 });
+
     return res.status(200).send({ appealComment });
   } catch (error) {
     res.status(500).send(error.message);
@@ -88,7 +93,7 @@ appealRouter.get("/:userId/comment", async (req, res) => {
 appealRouter.post("/:userId/image", upload.array("image"), async (req, res) => {
   try {
     const images = req.files.map((file) => file.filename); // req.files : 업로드 된 파일
-    console.log("파일이름", images);
+    // console.log("파일이름", images);
     return res.status(200).send({ images });
   } catch (error) {
     res.status(500).send(error.message);
@@ -100,7 +105,7 @@ appealRouter.delete("/:userId/image/:image", async (req, res) => {
   try {
     const { image } = req.params;
     const filePath = path.join(__dirname, "..", "..", "uploads", image);
-    console.log("삭제", image);
+    // console.log("삭제", image);
 
     await fs.promises.unlink(filePath);
 
