@@ -13,7 +13,6 @@ const AppealCommentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    petImage: {},
     createdAt: Date,
   }
   // { timestamps: true }

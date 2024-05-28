@@ -1,5 +1,6 @@
 const { mongoose, Types } = require("mongoose");
-const CircleSchema = new mongoose.Schema({
+const User = require("./User")
+const CircleTESTSchema = new mongoose.Schema({
   Users:[{
     type: mongoose.Types.ObjectId,
     ref: "User"
@@ -22,7 +23,7 @@ const CircleSchema = new mongoose.Schema({
     },
     coordinates: {
       type: [Number],
-        index: "2dsphere",
+      index: "2dsphere",
     },
   },
   endLoc: {
@@ -32,7 +33,8 @@ const CircleSchema = new mongoose.Schema({
       default: "Point",
     },
     coordinates: {
-      type: [Number]
+      type: [Number],
+      index: "2dsphere",
     },
   },
   startTime: {
@@ -51,5 +53,5 @@ const CircleSchema = new mongoose.Schema({
   },
   createAt: Date,
 });
-const Circle = mongoose.model("circle", CircleSchema);
-module.exports = Circle;
+const CircleTEST = mongoose.model("circletest", CircleTESTSchema);
+module.exports = CircleTEST;
