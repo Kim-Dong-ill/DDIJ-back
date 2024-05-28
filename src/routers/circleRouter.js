@@ -6,6 +6,7 @@ const CircleLocation = require("../models/CircleLocation");
 const WorkingCircle = require("../models/WorkingCircle");
 const circleRouter = express.Router();
 const Circle = require("../models/Circle");
+const CircleComment = require("../models/CircleComment");
 
 // 새로운 모임 생성 post
 circleRouter.post("/new/:userId", async (req, res) => {
@@ -33,6 +34,91 @@ circleRouter.post("/new/:userId", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+// 모임 댓글 -Post
+circleRouter.post("/:circleId/comment", async (req, res) => {
+  try {
+    const { content, circleId, userId } = req.body;
+
+    const circleComment = await new CircleComment({
+      circle: circleId,
+      user: userId,
+      content: content,
+      createdAt: new Date(),
+    }).save();
+
+    return res.status(200).send({ circleComment });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// 모임 댓글 - Get
+circleRouter.get("/:circleId/comment", async (req, res) => {
+  try {
+    const { circleId } = req.query;
+    const circleComment = await CircleComment.find({
+      circle: circleId,
+    })
+      .populate([
+        {
+          pate: "user",
+          select: "nickName",
+        },
+      ])
+      .sort({ createAt: 1 });
+    return res.status(200).send({ circleComment });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// 모임 댓글 - Post (Myfull식)
+// circleRouter.post("/:circleId/comment", async (req, res) => {
+//   try {
+//     const { circleId } = req.params;
+//     const { userId, content } = req.body;
+
+//     console.log(circleId);
+//     if (!mongoose.isValidObjectId(circleId))
+//       return res.status(400).send({ message: "circleId 가 없습니다." });
+//     if (!mongoose.isValidObjectId(userId))
+//       return res.status(400).send({ message: "userId 가 없습니다." });
+//     if (typeof content !== "string")
+//       return res.status(400).send({ message: "" });
+
+//     const [circle, user] = await Promise.all([
+//       Circle.findById(circleId),
+//       User.findById(userId),
+//     ]);
+
+//     const comment = await new CircleComment({
+//       circle,
+//       user,
+//       content,
+//     }).save();
+//     return res.status(200).send({ comment });
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
+
+// 모임 댓글 - Get (Myfull 식)
+// circleRouter.get("/:circleId/comment", async (req, res) => {
+//   try {
+//     const { circleId } = req.params;
+//     if (!mongoose.isValidObjectId(circleId))
+//       return res.status(400).send({ message: "circleId 가 없음" });
+//     const comment = await CircleComment.find({ circle: circleId }).sort({
+//       createAt: 1,
+//     });
+//     return res.status(200).send({ comment });
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
+
+// 이하 circleRouter였던것
 
 // CircleRouter.get("/:userid", async (req, res) => {
 //   try {
@@ -203,7 +289,6 @@ circleRouter.post("/new/:userId", async (req, res) => {
 //         .send({ message: "유저가 모임에 참석하지 않았습니다." });
 //     }
 
-
 //     // 유저 제거
 //     circle.UserId.splice(userIndex, 1);
 
@@ -222,7 +307,6 @@ circleRouter.post("/new/:userId", async (req, res) => {
 //     res.status(500).send(error.message);
 //   }
 // });
-
 
 // // 새로운 모임 생성 post
 // CircleRouter.post("/new", async (req, res) => {
