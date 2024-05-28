@@ -31,12 +31,12 @@ const CircleSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
-    startDate: {
-      type: Date,
-      //   required: true,
-      default: 0,
-    },
     startTime: {
+      type: String,
+      //   required: true,
+      default: "00:00",
+    },
+    startDate: {
       type: Date,
       //   required: true,
       default: 0,
@@ -59,5 +59,5 @@ const CircleSchema = new mongoose.Schema(
   }
 );
 
-const Circle = mongoose.model("cirle", CircleSchema);
+const Circle = mongoose.model("circle", CircleSchema);
 module.exports = Circle;

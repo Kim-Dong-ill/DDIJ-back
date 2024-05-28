@@ -13,16 +13,22 @@ circleRouter.post("/new/:userId", async (req, res) => {
     // 임시로 유저아이디 입력
     const { userId } = req.params;
     // const coordinates = req.body.coordinates;
-    // console.log("coordinates", coordinates);
+    const coordinates = req.body.startLoc.coordinates; // 수정된 부분
+
+    console.log("req.body", req.body);
+    console.log("coordinates", coordinates);
     const circle = await new Circle({
       user: userId,
       name: req.body.name,
       text: req.body.text,
-      // startLoc: { coordinates },
+      startLoc: { coordinates },
       endLoc: req.body.endLoc,
-      startTime: req.body.startTime,
+      // ==== startTime이문제임
+      // startTime: req.body.startTime,
+      // ==== startTime이문제임
       startDate: req.body.startDate,
       usingTime: req.body.usingTime,
+      peoples: req.body.peoples,
     }).save();
     console.log("()()()()())()", circle);
     const temp = {
@@ -33,6 +39,47 @@ circleRouter.post("/new/:userId", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+// 새로운 모임 생성 post
+// circleRouter.post("/new/:userId", async (req, res) => {
+//   try {
+//     const { userId } = req.params;
+//     const {
+//       name,
+//       text,
+//       startLoc,
+//       endLoc,
+//       startDate,
+//       startTime,
+//       usingTime,
+//       peoples,
+//     } = req.body;
+
+//     const newCircle = new Circle({
+//       user: userId,
+//       name,
+//       text,
+//       startLoc: {
+//         type: "Point",
+//         coordinates: startLoc.coordinates,
+//       },
+//       endLoc,
+//       startDate: new Date(startDate), // 필요시 형식 변환
+//       startTime,
+//       usingTime,
+//       peoples,
+//     });
+
+//     await newCircle.save();
+//     res
+//       .status(201)
+//       .json({ message: "Circle created successfully", data: newCircle });
+//   } catch (error) {
+//     console.error(error);
+//     res
+//       .status(500)
+//       .json({ message: "Internal Server Error", error: error.message });
+//   }
+// });
 
 // CircleRouter.get("/:userid", async (req, res) => {
 //   try {
@@ -203,7 +250,6 @@ circleRouter.post("/new/:userId", async (req, res) => {
 //         .send({ message: "유저가 모임에 참석하지 않았습니다." });
 //     }
 
-
 //     // 유저 제거
 //     circle.UserId.splice(userIndex, 1);
 
@@ -222,7 +268,6 @@ circleRouter.post("/new/:userId", async (req, res) => {
 //     res.status(500).send(error.message);
 //   }
 // });
-
 
 // // 새로운 모임 생성 post
 // CircleRouter.post("/new", async (req, res) => {
