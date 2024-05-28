@@ -1,7 +1,7 @@
 const express = require("express");
 const Pet = require("../models/Pet");
 const upload = require("../middleware/imageUploads");
-const PostImage = require("../models/PostImage");
+// const PostImage = require("../models/PostImage");
 const path = require("path");
 const fs = require("fs");
 const petRouter = express.Router();
