@@ -1,26 +1,95 @@
-const express = require("express");
+const express = require("express")
 const User = require("../models/User");
 const Pet = require("../models/Pet");
+const Circle = require("../models/Circle")
 const IndexRouter = express.Router();
 
-IndexRouter.get("/:userid", async (req, res) => {
-  try {
-    let { userid } = req.params;
-    const temp = {
-      message: "유저주변 이용자들찾기~ && 모임찾기",
-    };
-    return res.status(200).send({ temp });
+// IndexRouter.post("/:userid", async (req, res) => {
+//   try {
+//     let {userid} = req.params;
+//     const {nowCoords}= req.body;
+//     console.log(nowCoords.longitude)
+//     const nearUser = await User.aggregate([
+//       {
+//         $geoNear:{
+//           near:{
+//             type: "Point",
+//             coordinates: [parseFloat(nowCoords.longitude),parseFloat(nowCoords.latitude)]
+//           },
+//           distanceField: "distance",
+//           maxDistance:30000,
+//           spherical:true
+//         },
+//       },
+//     ])
+//     let tempUserId = nearUser.map(user => user._id.toString());
+//     console.log((tempUserId))
+//     const pet = await User.findById({ user: { $in: tempUserId } }).exec();
+//     // pet에서 userid로 추출한다음, 그들중 대표펫을 찾아내어 img주소를 가져와 id와 맵핑한다.
+//
+//     const nearCircle = await Circle.aggregate([
+//       {
+//         $geoNear:{
+//           near:{
+//             type: "Point",
+//             coordinates: [parseFloat(nowCoords.longitude),parseFloat(nowCoords.latitude)]
+//           },
+//           distanceField: "distance",
+//           maxDistance:30000,
+//           spherical:true
+//         },
+//       },
+//     ])
+//     console.log(nearCircle)
+//     return res.status(200).json({nearUser,nearCircle})
+//
+//     // let now_loc =
+//     // let user_loc = new Location()
+//     // const user = await User.findOne(userid).then(
+//     //     user_loc = user.loc
+//     // )
+//
+//     const temp = {
+//       message : "유저주변 이용자들찾기~ && 모임찾기"
+//     }
+//     return res.status(200).send({temp});
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
+IndexRouter.post("/geolocation", async (req, res) => {
+    try {
+    const { lat, lon } = req.body;
+    let circles = await Circle.aggregate([
+      {
+        $geoNear:{
+          near:{
+            type: "Point",
+            coordinates: [parseFloat(lon), parseFloat(lat)]
+          },
+          distanceField: "distance",
+          maxDistance:30000,
+          spherical:true
+        },
+      },
+    ]);
+
+    if (circles.length === 0) {
+      console.log("해당 위치에 모임이 없습니다.")
+      return res.status(404).json({ error: "해당 위치에 모임이 없습니다." });
+    }
+    return res.status(200).send({ circles });
   } catch (error) {
-    console.log(error);
+    console.error("데이터 조회 중 오류:", error);
+    return res.status(500).json({ error: "데이터 조회 중 오류 발생" });
   }
 });
 
 IndexRouter.post("/location", async (req, res) => {
   try {
     const { lat, lon } = req.body;
-    console.log(lat, lon);
 
-    // 현재 위치에서 2km 이내의 레스토랑 데이터 조회
     const users = await User.aggregate([
       {
         $geoNear: {
@@ -29,7 +98,7 @@ IndexRouter.post("/location", async (req, res) => {
             coordinates: [parseFloat(lon), parseFloat(lat)], // 경도, 위도 순서
           },
           distanceField: "distance",
-          maxDistance: 2000, // 최대 거리 (미터 단위, 여기서는 2km) 2000
+          maxDistance: 50000,
           spherical: true,
         },
       },
@@ -51,7 +120,7 @@ IndexRouter.post("/location", async (req, res) => {
 
     console.log("------------", filteredPets);
 
-    return res.status(200).json({ users, filteredPets }); // 조회된 레스토랑 데이터를 JSON 응답으로 보냄
+    return res.status(200).json({ users, filteredPets });
   } catch (error) {
     console.error("데이터 조회 중 오류:", error);
     return res.status(500).json({ error: "데이터 조회 중 오류 발생" });

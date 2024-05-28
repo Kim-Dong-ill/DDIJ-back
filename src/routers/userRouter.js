@@ -49,7 +49,6 @@ UserRouter.post("/login", async (req, res) => {
         .status(400)
         .send({ message: "입력하신 정보를 다시 확인해주세요." });
     }
-
     const payload = {
       userId: user._id.toHexString(),
       email: user.email,
