@@ -203,6 +203,7 @@ circleRouter.post("/new/:userId", async (req, res) => {
 //         .send({ message: "유저가 모임에 참석하지 않았습니다." });
 //     }
 
+
 //     // 유저 제거
 //     circle.UserId.splice(userIndex, 1);
 
@@ -221,6 +222,7 @@ circleRouter.post("/new/:userId", async (req, res) => {
 //     res.status(500).send(error.message);
 //   }
 // });
+
 
 // // 새로운 모임 생성 post
 // CircleRouter.post("/new", async (req, res) => {
