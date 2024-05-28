@@ -56,17 +56,17 @@ circleRouter.post("/:circleId/comment", async (req, res) => {
 // 모임 댓글 - Get
 circleRouter.get("/:circleId/comment", async (req, res) => {
   try {
-    const { circleId } = req.query;
+    const { circleId } = req.params;
     const circleComment = await CircleComment.find({
       circle: circleId,
     })
       .populate([
         {
-          pate: "user",
+          path: "user",
           select: "nickName",
         },
       ])
-      .sort({ createAt: 1 });
+      .sort({ createdAt: 1 });
     return res.status(200).send({ circleComment });
   } catch (error) {
     res.status(500).send(error.message);
