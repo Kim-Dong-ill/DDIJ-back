@@ -21,6 +21,7 @@ circleRouter.post("/new/:userId", async (req, res) => {
       // startLoc: { coordinates },
       endLoc: req.body.endLoc,
       startTime: req.body.startTime,
+      startDate: req.body.startDate,
       usingTime: req.body.usingTime,
     }).save();
     console.log("()()()()())()", circle);
