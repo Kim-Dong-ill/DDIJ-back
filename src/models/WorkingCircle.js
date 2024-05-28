@@ -9,19 +9,7 @@ const WorkingCircleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // start_loc: {
-  //   type: [Number],
-  //   required: true,
-  // },
-  // end_loc: {
-  //   type: [Number],
-  //   required: true,
-  // },
-  // now: {
-  //   type: Number,
-  //   // required: true,
-  //   default: 0,
-  // },
+
   max: {
     type: String,
     required: true,

@@ -4,6 +4,7 @@ const User = require("../models/User");
 const { default: mongoose } = require("mongoose");
 const CircleLocation = require("../models/CircleLocation");
 const WorkingCircle = require("../models/WorkingCircle");
+const Circle = require("../models/Circle");
 const CircleRouter = express.Router();
 
 CircleRouter.get("/:userid", async (req, res) => {
@@ -197,25 +198,21 @@ CircleRouter.post("/:circleid/cancel", async (req, res) => {
 // 새로운 모임 생성 post
 CircleRouter.post("/new", async (req, res) => {
   try {
-    // const workingCircle = await new WorkingCircle(req.body).save();
-    // console.log(workingCircle);
-
-    const workingCircle = await new WorkingCircle({
-      title: req.body.title,
-      content: req.body.content,
-      start_loc: req.body.startPoint,
-      end_loc: req.body.endPoint,
-      startDate: req.body.startDate,
+    const coordinates = req.body.coordinates;
+    console.log("coordinates", coordinates);
+    const circle = await new Circle({
+      name: req.body.name,
+      text: req.body.text,
+      startLoc: { coordinates },
+      endLoc: req.body.endLoc,
       startTime: req.body.startTime,
       usingTime: req.body.usingTime,
-      max: req.body.max,
     }).save();
-
+    console.log("()()()()())()", circle);
     const temp = {
       message: "모임 생성.",
-      workingCircle,
     };
-    return res.status(200).send(temp);
+    return res.status(200).send({ temp, circle });
   } catch (error) {
     res.status(500).send(error.message);
   }
