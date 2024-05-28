@@ -1,7 +1,7 @@
 const express = require("express");
 const Pet = require("../models/Pet");
 const upload = require("../middleware/imageUploads");
-const PostImage = require("../models/PostImage");
+// const PostImage = require("../models/PostImage");
 const path = require("path");
 const fs = require("fs");
 const petRouter = express.Router();
@@ -72,10 +72,7 @@ petRouter.post("/:userId", async (req, res) => {
     }).save();
     return res.status(200).send({ addPet });
   } catch (error) {
-    console.error("Server Error:", error);
-    res
-      .status(500)
-      .send({ message: "Internal Server Error", error: error.message });
+    res.status(500).send(error.message);
   }
 });
 

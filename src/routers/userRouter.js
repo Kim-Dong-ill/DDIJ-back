@@ -49,7 +49,6 @@ UserRouter.post("/login", async (req, res) => {
         .status(400)
         .send({ message: "입력하신 정보를 다시 확인해주세요." });
     }
-
     const payload = {
       userId: user._id.toHexString(),
       email: user.email,
@@ -144,12 +143,15 @@ UserRouter.post("/register/image", upload.single("image"), async (req, res) => {
 UserRouter.post("/register", async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  console.log(req.body);
   try {
+    // console.log(req.file.filename);
     const options = { session };
     const temp = {
       message: "register_post.",
     };
     const coordinates = req.body.coordinates;
+    console.log("좌표~!~!~!~!~!~!~!", coordinates);
     const password = await hash(req.body.password, 10);
     const user = new User({
       name: req.body.name,

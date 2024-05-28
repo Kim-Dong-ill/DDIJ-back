@@ -1,9 +1,9 @@
 const {default: mongoose} = require("mongoose");
 
-const CommentSchema = new mongoose.Schema({
-    Post_id: {
+const CircleCommentSchema = new mongoose.Schema({
+    Circle_id: {
         type:  mongoose.Types.ObjectId,
-        ref: "MyDogPost"
+        ref: "Circle"
     },
 
     content: {
@@ -17,5 +17,5 @@ const CommentSchema = new mongoose.Schema({
     },
     createdAt: Date,
 });
-const Comment = mongoose.model("comment", CommentSchema);
-module.exports = Comment;
+const CircleComment = mongoose.model("circlecoment", CircleCommentSchema);
+module.exports = CircleComment;

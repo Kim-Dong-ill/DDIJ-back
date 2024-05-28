@@ -1,40 +1,239 @@
 const express = require("express");
-const Pet = require("../models/Pet");
-const User = require("../models/User");
+const Pet = require("../models/Pet");                      //나중에 pet으로 변경
+const User = require("../models/User");                    //나중에 user로 변경
 const { default: mongoose } = require("mongoose");
-const CircleLocation = require("../models/CircleLocation");
-const WorkingCircle = require("../models/WorkingCircle");
-const circleRouter = express.Router();
 const Circle = require("../models/Circle");
+const CircleRouter = express.Router();
 
-// 새로운 모임 생성 post
-circleRouter.post("/new/:userId", async (req, res) => {
+function addFinishTime(circle){
+  let circleObj = circle.toObject();
+  circleObj.finishTime = new Date(circle.startTime.getTime() + circle.usingTime.getTime());
+  return circleObj
+}
+
+function checkDone(circleData){
+  if((circleData.startTime).getTime() <= Date.now()){
+    circleData.complete = true;
+  }
+  return circleData
+}
+
+
+// -> 그냥 모든 모임 리스틀 다 보여준다. // 이떄 자신이 참여중인 목록을 따로 넘겨받는다.
+CircleRouter.get("/:userId", async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+
+        // 전체 모임리스트를 페이지네이션해 조회
+        let allCircles = await Circle.find()
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .exec();
+
+    let updatedCircles = await Promise.all(
+        allCircles.map(async (circle) => {
+          if (circle.Users.length > 0) {
+            circle = addFinishTime(circle)
+            circle = checkDone(circle)
+            circle.mainPet=""
+            const userId = circle.Users[0]._id;
+            const user = await User.findById(userId).exec();
+            //   if (user) {           아래는 mainpet의 img를 추가하려고 작업했던것,
+            //     const petImage = (await Pet.findById(user.mainPet).exec()).toObject()
+            //     console.log(petImage.img)
+            //     if (petImage) {
+            //       circle.mainPet = petImage.imagePath;
+            //     }
+            // }
+          }
+          return circle;
+        })
+    );
+    let userCircles = await Circle.find({ Users: userid }).exec();
+    let tempUserCircles =await Promise.all(
+        userCircles.map(async (circle) => {
+          circle= addFinishTime(circle)
+          circle= checkDone(circle)
+          circle.mainPet = " "
+        return circle
+  })
+);
+    const temp = {
+      allCircles: updatedCircles ,
+      userCircles: tempUserCircles,
+      currentPage: page, // 현재페이지 번호 page: default 1
+      totalPages: Math.ceil((await Circle.countDocuments()) / limit),
+    };
+
+    return res.status(200).send(temp);
+    //
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// 유저의 좌표를 받아와 유저 근처에 있는모임 목록 ()개와, 시간순으로 뽑은 모임 ()개를 보내준다.
+CircleRouter.post("/:userid", async (req, res) => {
   try {
-    // 임시로 유저아이디 입력
-    const { userId } = req.params;
-    // const coordinates = req.body.coordinates;
-    const coordinates = req.body.startLoc.coordinates; // 수정된 부분
+    const calculateDistance = (coord1, coord2) => {
+      const [lat1, lon1] = coord1;
+      const [lat2, lon2] = coord2;
 
-    console.log("req.body", req.body);
-    console.log("coordinates", coordinates);
-    const circle = await new Circle({
-      user: userId,
+      const earthRadius = 6371e3;
+
+      const lat1Rad = lat1 * Math.PI / 180;
+      const lat2Rad = lat2 * Math.PI / 180;
+      const deltaLatRad = (lat2 - lat1) * Math.PI / 180;
+      const deltaLonRad = (lon2 - lon1) * Math.PI / 180;
+
+      const a = Math.sin(deltaLatRad / 2) * Math.sin(deltaLatRad / 2) +
+          Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+          Math.sin(deltaLonRad / 2) * Math.sin(deltaLonRad / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+      const distance = earthRadius * c;
+
+      return distance;
+    }
+
+    const { userid } = req.params;
+    const {userLocation} = req.body;
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+        // 전체 모임리스트를 페이지네이션해 조회
+        const allCircles = await Circle.find()
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .exec();
+
+    let circlesByNear = [...allCircles].sort((a, b) => {
+      const distA = calculateDistance(userLocation, a.startLoc.coordinates);
+      const distB = calculateDistance(userLocation, b.startLoc.coordinates);
+      return distA - distB;
+    });
+
+    let circlesByTime = [...allCircles].sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+
+    const userCircleByTime = circlesByTime.filter(circle => circle.Users.some(user => user.toString() === userid));
+
+    const userCircleByDist = circlesByNear.filter(circle => circle.Users.some(user => user.toString() === userid));
+
+    const temp = {
+      byDist: circlesByNear,
+      byDate: circlesByTime,
+      userByDist: userCircleByDist,
+      userByDate: userCircleByTime,
+      currentPage: page, // 현재페이지 번호 page: default 1
+      totalPages: Math.ceil((await Circle.countDocuments()) / limit),
+    };
+    return res.status(200).send(temp);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+})
+
+// 모임 상세 정보 get -> 선택한 모임의 상세 정보를 보여줘야 한다. => 보여줘야할 정보는 ()이다.
+CircleRouter.get("/detail/:circleid", async (req, res) => {
+  try {
+    // 모임정보 찾기
+    const { circleid } = req.params;
+    // 해당하는 모임정보
+    const circle = await Circle.findById(circleid);
+    circleData = addFinishTime(circle)
+    circleData = checkDone(circleData)
+    console.log(circleData)
+
+    if (!circle) {
+      return res.status(404).json({ message: "모임을 찾을 수 없습니다." });
+    }
+    const user = await User.findById(circle.Users[0]).exec();
+
+    if (!user) {
+      return res.status(404).json({ message: "대표유저를 찾을 수 없습니다." });
+    }
+
+    const mainPet = await Pet.findById(user.mainPet).exec();
+    if (!mainPet) {
+      return res.status(404).json({ message: "대표 반려견을 찾을 수 없습니다." });
+    }
+
+    const temp = {
+      message: "circle에 대한 상세정보, Start_Loc는 지도를 찍어주고, name, text, startTime등을 활용",
+      circle: circleData,
+      User : user,
+      mainPet: mainPet
+    };
+    return res.status(200).send(temp);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// 모임정보 수정 => 클라이언트로부터 자료를 받아와 db에 덮어쓴다.
+CircleRouter.put("/:circleid", async (req, res) => {
+  try {
+    const { circleid } = req.params;
+    const updatedCircle = {
       name: req.body.name,
       text: req.body.text,
-      startLoc: { coordinates },
-      endLoc: req.body.endLoc,
-      // ==== startTime이문제임
-      // startTime: req.body.startTime,
-      // ==== startTime이문제임
-      startDate: req.body.startDate,
+      startLoc: {
+        type: "Point",
+        coordinates: req.body.startLoc.coordinates,
+      },
+      endLoc: {
+        type: "Point",
+        coordinates: req.body.endLoc.coordinates,
+      },
+      startTime: req.body.startTime,
       usingTime: req.body.usingTime,
-      peoples: req.body.peoples,
-    }).save();
-    console.log("()()()()())()", circle);
-    const temp = {
-      message: "모임 생성.",
+      complete: req.body.complete,
     };
-    return res.status(200).send({ temp, circle });
+
+        const result = await Circle.findByIdAndUpdate(
+            circleid,
+            updatedCircle,
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
+
+    if (!result) {
+      return Res.status(404).json({ message: "모임을 찾을 수 없습니다." });
+    }
+
+        const temp = {
+            message: "모임 정보 수정.",
+            updatedCircle,
+        };
+        return res.status(200).send(temp);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+// 모임 삭제 -> 프론트에서 삭제가 반영되어야 한다.
+CircleRouter.delete("/:circleid", async (req, res) => {
+    try {
+        const { circleid } = req.params;
+
+        const deleteCircle = await Circle.findByIdAndDelete(circleid); // 모임정보 삭제
+
+    if (!deleteCircle) {
+      return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
+    }
+    for (const userId of deleteCircle.Users) {
+      await User.findByIdAndUpdate(userId, { $pull: { circles: circleid } });
+    }
+    const temp = {
+      message: "모임 정보 삭제.",
+      deleteCircle,
+    };
+    return res.status(200).send(temp);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -80,6 +279,110 @@ circleRouter.post("/new/:userId", async (req, res) => {
 //       .json({ message: "Internal Server Error", error: error.message });
 //   }
 // });
+
+//모임참석을 누른 사용자의 정보를 추가해야한다.
+CircleRouter.post("/:circleid/join", async (req, res) => {
+    try {
+        const { circleid } = req.params;
+        const { userId } = req.body;
+
+    // 모임 정보 찾기
+    const circle = await Circle.findById(circleid);
+
+        if (!circle) {
+            return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
+        }
+
+    if (circle.complete){
+      return res.status(404).send({ message: "이미 완료된 모임입니다.." });
+    }
+
+    if((circle.Users).length>=5){
+      return res.status(404).send({ message: "모임의 정원이 가득 찼습니다." });
+    }
+
+    if (circle.Users.includes(userid)) {
+      return res.status(400).send({ message: "이미 모임에 참석했습니다." });
+    }
+
+    circle.Users.push(userid);
+
+    await circle.save();
+
+        const temp = {
+            message: "모임 참석.",
+            circle,
+        };
+        return res.status(200).send(temp);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+//해당 사용자가 모임에 참여중이라면, 해당 기록을 삭제한다. 참여중이 아니라면, false
+CircleRouter.post("/:circleid/cancel", async (req, res) => {
+    try {
+        const { circleid } = req.params;
+        const { userid } = req.body;
+
+        // 모임 정보 찾기
+        const circle = await Circle.findById(circleid);
+        if (!circle) {
+            return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
+        }
+
+        // 유저가 모임에 참석했는지 확인
+        const userIndex = circle.UserId.indexOf(userid);
+        if (userIndex === -1) {
+            return res
+                .status(400)
+                .send({ message: "유저가 모임에 참석하지 않았습니다." });
+        }
+
+        // 유저 제거
+        circle.UserId.splice(userIndex, 1);
+
+        // 현재 참석자 수 업데이트
+        circle.now = circle.UserId.length;
+
+        // 변경 사항 저장
+        await circle.save();
+
+        const temp = {
+            message: "모임 취소.",
+            circle,
+        };
+        return res.status(200).send(temp);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+// 새로운 모임 생성 post
+CircleRouter.post("/new/:userId", async (req, res) => {
+    try {
+        // 임시로 유저아이디 입력
+        const { userId } = req.params;
+        // const coordinates = req.body.coordinates;
+        // console.log("coordinates", coordinates);
+        const circle = await new Circle({
+            user: userId,
+            name: req.body.name,
+            text: req.body.text,
+            // startLoc: { coordinates },
+            endLoc: req.body.endLoc,
+            startTime: req.body.startTime,
+            startDate: req.body.startDate,
+            usingTime: req.body.usingTime,
+        }).save();
+        console.log("()()()()())()", circle);
+        const temp = {
+            message: "모임 생성.",
+        };
+        return res.status(200).send({ temp, circle });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
 
 // CircleRouter.get("/:userid", async (req, res) => {
 //   try {
@@ -307,4 +610,4 @@ circleRouter.post("/new/:userId", async (req, res) => {
 // //   }
 // // });
 
-module.exports = circleRouter;
+module.exports = CircleRouter;
