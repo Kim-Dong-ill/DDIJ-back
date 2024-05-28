@@ -238,6 +238,47 @@ CircleRouter.delete("/:circleid", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+// 새로운 모임 생성 post
+// circleRouter.post("/new/:userId", async (req, res) => {
+//   try {
+//     const { userId } = req.params;
+//     const {
+//       name,
+//       text,
+//       startLoc,
+//       endLoc,
+//       startDate,
+//       startTime,
+//       usingTime,
+//       peoples,
+//     } = req.body;
+
+//     const newCircle = new Circle({
+//       user: userId,
+//       name,
+//       text,
+//       startLoc: {
+//         type: "Point",
+//         coordinates: startLoc.coordinates,
+//       },
+//       endLoc,
+//       startDate: new Date(startDate), // 필요시 형식 변환
+//       startTime,
+//       usingTime,
+//       peoples,
+//     });
+
+//     await newCircle.save();
+//     res
+//       .status(201)
+//       .json({ message: "Circle created successfully", data: newCircle });
+//   } catch (error) {
+//     console.error(error);
+//     res
+//       .status(500)
+//       .json({ message: "Internal Server Error", error: error.message });
+//   }
+// });
 
 //모임참석을 누른 사용자의 정보를 추가해야한다.
 CircleRouter.post("/:circleid/join", async (req, res) => {
@@ -512,7 +553,6 @@ CircleRouter.post("/new/:userId", async (req, res) => {
 //         .send({ message: "유저가 모임에 참석하지 않았습니다." });
 //     }
 
-
 //     // 유저 제거
 //     circle.UserId.splice(userIndex, 1);
 
@@ -531,7 +571,6 @@ CircleRouter.post("/new/:userId", async (req, res) => {
 //     res.status(500).send(error.message);
 //   }
 // });
-
 
 // // 새로운 모임 생성 post
 // CircleRouter.post("/new", async (req, res) => {

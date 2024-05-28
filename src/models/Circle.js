@@ -23,6 +23,17 @@ const CircleSchema = new mongoose.Schema({
     coordinates: {
       type: [Number],
         index: "2dsphere",
+      // required: true,
+    },
+//     startTime: {
+//       type: String,
+//       //   required: true,
+//       default: "00:00",
+//     },
+    startDate: {
+      type: Date,
+      //   required: true,
+      default: 0,
     },
   },
   endLoc: {
@@ -50,6 +61,10 @@ const CircleSchema = new mongoose.Schema({
     default: false
   },
   createAt: Date,
-});
+},
+  {
+    timestamps: true,
+  }
+);
 const Circle = mongoose.model("circle", CircleSchema);
 module.exports = Circle;
