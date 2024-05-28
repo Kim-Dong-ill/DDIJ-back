@@ -44,6 +44,35 @@ IndexRouter.post("/geolocation", async (req, res) => {
     return res.status(500).json({ error: "데이터 조회 중 오류 발생" });
   }
 });
+//test 드래그 test
+IndexRouter.post("/geolocation/drag", async (req, res) => {
+  try {
+    const { lat, lon } = req.body;
+    console.log("DDDDDDDDDDDDD", lat, lon);
+
+    const circles = await Circle.aggregate([
+      {
+        $geoNear: {
+          near: {
+            type: "Point",
+            coordinates: [parseFloat(lon), parseFloat(lat)], // 경도, 위도 순서
+          },
+          distanceField: "distance",
+          maxDistance: 2000, // 최대 거리 (미터 단위, 여기서는 2km) 2000
+          spherical: true,
+        },
+      },
+    ]);
+    // if (circles.length === 0) {
+    //   return res.status(404).json({ error: "해당 위치에 모임이 없습니다." });
+    // }
+    console.log("ddddddddddddddd", circles);
+    return res.status(200).send({ circles });
+  } catch (error) {
+    console.error("데이터 조회 중 오류:", error);
+    return res.status(500).json({ error: "데이터 조회 중 오류 발생" });
+  }
+});
 
 IndexRouter.post("/location", async (req, res) => {
   try {
