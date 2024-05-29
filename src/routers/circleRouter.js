@@ -11,14 +11,37 @@ function addFinishTime(circle){
   return circleObj
 }
 
-function checkDone(circleData){
-  if((circleData.startTime).getTime() <= Date.now()){
-    circleData.complete = true;
+function checkDone(circle){
+  if(((circle.startTime).getTime() > Date.now())&& (circle.Users.length<circle.peoples)){
+      if (circle.Users.length<0){
+          circle.complete= true;
+          console.log("인원에 오류가 있습니다.")
+      }
+      circle.complete = false;
   }
-  else circleData.complete=false;
-  return circleData
+  else{
+      circle.complete=false;
+  }
+  return circle
 }
+function preDate(circle){
+    if(circle.startTime){
+        const date = circle.startTime
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        const hours = ('0' + date.getHours()).slice(-2);
+        const minutes = ('0' + date.getMinutes()).slice(-2);
 
+        const formattedDate = `${year}년 ${month}월 ${day}일`;
+        const formattedTime = `${hours}시 ${minutes}분`;
+
+        circle.DateData = formattedDate;
+        circle.TimeData = formattedTime;
+        return circle
+    }
+    else return false;
+}
 
 // -> 그냥 모든 모임 리스틀 다 보여준다. // 이떄 자신이 참여중인 목록을 따로 넘겨받는다.
 CircleRouter.get("/:userid", async (req, res) => {
@@ -38,9 +61,12 @@ CircleRouter.get("/:userid", async (req, res) => {
           if (circle.Users.length > 0) {
             circle = addFinishTime(circle)
             circle = checkDone(circle)
+            circle = preDate(circle)
             circle.mainPet=""
-            const userid = circle.Users[0]._id;
-            const user = await User.findById(userid).exec();
+
+
+            // const userid = circle.Users[0]._id;
+            // const user = await User.findById(userid).exec();
             //   if (user) {           아래는 mainpet의 img를 추가하려고 작업했던것,
             //     const petImage = (await Pet.findById(user.mainPet).exec()).toObject()
             //     console.log(petImage.img)
@@ -55,9 +81,10 @@ CircleRouter.get("/:userid", async (req, res) => {
     let userCircles = await Circle.find({ Users: userid }).exec();
     let tempUserCircles =await Promise.all(
         userCircles.map(async (circle) => {
-          circle= addFinishTime(circle)
-          circle= checkDone(circle)
-          circle.mainPet = " "
+            circle = addFinishTime(circle)
+            circle = checkDone(circle)
+            circle = preDate(circle)
+            circle.mainPet=""
         return circle
   })
 );
@@ -102,15 +129,29 @@ CircleRouter.post("/:userid", async (req, res) => {
 
     const { userid } = req.params;
     const {userLocation} = req.body;
-    console.log("locatio입니다______>"+userLocation)
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
         // 전체 모임리스트를 페이지네이션해 조회
-        const allCircles = await Circle.find()
+        const preCircle = await Circle.find()
             .skip((page - 1) * limit)
             .limit(limit)
             .exec();
+
+      let allCircles = await Promise.all(
+          preCircle.map(async (circle) => {
+              if (circle.Users.length > 0) {
+                  circle = addFinishTime(circle)
+                  circle = checkDone(circle)
+                  circle = preDate(circle)
+                  circle.mainPet=""
+              }
+              return circle;
+          })
+      );
+
+
+
 
     let circlesByNear = [...allCircles].sort((a, b) => {
       const distA = calculateDistance(userLocation, a.startLoc.coordinates);
@@ -183,6 +224,7 @@ CircleRouter.put("/:circleid", async (req, res) => {
     const updatedCircle = {
       name: req.body.name,
       text: req.body.text,
+        startAdd : req.body.startAdd,
       startLoc: {
         type: "Point",
         coordinates: req.body.startLoc.coordinates,
@@ -372,10 +414,10 @@ CircleRouter.post("/new/:userid", async (req, res) => {
             name: req.body.name,
             text: req.body.text,
             // startLoc: { coordinates },
-            endLoc: req.body.endLoc,
+            // endLoc: req.body.endLoc,
             startTime: req.body.startTime,
-            startDate: req.body.startDate,
             usingTime: req.body.usingTime,
+            startAdd : req.body.startAdd,
         }).save();
         console.log("()()()()())()", circle);
         const temp = {

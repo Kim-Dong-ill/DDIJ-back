@@ -17,7 +17,7 @@ const IndexRouter = express.Router();
 //             coordinates: [parseFloat(nowCoords.longitude),parseFloat(nowCoords.latitude)]
 //           },
 //           distanceField: "distance",
-//           maxDistance:30000,
+//           maxDistance:1000,
 //           spherical:true
 //         },
 //       },
@@ -35,7 +35,7 @@ const IndexRouter = express.Router();
 //             coordinates: [parseFloat(nowCoords.longitude),parseFloat(nowCoords.latitude)]
 //           },
 //           distanceField: "distance",
-//           maxDistance:30000,
+//           maxDistance:1000,
 //           spherical:true
 //         },
 //       },
@@ -69,7 +69,7 @@ IndexRouter.post("/geolocation", async (req, res) => {
             coordinates: [parseFloat(lon), parseFloat(lat)]
           },
           distanceField: "distance",
-          maxDistance:30000,
+          maxDistance:1000,
           spherical:true
         },
       },
@@ -127,7 +127,7 @@ IndexRouter.post("/location", async (req, res) => {
             coordinates: [parseFloat(lon), parseFloat(lat)], // 경도, 위도 순서
           },
           distanceField: "distance",
-          maxDistance: 50000,
+          maxDistance: 1000,
           spherical: true,
         },
       },

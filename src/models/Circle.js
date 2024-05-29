@@ -14,6 +14,10 @@ const CircleSchema = new mongoose.Schema({
     required: true,
     default: "empty"
   },
+  startAdd:{
+    type:String,
+    default: "주소가 없습니다."
+  },
   startLoc: {
     type: {
       type: String,
@@ -30,7 +34,7 @@ const CircleSchema = new mongoose.Schema({
 //       //   required: true,
 //       default: "00:00",
 //     },
-    startDate: {
+    startTime: {
       type: Date,
       //   required: true,
       default: 0,
@@ -59,6 +63,10 @@ const CircleSchema = new mongoose.Schema({
   complete:{
     type:Boolean,
     default: false
+  },
+  peoples:{
+    type:Number,
+    default:0
   },
   createAt: Date,
 },
