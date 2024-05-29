@@ -33,7 +33,7 @@ const CircleSchema = new mongoose.Schema(
     },
     startTime: {
       type: String,
-      //   required: true,
+      required: true,
       default: "00:00",
     },
     startDate: {

@@ -23,9 +23,7 @@ circleRouter.post("/new/:userId", async (req, res) => {
       text: req.body.text,
       startLoc: { coordinates },
       endLoc: req.body.endLoc,
-      // ==== startTime이문제임
-      // startTime: req.body.startTime,
-      // ==== startTime이문제임
+      startTime: req.body.startTime,
       startDate: req.body.startDate,
       usingTime: req.body.usingTime,
       peoples: req.body.peoples,
