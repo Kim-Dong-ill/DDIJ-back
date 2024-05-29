@@ -1,5 +1,10 @@
 const { default: mongoose } = require("mongoose");
 const CircleCommentSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Types.ObjectId,
+    ref: "user",
+  },
+
   circle: {
     type: mongoose.Types.ObjectId,
     ref: "circle",
@@ -7,12 +12,8 @@ const CircleCommentSchema = new mongoose.Schema({
 
   content: {
     type: String,
-    maxLength: 300,
+    maxLength: 50,
     required: true,
-  },
-  user: {
-    type: mongoose.Types.ObjectId,
-    ref: "user",
   },
   createdAt: Date,
 });

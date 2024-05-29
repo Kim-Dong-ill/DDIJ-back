@@ -73,6 +73,8 @@ circleRouter.get("/:circleId/comment", async (req, res) => {
   }
 });
 
+module.exports = circleRouter;
+
 // 모임 댓글 - Post (Myfull식)
 // circleRouter.post("/:circleId/comment", async (req, res) => {
 //   try {
@@ -345,5 +347,3 @@ circleRouter.get("/:circleId/comment", async (req, res) => {
 // //     res.status(500).send(error.message);
 // //   }
 // // });
-
-module.exports = circleRouter;
