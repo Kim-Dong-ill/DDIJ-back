@@ -51,7 +51,7 @@ const CircleSchema = new mongoose.Schema(
     startTime: {
       type: Date,
       required: true,
-      default: Date.now,
+      default: 0,
     },
     usingTime: {
       type: Date,
@@ -61,6 +61,10 @@ const CircleSchema = new mongoose.Schema(
     complete: {
       type: Boolean,
       default: false,
+    },
+    peoples: {
+      type: Number,
+      default: 0,
     },
     createAt: Date,
   },
