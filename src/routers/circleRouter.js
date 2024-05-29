@@ -12,7 +12,6 @@ circleRouter.post("/new/:userId", async (req, res) => {
   try {
     // 임시로 유저아이디 입력
     const { userId } = req.params;
-    // const coordinates = req.body.coordinates;
     const coordinates = req.body.startLoc.coordinates; // 수정된 부분
 
     console.log("req.body", req.body);
