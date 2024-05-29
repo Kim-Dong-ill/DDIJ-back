@@ -1,7 +1,7 @@
-const express = require("express")
+const express = require("express");
 const User = require("../models/User");
 const Pet = require("../models/Pet");
-const Circle = require("../models/Circle")
+const Circle = require("../models/Circle");
 const IndexRouter = express.Router();
 
 // IndexRouter.post("/:userid", async (req, res) => {
@@ -58,25 +58,25 @@ const IndexRouter = express.Router();
 //   }
 // });
 
+//현재위치로 마커 찍기
 IndexRouter.post("/geolocation", async (req, res) => {
-    try {
+  try {
     const { lat, lon } = req.body;
     let circles = await Circle.aggregate([
       {
-        $geoNear:{
-          near:{
+        $geoNear: {
+          near: {
             type: "Point",
-            coordinates: [parseFloat(lon), parseFloat(lat)]
+            coordinates: [parseFloat(lon), parseFloat(lat)],
           },
           distanceField: "distance",
-          maxDistance:30000,
-          spherical:true
+          maxDistance: 2000,
+          spherical: true,
         },
       },
     ]);
-
     if (circles.length === 0) {
-      console.log("해당 위치에 모임이 없습니다.")
+      console.log("해당 위치에 모임이 없습니다.");
       return res.status(404).json({ error: "해당 위치에 모임이 없습니다." });
     }
     return res.status(200).send({ circles });
@@ -85,7 +85,8 @@ IndexRouter.post("/geolocation", async (req, res) => {
     return res.status(500).json({ error: "데이터 조회 중 오류 발생" });
   }
 });
-//test 드래그 test
+
+//드래그 위치로 모임찍기
 IndexRouter.post("/geolocation/drag", async (req, res) => {
   try {
     const { lat, lon } = req.body;
@@ -115,6 +116,7 @@ IndexRouter.post("/geolocation/drag", async (req, res) => {
   }
 });
 
+//주소로 반려견 index
 IndexRouter.post("/location", async (req, res) => {
   try {
     const { lat, lon } = req.body;
@@ -127,7 +129,7 @@ IndexRouter.post("/location", async (req, res) => {
             coordinates: [parseFloat(lon), parseFloat(lat)], // 경도, 위도 순서
           },
           distanceField: "distance",
-          maxDistance: 50000,
+          maxDistance: 5000,
           spherical: true,
         },
       },

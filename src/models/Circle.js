@@ -62,6 +62,10 @@ const CircleSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    peoples: {
+      type: Number,
+      default: 0,
+    },
     createAt: Date,
   },
   {
