@@ -3,6 +3,7 @@ const Pet = require("../models/Pet");                      //나중에 pet으로
 const User = require("../models/User");                    //나중에 user로 변경
 const { default: mongoose } = require("mongoose");
 const Circle = require("../models/Circle");
+const CircleComment = require("../models/CircleComment");
 const CircleRouter = express.Router();
 
 function addFinishTime(circle){
@@ -288,6 +289,7 @@ CircleRouter.delete("/:circleid", async (req, res) => {
   }
 });
 
+
 //모임참석을 누른 사용자의 정보를 추가해야한다.
 CircleRouter.post("/:circleid/join", async (req, res) => {
     try {
@@ -395,6 +397,93 @@ circleRouter.post("/new/:userId", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+// 모임 댓글 -Post
+circleRouter.post("/:circleId/comment", async (req, res) => {
+  try {
+    const { content, circleId, userId } = req.body;
+
+    const circleComment = await new CircleComment({
+      circle: circleId,
+      user: userId,
+      content: content,
+      createdAt: new Date(),
+    }).save();
+
+    return res.status(200).send({ circleComment });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// 모임 댓글 - Get
+circleRouter.get("/:circleId/comment", async (req, res) => {
+  try {
+    const { circleId } = req.params;
+    const circleComment = await CircleComment.find({
+      circle: circleId,
+    })
+      .populate([
+        {
+          path: "user",
+          select: "nickName",
+        },
+      ])
+      .sort({ createdAt: 1 });
+    return res.status(200).send({ circleComment });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+module.exports = circleRouter;
+
+// 모임 댓글 - Post (Myfull식)
+// circleRouter.post("/:circleId/comment", async (req, res) => {
+//   try {
+//     const { circleId } = req.params;
+//     const { userId, content } = req.body;
+
+//     console.log(circleId);
+//     if (!mongoose.isValidObjectId(circleId))
+//       return res.status(400).send({ message: "circleId 가 없습니다." });
+//     if (!mongoose.isValidObjectId(userId))
+//       return res.status(400).send({ message: "userId 가 없습니다." });
+//     if (typeof content !== "string")
+//       return res.status(400).send({ message: "" });
+
+//     const [circle, user] = await Promise.all([
+//       Circle.findById(circleId),
+//       User.findById(userId),
+//     ]);
+
+//     const comment = await new CircleComment({
+//       circle,
+//       user,
+//       content,
+//     }).save();
+//     return res.status(200).send({ comment });
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
+
+// 모임 댓글 - Get (Myfull 식)
+// circleRouter.get("/:circleId/comment", async (req, res) => {
+//   try {
+//     const { circleId } = req.params;
+//     if (!mongoose.isValidObjectId(circleId))
+//       return res.status(400).send({ message: "circleId 가 없음" });
+//     const comment = await CircleComment.find({ circle: circleId }).sort({
+//       createAt: 1,
+//     });
+//     return res.status(200).send({ comment });
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
+
+// 이하 circleRouter였던것
 
 // CircleRouter.get("/:userid", async (req, res) => {
 //   try {
@@ -622,4 +711,6 @@ circleRouter.post("/new/:userId", async (req, res) => {
 // //   }
 // // });
 
+
 module.exports = CircleRouter;
+
