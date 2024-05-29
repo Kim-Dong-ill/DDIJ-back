@@ -1,67 +1,69 @@
 const { mongoose, Types } = require("mongoose");
-const CircleSchema = new mongoose.Schema({
-  Users:[{
-    type: mongoose.Types.ObjectId,
-    ref: "User"
-  }],
-  name: {
-    type: String,
-    required: true,
-    default: "empty"
-  },
-  text: {
-    type: String,
-    required: true,
-    default: "empty"
-  },
-  startLoc: {
-    type: {
+const CircleSchema = new mongoose.Schema(
+  {
+    user: {
+      type: Types.ObjectId,
+      ref: "user",
+    },
+
+    name: {
       type: String,
-      enum: ["Point"],
-      default: "Point",
+      required: true,
+      default: "empty",
     },
-    coordinates: {
-      type: [Number],
+    text: {
+      type: String,
+      required: true,
+      default: "empty",
+    },
+    startLoc: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number],
         index: "2dsphere",
-      // required: true,
+        // required: true,
+      },
+      //     startTime: {
+      //       type: String,
+      //       //   required: true,
+      //       default: "00:00",
+      //     },
+      // startDate: {
+      //   type: Date,
+      //   //   required: true,
+      //   default: 0,
+      // },
     },
-//     startTime: {
-//       type: String,
-//       //   required: true,
-//       default: "00:00",
-//     },
-    startDate: {
+    endLoc: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number],
+      },
+    },
+    startTime: {
       type: Date,
-      //   required: true,
+      required: true,
+      default: Date.now,
+    },
+    usingTime: {
+      type: Date,
+      required: true,
       default: 0,
     },
-  },
-  endLoc: {
-    type: {
-      type: String,
-      enum: ["Point"],
-      default: "Point",
+    complete: {
+      type: Boolean,
+      default: false,
     },
-    coordinates: {
-      type: [Number]
-    },
+    createAt: Date,
   },
-  startTime: {
-    type: Date,
-    required: true,
-    default:Date.now
-  },
-  usingTime: {
-    type: Date,
-    required: true,
-    default:0
-  },
-  complete:{
-    type:Boolean,
-    default: false
-  },
-  createAt: Date,
-},
   {
     timestamps: true,
   }
