@@ -159,16 +159,28 @@ petRouter.put("/modify", async (req, res) => {
 });
 
 //마이펫 이미지 파일 업로드
-petRouter.post("/modify/image", upload.single("image"), async (req, res) => {
-  try {
-    const fetchImage = req.file.filename;
+petRouter.put(
+  "/modify/image/:petId",
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      const newImageName = req.file.filename;
+      const { petId } = req.params;
+      console.log("아이디이이ㅣ잉", petId);
+      console.log(
+        `이미지 파일 ${newImageName}이(가) 성공적으로 업로드되었습니다.`
+      ); // 업로드 성공 로그 기록
+      const fetchPetImage = await Pet.findByIdAndUpdate(petId, {
+        image: newImageName,
+      });
 
-    return res.status(200).send({ fetchImage });
-  } catch (error) {
-    console.error("Server Error:", error); // 오류 메시지 로그 기록
-    return res.status(500).send(error.message);
+      return res.status(200).send({ fetchPetImage });
+    } catch (error) {
+      console.error("Server Error:", error); // 오류 메시지 로그 기록
+      return res.status(500).send(error.message);
+    }
   }
-});
+);
 
 //마이펫 이미지 파일 삭제
 petRouter.delete("/modify/image/:petImage", async (req, res) => {
@@ -178,6 +190,8 @@ petRouter.delete("/modify/image/:petImage", async (req, res) => {
 
     // 비동기 방식으로 파일 삭제
     await fs.promises.unlink(filePath);
+
+    console.log(`이미지 파일 ${petImage}이(가) 삭제되었습니다.`); // 이미지 삭제 로그 기록
 
     return res.status(200).send({ petImage });
   } catch (error) {
