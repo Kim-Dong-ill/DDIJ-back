@@ -61,12 +61,9 @@ CircleRouter.get("/:userid", async (req, res) => {
           if (circle.Users.length > 0) {
             circle = addFinishTime(circle)
             circle = checkDone(circle)
-            circle = preDate(circle)
             circle.mainPet=""
-
-
-            // const userid = circle.Users[0]._id;
-            // const user = await User.findById(userid).exec();
+            const userId = circle.Users[0]._id;
+            const user = await User.findById(userId).exec();
             //   if (user) {           아래는 mainpet의 img를 추가하려고 작업했던것,
             //     const petImage = (await Pet.findById(user.mainPet).exec()).toObject()
             //     console.log(petImage.img)
@@ -175,7 +172,6 @@ CircleRouter.post("/:userid", async (req, res) => {
     };
     return res.status(200).send(temp);
   } catch (error) {
-      console.log(error.message)
     res.status(500).send(error.message);
   }
 })
