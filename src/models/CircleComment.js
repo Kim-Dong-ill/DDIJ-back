@@ -1,21 +1,24 @@
-const {default: mongoose} = require("mongoose");
 
+const { default: mongoose } = require("mongoose");
 const CircleCommentSchema = new mongoose.Schema({
-    Circle_id: {
-        type:  mongoose.Types.ObjectId,
-        ref: "Circle"
-    },
+  user: {
+    type: mongoose.Types.ObjectId,
+    ref: "user",
+  },
 
-    content: {
-        type: String,
-        maxLength: 300,
-        required:true
-    },
-    User_id: {
-        type: mongoose.Types.ObjectId,
-        ref: "User"
-    },
-    createdAt: Date,
+  circle: {
+    type: mongoose.Types.ObjectId,
+    ref: "circle",
+  },
+
+  content: {
+    type: String,
+    maxLength: 50,
+    required: true,
+  },
+  createdAt: Date,
 });
-const CircleComment = mongoose.model("circlecoment", CircleCommentSchema);
+
+const CircleComment = mongoose.model("circleComment", CircleCommentSchema);
 module.exports = CircleComment;
+
