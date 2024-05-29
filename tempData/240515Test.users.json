@@ -1,0 +1,102 @@
+[{
+  "_id": {
+    "$oid": "664850a57e731434e79d383b"
+  },
+  "name": "Alice Johnson",
+  "email": "alice@example.com",
+  "nickName": "alicej",
+  "password": "password123",
+  "role": 1,
+  "address": "123 Apple Street, City, Country",
+  "createAt": {
+    "$date": "2024-05-17T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "664850ac7e731434e79d383c"
+  },
+  "name": "Bob Smith",
+  "email": "bob@example.com",
+  "nickName": "bobsmith",
+  "password": "password456",
+  "role": 1,
+  "address": "456 Orange Avenue, City, Country",
+  "createAt": {
+    "$date": "2024-05-17T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "664bfe3884c5bf0fa6df90d5"
+  },
+  "name": "qqqq",
+  "email": "qorhvk@qorhvk.com",
+  "nickName": "qorhvk",
+  "password": "$2a$10$FceJ8IOe7R7JxSFFekr6euBLrlOQ6sRSXUx8DP9.JrPzHtI/28h8O",
+  "role": 1,
+  "address": "ehddlf",
+  "createdAt": {
+    "$date": "2024-05-21T01:51:52.649Z"
+  },
+  "updatedAt": {
+    "$date": "2024-05-21T01:51:52.649Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "664c05be84c5bf0fa6df9100"
+  },
+  "name": "배고파",
+  "email": "vlrhsgo@vlrhsgo.com",
+  "nickName": "1",
+  "password": "$2a$10$iAn.NWY3FaYtGxAIkvONuesgDkbR.pnBywzHRG1Ed913tlcauY93K",
+  "role": 1,
+  "address": "서울 성북구 아리랑로 3",
+  "createdAt": {
+    "$date": "2024-05-21T02:23:58.133Z"
+  },
+  "updatedAt": {
+    "$date": "2024-05-21T02:23:58.133Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "664c0efa83556c598837895e"
+  },
+  "name": "whffu",
+  "email": "whffu@whffu.com",
+  "nickName": "whffu",
+  "password": "$2a$10$Mh1bmQYFN6dVJntKvkcbuuP/52SX1F8uhB3ZgBQhosA422.QRkeJq",
+  "role": 1,
+  "address": "서울 금천구 가마산로 70",
+  "createdAt": {
+    "$date": "2024-05-21T03:03:22.721Z"
+  },
+  "updatedAt": {
+    "$date": "2024-05-21T03:03:22.721Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "664d520e1fea5d6d9c5fbd9e"
+  },
+  "name": "신창훈",
+  "email": "tlsckdgns@tlsckdgns.com",
+  "nickName": "김으뜸꼬붕",
+  "password": "$2a$10$DjbGG2ZCeDgPoDmuCY5HLOlxRir0WJlvOv93oeOEzMYM2yLLXyyqW",
+  "role": 1,
+  "address": "경기 안양시 동안구 귀인로 155",
+  "createdAt": {
+    "$date": "2024-05-22T02:01:50.458Z"
+  },
+  "updatedAt": {
+    "$date": "2024-05-22T02:01:50.458Z"
+  },
+  "__v": 0
+}]
+
+

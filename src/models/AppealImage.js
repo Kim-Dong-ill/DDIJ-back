@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose");
 
-const PostImageSchema = new mongoose.Schema({
+const AppealImageSchema = new mongoose.Schema({
   Post_id: {
     type: mongoose.Types.ObjectId,
     ref: "Post",
@@ -15,5 +15,5 @@ const PostImageSchema = new mongoose.Schema({
     maxlength: 3, // 최대 3개의 사진까지만 허용
   },
 });
-const PostImage = mongoose.model("postimage", PostImageSchema);
-module.exports = PostImage;
+const AppealImage = mongoose.model("appealimage", AppealImageSchema);
+module.exports = AppealImage;

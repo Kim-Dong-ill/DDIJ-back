@@ -1,0 +1,142 @@
+[
+  {
+    "name": "이철수",
+    "email": "chulsoo1@example.com",
+    "nickName": "Chul-su",
+    "password": "password123",
+    "role": 1,
+    "address": "서울특별시 동작구 상도로 265-14",
+    "location": {
+      "type": "Point",
+      "coordinates": [126.947429,37.504531]
+    },
+    "mainPet": "664ebddd498107d35a2499d4",
+    "pets": ["664ebddd498107d35a2499d4"]
+  },
+  {
+    "name": "김민지",
+    "email": "minji2@example.com",
+    "nickName": "Min-ji",
+    "password": "password234",
+    "role": 1,
+    "address": "서울특별시 동작구 상도로34다길",
+    "location": {
+      "type": "Point",
+      "coordinates": [126.945912,37.502789]
+    },
+    "mainPet": "664ebddd498107d35a2499d8",
+    "pets": ["664ebddd498107d35a2499d8", "664ebe1e498107d35a2499de", "664ebe1e498107d35a2499e2"]
+  },
+  {
+    "name": "박준호",
+    "email": "junho3@example.com",
+    "nickName": "Jun-ho",
+    "password": "password345",
+    "role": 1,
+    "address": "서울특별시 동작구 상도동 235-9",
+    "location": {
+      "type": "Point",
+      "coordinates": [126.939923,37.498921]
+    },
+    "mainPet": "664ebedc498107d35a2499ed",
+    "pets": ["664ebedc498107d35a2499ed"]
+  },
+  {
+    "name": "최수미",
+    "email": "soomi4@example.com",
+    "nickName": "Soo-mi",
+    "password": "password456",
+    "role": 1,
+    "address": "서울특별시 동작구 상도동 175-9",
+    "location": {
+      "type": "Point",
+      "coordinates": [126.940224,37.503707]
+    },
+    "mainPet": "664ec05d498107d35a249a00",
+    "pets": ["664ec05d498107d35a249a00", "664b43622d5cade194dfcafa"]
+  },
+  {
+    "name": "정우성",
+    "email": "woosung5@example.com",
+    "nickName": "Woo-sung",
+    "password": "password567",
+    "role": 1,
+    "address": "서울특별시 동작구 노량진동 225-3",
+    "location": {
+      "type": "Point",
+      "coordinates": [ 126.941294,37.509008]
+    },
+    "mainPet": "664b43cf2d5cade194dfcaff",
+    "pets": ["664b43cf2d5cade194dfcaff"]
+  },
+  {
+    "name": "한지민",
+    "email": "jimin6@example.com",
+    "nickName": "Ji-min",
+    "password": "password678",
+    "role": 1,
+    "address": "서울특별시 동작구 상도제1동 710-2번지",
+    "location": {
+      "type": "Point",
+      "coordinates": [ 126.946902,37.502902]
+    },
+    "mainPet": "664bfe3884c5bf0fa6df90d6",
+    "pets": ["664bfe3884c5bf0fa6df90d6", "664c05be84c5bf0fa6df9101", "664c0efa83556c598837895f"]
+  },
+  {
+    "name": "강다현",
+    "email": "dahyun7@example.com",
+    "nickName": "Da-hyun",
+    "password": "password789",
+    "role": 1,
+    "address": "서울특별시 동작구 상도1동 712번지",
+    "location": {
+      "type": "Point",
+      "coordinates": [126.946830,37.502938]
+    },
+    "mainPet": "664bfe4a84c5bf0fa6df90db",
+    "pets": ["664bfe4a84c5bf0fa6df90db", "664c05be84c5bf0fa6df9101"]
+  },
+  {
+    "name": "신동우",
+    "email": "dongwoo8@example.com",
+    "nickName": "Dong-woo",
+    "password": "password890",
+    "role": 1,
+    "address": "서울특별시 동작구 상도1동 707-1번지",
+    "location": {
+      "type": "Point",
+      "coordinates": [126.947121,37.503231]
+    },
+    "mainPet": "664d520e1fea5d6d9c5fbd9f",
+    "pets": ["664d520e1fea5d6d9c5fbd9f", "664da0181ed9992e4d18e38d"]
+  },
+  {
+    "name": "윤세영",
+    "email": "seyoung9@example.com",
+    "nickName": "Se-young",
+    "password": "password901",
+    "role": 1,
+    "address": "서울특별시 동작구 상도로",
+    "location": {
+      "type": "Point",
+      "coordinates": [126.947369,37.503513]
+    },
+    "mainPet": "664ec1b01458f140f200bece",
+    "pets": ["664ec1b01458f140f200bece"]
+  },
+  {
+    "name": "정재희",
+    "email": "jaehee10@example.com",
+    "nickName": "Jae-hee",
+    "password": "password1010",
+    "role": 1,
+    "address": "서울특별시 동작구 상도1동 700",
+    "location": {
+      "type": "Point",
+      "coordinates": [126.947617,37.503796]
+    },
+    "mainPet": "664ebddd498107d35a2499d4",
+    "pets": ["664ebe1e498107d35a2499de"]
+  }
+]
