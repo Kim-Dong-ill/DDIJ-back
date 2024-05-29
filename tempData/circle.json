@@ -1,0 +1,119 @@
+[
+  {
+    "Users": [
+      {
+        "$oid": "665038eabc4b9b0a9463d7c0"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7ba"
+      }
+    ],
+    "name": "왈왈",
+    "text": "Lorem ipsum dolor sit amet.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91195834322995,
+        37.50471594694458
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91349282200828,
+        37.50619151486964
+      ]
+    },
+    "startTime": "2024-05-24T07:22:56.171Z",
+    "usingTime": 108000000,
+    "complete": false,
+    "neuter": true,
+    "rabies": true,
+    "createdAt": {
+      "$date": "2024-05-23T04:10:24.823Z"
+    },
+    "__v": 0
+  },
+  {
+    "Users": [
+      {
+        "$oid": "665038eabc4b9b0a9463d7ba"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c2"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c0"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7bb"
+      }
+    ],
+    "name": "산책 모임",
+    "text": "Consectetur adipiscing elit.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91462041367295,
+        37.50450581967678
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91612405815605,
+        37.50724876845031
+      ]
+    },
+    "startTime": "2024-05-25T11:12:34.567Z",
+    "usingTime": 108000000,
+    "complete": false,
+    "neuter": false,
+    "rabies": false,
+    "createdAt": {
+      "$date": "2024-05-23T05:15:30.823Z"
+    },
+    "__v": 0
+  },
+  {
+    "Users": [
+      {
+        "$oid": "665038eabc4b9b0a9463d7c3"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7c2"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7be"
+      },
+      {
+        "$oid": "665038eabc4b9b0a9463d7bd"
+      }
+    ],
+    "name": "강아지 모임",
+    "text": "Sed do eiusmod tempor incididunt.",
+    "startLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91093716462413,
+        37.50629952715073
+      ]
+    },
+    "endLoc": {
+      "type": "Point",
+      "coordinates": [
+        126.91312348917598,
+        37.50538276568735
+      ]
+    },
+    "startTime": "2024-05-26T14:45:12.678Z",
+    "usingTime": 108000000,
+    "complete": false,
+    "neuter": true,
+    "rabies": true,
+    "createdAt": {
+      "$date": "2024-05-23T06:20:36.823Z"
+    },
+    "__v": 0
+  }
+]

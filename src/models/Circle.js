@@ -1,63 +1,68 @@
-const { default: mongoose, Types } = require("mongoose");
-
-const CircleSchema = new mongoose.Schema(
-  {
-    user: {
+const { mongoose, Types } = require("mongoose");
+const CircleSchema = new mongoose.Schema({
+  user: {
       type: Types.ObjectId,
       ref: "user",
     },
-    name: {
+  name: {
+    type: String,
+    required: true,
+    default: "empty"
+  },
+  text: {
+    type: String,
+    required: true,
+    default: "empty"
+  },
+  startAdd:{
+    type:String,
+    default: "주소가 없습니다."
+  },
+  startLoc: {
+    type: {
       type: String,
-      default: "empty",
-      required: true,
+      enum: ["Point"],
+      default: "Point",
     },
-    text: {
-      type: String,
-      required: true,
-      default: "empty",
-    },
-    startLoc: {
-      type: {
-        type: String,
-        enum: ["Point"], // 위치 타입은 'Point'로 제한
-        default: "Point", // GeoJSON 타입은 기본적으로 'Point'로 설정
-      },
-      coordinates: {
-        type: [Number], // 경도와 위도를 순서대로 배열로 저장 (GeoJSON 형식)
-        index: "2dsphere", // GeoJSON 인덱스 생성 (지리적 위치 검색을 위해)
-      },
+    coordinates: {
+      type: [Number],
+        index: "2dsphere",
     },
     endLoc: {
-      type: String,
-      // required: true,
-    },
-    startDate: {
-      type: Date,
-      //   required: true,
-      default: 0,
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point",
+      },
+      endCoordinates: {
+        type: [Number],
+        index: "2dsphere",
+      },
     },
     startTime: {
-      type: Date,
-      //   required: true,
-      default: 0,
-    },
+    type: Date,
+    //required: true,
+    default:Date.now
+  },
     usingTime: {
-      type: String,
-      // required: true,
-    },
+    type: Date,
+    required: true,
+    default:0
+  },
     peoples: {
       type: Number,
+      default: 0,
+      required: true,
     },
     complete: {
       type: Boolean,
-      // required: true,
       default: false,
     },
+    createAt: Date,
   },
   {
     timestamps: true,
   }
 );
-
-const Circle = mongoose.model("cirle", CircleSchema);
+const Circle = mongoose.model("circle", CircleSchema);
 module.exports = Circle;

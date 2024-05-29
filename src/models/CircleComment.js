@@ -1,3 +1,4 @@
+
 const { default: mongoose } = require("mongoose");
 const CircleCommentSchema = new mongoose.Schema({
   user: {
@@ -20,3 +21,4 @@ const CircleCommentSchema = new mongoose.Schema({
 
 const CircleComment = mongoose.model("circleComment", CircleCommentSchema);
 module.exports = CircleComment;
+

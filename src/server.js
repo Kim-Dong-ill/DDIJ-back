@@ -12,7 +12,6 @@ const indexRouter = require("./routers/indexRouter");
 const petRouter = require("./routers/petRouter");
 const userRouter = require("./routers/userRouter");
 const mainPetRouter = require("./routers/mainPetRouter");
-
 app.use(cors());
 app.use("/uploads", express.static("uploads"));
 
