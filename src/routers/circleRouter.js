@@ -332,7 +332,7 @@ circleRouter.post("/new/:userId", async (req, res) => {
     // 임시로 유저아이디 입력
     const { userId } = req.params;
     const coordinates = req.body.startLoc.coordinates; // 수정된 부분
-    const endCoordinates = req.body.endLoc.coordinates; // 수정된 부분
+    const endCoordinates = req.body.endLoc.endCoordinates; // 수정된 부분
     console.log("coordinates==========", coordinates);
     console.log("endCoordinates==========", endCoordinates);
     const circle = await new Circle({
@@ -340,7 +340,7 @@ circleRouter.post("/new/:userId", async (req, res) => {
       name: req.body.name,
       text: req.body.text,
       startLoc: { coordinates },
-      endLoc: { coordinates: endCoordinates },
+      endLoc: { endCoordinates: endCoordinates },
       startTime: req.body.startTime,
       // startDate: req.body.startDate,
       usingTime: req.body.usingTime,
