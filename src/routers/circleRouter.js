@@ -287,47 +287,6 @@ CircleRouter.delete("/:circleid", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-// 새로운 모임 생성 post
-// circleRouter.post("/new/:userId", async (req, res) => {
-//   try {
-//     const { userId } = req.params;
-//     const {
-//       name,
-//       text,
-//       startLoc,
-//       endLoc,
-//       startDate,
-//       startTime,
-//       usingTime,
-//       peoples,
-//     } = req.body;
-
-//     const newCircle = new Circle({
-//       user: userId,
-//       name,
-//       text,
-//       startLoc: {
-//         type: "Point",
-//         coordinates: startLoc.coordinates,
-//       },
-//       endLoc,
-//       startDate: new Date(startDate), // 필요시 형식 변환
-//       startTime,
-//       usingTime,
-//       peoples,
-//     });
-
-//     await newCircle.save();
-//     res
-//       .status(201)
-//       .json({ message: "Circle created successfully", data: newCircle });
-//   } catch (error) {
-//     console.error(error);
-//     res
-//       .status(500)
-//       .json({ message: "Internal Server Error", error: error.message });
-//   }
-// });
 
 //모임참석을 누른 사용자의 정보를 추가해야한다.
 CircleRouter.post("/:circleid/join", async (req, res) => {
@@ -406,31 +365,35 @@ CircleRouter.post("/:circleid/cancel", async (req, res) => {
         res.status(500).send(error.message);
     }
 });
-// 새로운 모임 생성 post
-CircleRouter.post("/new/:userid", async (req, res) => {
-    try {
-        // 임시로 유저아이디 입력
-        const { userid } = req.params;
-        // const coordinates = req.body.coordinates;
-        // console.log("coordinates", coordinates);
-        const circle = await new Circle({
-            user: userid,
-            name: req.body.name,
-            text: req.body.text,
-            // startLoc: { coordinates },
-            // endLoc: req.body.endLoc,
-            startTime: req.body.startTime,
-            usingTime: req.body.usingTime,
-            startAdd : req.body.startAdd,
-        }).save();
-        console.log("()()()()())()", circle);
-        const temp = {
-            message: "모임 생성.",
-        };
-        return res.status(200).send({ temp, circle });
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
+
+// ======== ked 새로운 모임 생성 post
+circleRouter.post("/new/:userId", async (req, res) => {
+  try {
+    // 임시로 유저아이디 입력
+    const { userId } = req.params;
+    const coordinates = req.body.startLoc.coordinates; // 수정된 부분
+    const endCoordinates = req.body.endLoc.endCoordinates; // 수정된 부분
+    console.log("coordinates==========", coordinates);
+    console.log("endCoordinates==========", endCoordinates);
+    const circle = await new Circle({
+      user: userId,
+      name: req.body.name,
+      text: req.body.text,
+      startLoc: { coordinates },
+      endLoc: { endCoordinates: endCoordinates },
+      startTime: req.body.startTime,
+      startAdd: req.body.startAdd,
+      usingTime: req.body.usingTime,
+      peoples: req.body.peoples,
+    }).save();
+    console.log("()()()()())()", circle);
+    const temp = {
+      message: "모임 생성.",
+    };
+    return res.status(200).send({ temp, circle });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 });
 
 // CircleRouter.get("/:userid", async (req, res) => {
