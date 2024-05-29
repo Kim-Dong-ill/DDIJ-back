@@ -169,14 +169,29 @@ petRouter.put(
       console.log("아이디이이ㅣ잉", petId);
       console.log(
         `이미지 파일 ${newImageName}이(가) 성공적으로 업로드되었습니다.`
-      ); // 업로드 성공 로그 기록
-      const fetchPetImage = await Pet.findByIdAndUpdate(petId, {
-        image: newImageName,
-      });
+      );
+      console.log("새이미지업로드", req.file.filename);
 
-      return res.status(200).send({ fetchPetImage });
+      // 업데이트 전 문서 출력
+      const beforeUpdate = await Pet.findById(petId);
+      console.log("업데이트 전 패치이미지", beforeUpdate);
+
+      // 문서 업데이트
+      const fetchPetImage = await Pet.findByIdAndUpdate(
+        petId,
+        { image: newImageName },
+        { new: true }
+      );
+
+      console.log("패치이미지", fetchPetImage);
+
+      // 업데이트 후 문서 출력
+      const updatedPetImage = await Pet.findById(petId);
+      console.log("업데이트된 패치이미지", updatedPetImage);
+
+      return res.status(200).send({ newImageName: updatedPetImage.image });
     } catch (error) {
-      console.error("Server Error:", error); // 오류 메시지 로그 기록
+      console.error("Server Error:", error);
       return res.status(500).send(error.message);
     }
   }
