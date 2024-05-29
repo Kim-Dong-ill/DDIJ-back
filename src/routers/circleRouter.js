@@ -7,7 +7,8 @@ const CircleRouter = express.Router();
 
 function addFinishTime(circle){
   let circleObj = circle.toObject();
-  circleObj.finishTime = new Date(circle.startTime.getTime() + circle.usingTime.getTime());
+  console.log("시작시간:!!!!!!!!!!!!!!!!!!!!"+circle.startTime)
+  circleObj.finishTime = new Date(circle.startTime.getTime() + (circle.usingTime.getTime()));
   return circleObj
 }
 
@@ -17,16 +18,19 @@ function checkDone(circle){
           circle.complete= true;
           console.log("인원에 오류가 있습니다.")
       }
+      circle.nowUser = circle.Users.length
       circle.complete = false;
   }
   else{
-      circle.complete=false;
+      circle.nowUser = circle.Users.length
+      circle.complete=true;
   }
   return circle
 }
-function preDate(circle){
-    if(circle.startTime){
-        const date = circle.startTime
+function preDate(circle) {
+    if (circle.startTime) {
+        const kstOffset = 9 * 60 * 60 * 1000
+        const date = new Date(circle.startTime.getTime() -kstOffset); // Date 객체로 변환
         const year = date.getFullYear();
         const month = ('0' + (date.getMonth() + 1)).slice(-2);
         const day = ('0' + date.getDate()).slice(-2);
@@ -38,10 +42,12 @@ function preDate(circle){
 
         circle.DateData = formattedDate;
         circle.TimeData = formattedTime;
-        return circle
+        return circle;
+    } else {
+        return false;
     }
-    else return false;
 }
+
 
 // -> 그냥 모든 모임 리스틀 다 보여준다. // 이떄 자신이 참여중인 목록을 따로 넘겨받는다.
 CircleRouter.get("/:userid", async (req, res) => {
@@ -61,16 +67,15 @@ CircleRouter.get("/:userid", async (req, res) => {
           if (circle.Users.length > 0) {
             circle = addFinishTime(circle)
             circle = checkDone(circle)
+              circle = preDate(circle)
             circle.mainPet=""
-            const userId = circle.Users[0]._id;
-            const user = await User.findById(userId).exec();
-            //   if (user) {           아래는 mainpet의 img를 추가하려고 작업했던것,
-            //     const petImage = (await Pet.findById(user.mainPet).exec()).toObject()
-            //     console.log(petImage.img)
-            //     if (petImage) {
-            //       circle.mainPet = petImage.imagePath;
-            //     }
-            // }
+          }
+          else{
+              console.log("user조회가 실패")
+              let EmptyCircleForHandleError = circle;
+              EmptyCircleForHandleError = addFinishTime(EmptyCircleForHandleError)
+              EmptyCircleForHandleError = checkDone(EmptyCircleForHandleError)
+              return EmptyCircleForHandleError
           }
           return circle;
         })
@@ -95,7 +100,7 @@ CircleRouter.get("/:userid", async (req, res) => {
     return res.status(200).send(temp);
     //
   } catch (error) {
-        console.log(error.message)
+    console.log(error.message)
     res.status(500).send(error.message);
   }
 });
@@ -104,24 +109,29 @@ CircleRouter.get("/:userid", async (req, res) => {
 CircleRouter.post("/:userid", async (req, res) => {
   try {
     const calculateDistance = (coord1, coord2) => {
-      const [lat1, lon1] = coord1;
-      const [lat2, lon2] = coord2;
+        try{
+            const [lat1, lon1] = coord1;
+            const [lat2, lon2] = coord2;
 
-      const earthRadius = 6371e3;
+            const earthRadius = 6371e3;
 
-      const lat1Rad = lat1 * Math.PI / 180;
-      const lat2Rad = lat2 * Math.PI / 180;
-      const deltaLatRad = (lat2 - lat1) * Math.PI / 180;
-      const deltaLonRad = (lon2 - lon1) * Math.PI / 180;
+            const lat1Rad = lat1 * Math.PI / 180;
+            const lat2Rad = lat2 * Math.PI / 180;
+            const deltaLatRad = (lat2 - lat1) * Math.PI / 180;
+            const deltaLonRad = (lon2 - lon1) * Math.PI / 180;
 
-      const a = Math.sin(deltaLatRad / 2) * Math.sin(deltaLatRad / 2) +
-          Math.cos(lat1Rad) * Math.cos(lat2Rad) *
-          Math.sin(deltaLonRad / 2) * Math.sin(deltaLonRad / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const a = Math.sin(deltaLatRad / 2) * Math.sin(deltaLatRad / 2) +
+                Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+                Math.sin(deltaLonRad / 2) * Math.sin(deltaLonRad / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-      const distance = earthRadius * c;
+            const distance = earthRadius * c;
 
-      return distance;
+            return distance;
+        }catch (e){
+            console.log(e.message)
+            return false
+        }
     }
 
     const { userid } = req.params;
@@ -147,13 +157,10 @@ CircleRouter.post("/:userid", async (req, res) => {
           })
       );
 
-
-
-
     let circlesByNear = [...allCircles].sort((a, b) => {
       const distA = calculateDistance(userLocation, a.startLoc.coordinates);
       const distB = calculateDistance(userLocation, b.startLoc.coordinates);
-      return distA - distB;
+      return ((distA)-(distB)? distA-distB : 0)
     });
 
     let circlesByTime = [...allCircles].sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
@@ -172,6 +179,7 @@ CircleRouter.post("/:userid", async (req, res) => {
     };
     return res.status(200).send(temp);
   } catch (error) {
+    console.log(error.message)
     res.status(500).send(error.message);
   }
 })
