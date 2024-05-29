@@ -51,7 +51,7 @@ const CircleSchema = new mongoose.Schema(
     startTime: {
       type: Date,
       required: true,
-      default: 0,
+      default: Date.now,
     },
     usingTime: {
       type: Date,

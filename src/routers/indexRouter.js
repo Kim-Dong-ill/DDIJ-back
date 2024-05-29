@@ -75,7 +75,6 @@ IndexRouter.post("/geolocation", async (req, res) => {
         },
       },
     ]);
-
     if (circles.length === 0) {
       console.log("해당 위치에 모임이 없습니다.");
       return res.status(404).json({ error: "해당 위치에 모임이 없습니다." });
