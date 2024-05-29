@@ -247,47 +247,6 @@ circleRouter.delete("/:circleid", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-// 새로운 모임 생성 post
-// circleRouter.post("/new/:userId", async (req, res) => {
-//   try {
-//     const { userId } = req.params;
-//     const {
-//       name,
-//       text,
-//       startLoc,
-//       endLoc,
-//       startDate,
-//       startTime,
-//       usingTime,
-//       peoples,
-//     } = req.body;
-
-//     const newCircle = new Circle({
-//       user: userId,
-//       name,
-//       text,
-//       startLoc: {
-//         type: "Point",
-//         coordinates: startLoc.coordinates,
-//       },
-//       endLoc,
-//       startDate: new Date(startDate), // 필요시 형식 변환
-//       startTime,
-//       usingTime,
-//       peoples,
-//     });
-
-//     await newCircle.save();
-//     res
-//       .status(201)
-//       .json({ message: "Circle created successfully", data: newCircle });
-//   } catch (error) {
-//     console.error(error);
-//     res
-//       .status(500)
-//       .json({ message: "Internal Server Error", error: error.message });
-//   }
-// });
 
 //모임참석을 누른 사용자의 정보를 추가해야한다.
 circleRouter.post("/:circleid/join", async (req, res) => {
@@ -366,19 +325,22 @@ circleRouter.post("/:circleid/cancel", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-// 새로운 모임 생성 post
+
+// ======== ked 새로운 모임 생성 post
 circleRouter.post("/new/:userId", async (req, res) => {
   try {
     // 임시로 유저아이디 입력
     const { userId } = req.params;
     const coordinates = req.body.startLoc.coordinates; // 수정된 부분
-    console.log("coordinates``````````````", coordinates);
+    const endCoordinates = req.body.endLoc.coordinates; // 수정된 부분
+    console.log("coordinates==========", coordinates);
+    console.log("endCoordinates==========", endCoordinates);
     const circle = await new Circle({
       user: userId,
       name: req.body.name,
       text: req.body.text,
       startLoc: { coordinates },
-      endLoc: req.body.endLoc,
+      endLoc: { coordinates: endCoordinates },
       startTime: req.body.startTime,
       // startDate: req.body.startDate,
       usingTime: req.body.usingTime,

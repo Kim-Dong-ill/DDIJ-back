@@ -46,6 +46,7 @@ const CircleSchema = new mongoose.Schema(
       },
       coordinates: {
         type: [Number],
+        index: "2dsphere",
       },
     },
     startTime: {
