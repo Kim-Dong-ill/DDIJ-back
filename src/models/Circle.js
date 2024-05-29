@@ -27,6 +27,7 @@ const CircleSchema = new mongoose.Schema(
         index: "2dsphere",
         // required: true,
       },
+
       //     startTime: {
       //       type: String,
       //       //   required: true,
@@ -37,6 +38,9 @@ const CircleSchema = new mongoose.Schema(
       //   //   required: true,
       //   default: 0,
       // },
+    },
+    startAdd: {
+      type: String,
     },
     endLoc: {
       type: {
@@ -49,6 +53,7 @@ const CircleSchema = new mongoose.Schema(
         index: "2dsphere",
       },
     },
+
     startTime: {
       type: Date,
       required: true,
@@ -58,6 +63,11 @@ const CircleSchema = new mongoose.Schema(
       type: Date,
       required: true,
       default: 0,
+    },
+    peoples: {
+      type: Number,
+      default: 0,
+      required: true,
     },
     complete: {
       type: Boolean,
