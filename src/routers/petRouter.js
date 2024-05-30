@@ -180,7 +180,7 @@ petRouter.put(
 
       // console.log("패치이미지", fetchPetImage);
 
-      // 업데이트 후 문서 출력
+      // 업데이트 후 문서 출력려
       const updatedPetImage = await Pet.findById(petId);
       console.log("업데이트된 패치이미지", updatedPetImage);
 
