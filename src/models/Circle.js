@@ -6,7 +6,6 @@ const CircleSchema = new mongoose.Schema(
       type: Types.ObjectId,
       ref: "user",
     },
-
   users:[
     {
       type: Types.ObjectId,
@@ -27,28 +26,27 @@ const CircleSchema = new mongoose.Schema(
     type:String,
     default: "주소가 없습니다."
   },
-
-    startLoc: {
-      type: {
-        type: String,
-        enum: ["Point"],
-        default: "Point",
-      },
-      coordinates: {
-        type: [Number],
-        index: "2dsphere",
-      },
+  startLoc: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      default: "Point",
     },
-    endLoc: {
-      type: {
-        type: String,
-        enum: ["Point"],
-        default: "Point",
-      },
-      endCoordinates: {
-        type: [Number],
-      },
+    coordinates: {
+      type: [Number],
+      index: "2dsphere",
     },
+  },
+  endLoc: {
+    type: {
+     type: String,
+     enum: ["Point"],
+     default: "Point",
+    },
+    endCoordinates: {
+      type: [Number],
+    },
+  },
     startTime: {
       type: Date,
       //required: true,
@@ -71,7 +69,6 @@ const CircleSchema = new mongoose.Schema(
     createAt: Date,
   },
   { timestamps: true }
-
 );
 
 const Circle = mongoose.model("circle", CircleSchema);
