@@ -1,4 +1,5 @@
 const { mongoose, Types } = require("mongoose");
+
 const CircleSchema = new mongoose.Schema(
   {
     user: {
@@ -61,9 +62,8 @@ const CircleSchema = new mongoose.Schema(
     },
     createAt: Date,
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
+
 const Circle = mongoose.model("circle", CircleSchema);
 module.exports = Circle;
