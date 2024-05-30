@@ -200,7 +200,6 @@ circleRouter.post("/:userId", async (req, res) => {
   }
 });
 
-
 // 모임정보 수정 => 클라이언트로부터 자료를 받아와 db에 덮어쓴다.
 circleRouter.put("/:circleId", async (req, res) => {
   try {
@@ -414,40 +413,45 @@ circleRouter.get("/:circleId/comment", async (req, res) => {
   }
 });
 
-
-
 // 모임 상세 정보 get -> 선택한 모임의 상세 정보를 보여줘야 한다. => 보여줘야할 정보는 ()이다.
 circleRouter.get("/detail/:circleId", async (req, res) => {
   try {
     const { circleId } = req.params;
-      const circle = await Circle.findById(circleId).populate({
-          path: 'users',
-          populate: {
-              path: 'mainPet',
-              model: 'pet',
-          },
-      });
-      if (!circle) {
-          return res.status(404).json({ message: "모임을 찾을 수 없습니다." });
-      }
-      const mainuser = circle.users[0]
-      const tempUser = circle.users.map(user=>(
-          user.mainPet?{
-          userId: user._id,
-          userName: user.name,
-          mainPetName: user.mainPet ? user.mainPet.pName : 'mainPet 조회실패',
-          mainPetAge: user.mainPet ? user.mainPet.pAge : 'mainPet 조회실패',
-          mainPetBreed: user.mainPet? user.mainPet.pBreed : 'mainPet 조회실패',
-          mainPetImg: user.mainPet.image? user.mainpet.image: "img없습니다."
-      }:{
-          userId: user._id,
-          userName: user.name,
-          mainPetName: '대표 강아지가 없어요잉',
-          mainPetAge: '강아지를 길러 봅',
-          mainPetBreed: ' ',
-          mainPetImg: "img없습니다."
-          }))
-      console.log(circle.users)
+    const circle = await Circle.findById(circleId).populate({
+      path: "users",
+      populate: {
+        path: "mainPet",
+        model: "pet",
+      },
+    });
+    if (!circle) {
+      return res.status(404).json({ message: "모임을 찾을 수 없습니다." });
+    }
+    const mainuser = circle.users[0];
+    const tempUser = circle.users.map((user) =>
+      user.mainPet
+        ? {
+            userId: user._id,
+            userName: user.name,
+            mainPetName: user.mainPet ? user.mainPet.pName : "mainPet 조회실패",
+            mainPetAge: user.mainPet ? user.mainPet.pAge : "mainPet 조회실패",
+            mainPetBreed: user.mainPet
+              ? user.mainPet.pBreed
+              : "mainPet 조회실패",
+            mainPetImg: user.mainPet.image
+              ? user.mainpet.image
+              : "img없습니다.",
+          }
+        : {
+            userId: user._id,
+            userName: user.name,
+            mainPetName: "대표 강아지가 없어요잉",
+            mainPetAge: "강아지를 길러 봅",
+            mainPetBreed: " ",
+            mainPetImg: "img없습니다.",
+          }
+    );
+    console.log(circle.users);
 
     const temp = {
       userData: mainuser,
@@ -455,11 +459,10 @@ circleRouter.get("/detail/:circleId", async (req, res) => {
     };
     return res.status(200).send(temp);
   } catch (error) {
-      console.log(error.stack)
+    console.log(error.stack);
     res.status(500).send(error.message);
   }
 });
-
 
 // circleRouter.delete("/:circleId", async (req, res) => {
 //     try {
