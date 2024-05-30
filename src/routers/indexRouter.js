@@ -70,8 +70,8 @@ IndexRouter.post("/geolocation", async (req, res) => {
             coordinates: [parseFloat(lon), parseFloat(lat)],
           },
           distanceField: "distance",
-          maxDistance:1000,
-          spherical:true
+          maxDistance: 1000,
+          spherical: true,
         },
       },
     ]);
