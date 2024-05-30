@@ -3,6 +3,7 @@ const AppealPost = require("../models/AppealPost");
 const AppealComment = require("../models/AppealComment");
 const PostImage = require("../models/AppealImage");
 const upload = require("../middleware/imageUploads");
+const Pet = require("../models/Pet.js");
 const path = require("path");
 const fs = require("fs");
 const appealRouter = express.Router();
@@ -51,11 +52,16 @@ appealRouter.post("/:userId/comment", async (req, res) => {
   try {
     const { text, appealPostId, userId } = req.body;
     console.log(appealPostId);
+
+    const pet = await Pet.findOne({ user: userId, index: 1 });
+    const petImage = pet ? pet.image : "";
+
     const appealComment = await new AppealComment({
       appealPost: appealPostId,
       user: userId,
       text: text,
       createdAt: new Date(),
+      petImage: petImage,
       // 왼쪽이 스키마랑 이름 똑같아야함.. 오른쪽은 위에서 내가 써준 변수들
       // 오른쪽꺼가 포스트맨쓸때 써야할값
     }).save();
