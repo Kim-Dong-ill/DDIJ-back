@@ -166,15 +166,10 @@ petRouter.put(
     try {
       const newImageName = req.file.filename;
       const { petId } = req.params;
-      console.log("아이디이이ㅣ잉", petId);
+      // console.log("아이디이이ㅣ잉", petId);
       console.log(
         `이미지 파일 ${newImageName}이(가) 성공적으로 업로드되었습니다.`
       );
-      console.log("새이미지업로드", req.file.filename);
-
-      // 업데이트 전 문서 출력
-      const beforeUpdate = await Pet.findById(petId);
-      console.log("업데이트 전 패치이미지", beforeUpdate);
 
       // 문서 업데이트
       const fetchPetImage = await Pet.findByIdAndUpdate(
@@ -183,7 +178,7 @@ petRouter.put(
         { new: true }
       );
 
-      console.log("패치이미지", fetchPetImage);
+      // console.log("패치이미지", fetchPetImage);
 
       // 업데이트 후 문서 출력
       const updatedPetImage = await Pet.findById(petId);
@@ -206,11 +201,11 @@ petRouter.delete("/modify/image/:petImage", async (req, res) => {
     // 비동기 방식으로 파일 삭제
     await fs.promises.unlink(filePath);
 
-    console.log(`이미지 파일 ${petImage}이(가) 삭제되었습니다.`); // 이미지 삭제 로그 기록
+    console.log(`이미지 파일 ${petImage}이(가) 삭제되었습니다.`);
 
     return res.status(200).send({ petImage });
   } catch (error) {
-    console.error("Server Error:", error); // 오류 메시지 로그 기록
+    console.error("Server Error:", error);
     return res.status(500).send(error.message);
   }
 });
