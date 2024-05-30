@@ -200,49 +200,8 @@ circleRouter.post("/:userId", async (req, res) => {
   }
 });
 
-      
-// 모임 상세 정보 get -> 선택한 모임의 상세 정보를 보여줘야 한다. => 보여줘야할 정보는 ()이다.
-circleRouter.get("/detail/:circleid", async (req, res) => {
-  try {
-    // 모임정보 찾기
-    const { circleid } = req.params;
-    // 해당하는 모임정보
-    const circle = await Circle.findById(circleid);
-    circleData = addFinishTime(circle);
-    circleData = checkDone(circleData);
-    console.log(circleData);
-
-    if (!circle) {
-      return res.status(404).json({ message: "모임을 찾을 수 없습니다." });
-    }
-    const user = await User.findById(circle.Users[0]).exec();
-
-    if (!user) {
-      return res.status(404).json({ message: "대표유저를 찾을 수 없습니다." });
-    }
-
-    const mainPet = await Pet.findById(user.mainPet).exec();
-    if (!mainPet) {
-      return res
-        .status(404)
-        .json({ message: "대표 반려견을 찾을 수 없습니다." });
-    }
-
-    const temp = {
-      message:
-        "circle에 대한 상세정보, Start_Loc는 지도를 찍어주고, name, text, startTime등을 활용",
-      circle: circleData,
-      User: user,
-      mainPet: mainPet,
-    };
-    return res.status(200).send(temp);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
-
 // 모임정보 수정 => 클라이언트로부터 자료를 받아와 db에 덮어쓴다.
-circleRouter.put("/:circleid", async (req, res) => {
+circleRouter.put("/:circleId", async (req, res) => {
   try {
     const { circleid } = req.params;
     const updatedCircle = {
@@ -390,8 +349,8 @@ circleRouter.post("/new/:userId", async (req, res) => {
     const endCoordinates = req.body.endLoc.endCoordinates; // 수정된 부분
     console.log("coordinates==========", coordinates);
     console.log("endCoordinates==========", endCoordinates);
-    let circle =""
-    if((req.body.startTime).getTime() > Date.now()&& (req.body.peoples>1)) {
+    let circle =false
+    // if((req.body.startTime).getTime() > Date.now()&& (req.body.peoples>1)) {
         circle = await new Circle({
             user: userId,
             users: [userId,],
@@ -405,12 +364,12 @@ circleRouter.post("/new/:userId", async (req, res) => {
             peoples: req.body.peoples,
             complete: false
         }).save()
-    }
+    // }
     const temp = {
       message: "모임 생성.",
       circleData : circle
           };
-    return res.status(200).send(temp);
+    return res.status(200).send({temp});
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -457,6 +416,50 @@ circleRouter.get("/:circleId/comment", async (req, res) => {
   }
 });
 
+
+// 모임 상세 정보 get -> 선택한 모임의 상세 정보를 보여줘야 한다. => 보여줘야할 정보는 ()이다.
+circleRouter.get("/detail/:circleId", async (req, res) => {
+  try {
+    const { circleId } = req.params;
+      const circle = await Circle.findById(circleId).populate({
+          path: 'users',
+          populate: {
+              path: 'mainPet',
+              model: 'pet',
+          },
+      });
+      if (!circle) {
+          return res.status(404).json({ message: "모임을 찾을 수 없습니다." });
+      }
+      const mainuser = circle.users[0]
+      const tempUser = circle.users.map(user=>(
+          user.mainPet?{
+          userId: user._id,
+          userName: user.name,
+          mainPetName: user.mainPet ? user.mainPet.pName : 'mainPet 조회실패',
+          mainPetAge: user.mainPet ? user.mainPet.pAge : 'mainPet 조회실패',
+          mainPetBreed: user.mainPet? user.mainPet.pBreed : 'mainPet 조회실패',
+          mainPetImg: user.mainPet.image? user.mainpet.image: "img없습니다."
+      }:{
+          userId: user._id,
+          userName: user.name,
+          mainPetName: '대표 강아지가 없어요잉',
+          mainPetAge: '강아지를 길러 봅',
+          mainPetBreed: ' ',
+          mainPetImg: "img없습니다."
+          }))
+      console.log(circle.users)
+
+    const temp = {
+      userData: mainuser,
+      member: tempUser,
+    };
+    return res.status(200).send(temp);
+  } catch (error) {
+      console.log(error.stack)
+    res.status(500).send(error.message);
+  }
+});
 
 // circleRouter.delete("/:circleId", async (req, res) => {
 //     try {
