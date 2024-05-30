@@ -9,21 +9,25 @@ const circleRouter = express.Router();
 function addFinishTime(circle) {
   let circleObj = circle.toObject();
 
-  circleObj.finishTime = new Date(circle.startTime.getTime() + (circle.usingTime.getTime()));
-  return circleObj
+  circleObj.finishTime = new Date(
+    circle.startTime.getTime() + circle.usingTime.getTime()
+  );
+  return circleObj;
 }
-function checkDone(circle){
-  if(((circle.startTime).getTime() > Date.now())&& (circle.users.length<circle.peoples)){
-      if (circle.users.length<0){
-          circle.complete= true;
-          console.log("인원에 오류가 있습니다.")
-      }
-      circle.nowUser = circle.users.length
-      circle.complete = false;
-  }
-  else{
-      circle.nowUser = circle.users.length
-      circle.complete=true;
+function checkDone(circle) {
+  if (
+    circle.startTime.getTime() > Date.now() &&
+    circle.users.length < circle.peoples
+  ) {
+    if (circle.users.length < 0) {
+      circle.complete = true;
+      console.log("인원에 오류가 있습니다.");
+    }
+    circle.nowUser = circle.users.length;
+    circle.complete = false;
+  } else {
+    circle.nowUser = circle.users.length;
+    circle.complete = true;
   }
   return circle;
 }
@@ -50,48 +54,46 @@ function preDate(circle) {
 
 // -> 그냥 모든 모임 리스틀 다 보여준다. // 이떄 자신이 참여중인 목록을 따로 넘겨받는다.
 
-
 circleRouter.get("/:userId", async (req, res) => {
-    try {
-        const { userId } = req.params;
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+  try {
+    const { userId } = req.params;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
-        // 전체 모임리스트를 페이지네이션해 조회
-        let allCircles = await Circle.find()
-            .skip((page - 1) * limit)
-            .limit(limit)
-            .exec();
+    // 전체 모임리스트를 페이지네이션해 조회
+    let allCircles = await Circle.find()
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
 
     let updatedCircles = await Promise.all(
-        allCircles.map(async (circle) => {
-          if (circle.users.length > 0) {
-              console.log(typeof circle.usingTime)
-              circle = addFinishTime(circle)
-              circle = checkDone(circle)
-              circle = preDate(circle)
-              circle.mainPet=""
-          }
-          else{
-              console.log("user조회가 실패")
-              let EmptyCircleForHandleError = circle;
-              EmptyCircleForHandleError = addFinishTime(EmptyCircleForHandleError)
-              EmptyCircleForHandleError = checkDone(EmptyCircleForHandleError)
-              return EmptyCircleForHandleError
-          }
-          return circle;
-        })
+      allCircles.map(async (circle) => {
+        if (circle.users.length > 0) {
+          console.log(typeof circle.usingTime);
+          circle = addFinishTime(circle);
+          circle = checkDone(circle);
+          circle = preDate(circle);
+          circle.mainPet = "";
+        } else {
+          console.log("user조회가 실패");
+          let EmptyCircleForHandleError = circle;
+          EmptyCircleForHandleError = addFinishTime(EmptyCircleForHandleError);
+          EmptyCircleForHandleError = checkDone(EmptyCircleForHandleError);
+          return EmptyCircleForHandleError;
+        }
+        return circle;
+      })
     );
     let userCircles = await Circle.find({ users: userId }).exec();
-    let tempUserCircles =await Promise.all(
-        userCircles.map(async (circle) => {
-            circle = addFinishTime(circle)
-            circle = checkDone(circle)
-            circle = preDate(circle)
-            circle.mainPet=""
-        return circle
-  })
-);
+    let tempUserCircles = await Promise.all(
+      userCircles.map(async (circle) => {
+        circle = addFinishTime(circle);
+        circle = checkDone(circle);
+        circle = preDate(circle);
+        circle.mainPet = "";
+        return circle;
+      })
+    );
 
     const temp = {
       allCircles: updatedCircles,
@@ -102,9 +104,8 @@ circleRouter.get("/:userId", async (req, res) => {
 
     return res.status(200).send(temp);
   } catch (error) {
-
-    console.log(error.message)
-        console.log(error.stack)
+    console.log(error.message);
+    console.log(error.stack);
 
     res.status(500).send(error.message);
   }
@@ -113,7 +114,6 @@ circleRouter.get("/:userId", async (req, res) => {
 // 유저의 좌표를 받아와 유저 근처에 있는모임 목록 ()개와, 시간순으로 뽑은 모임 ()개를 보내준다.
 
 circleRouter.post("/:userId", async (req, res) => {
-
   try {
     const calculateDistance = (coord1, coord2) => {
       try {
@@ -144,30 +144,28 @@ circleRouter.post("/:userId", async (req, res) => {
       }
     };
 
-
     const { userId } = req.params;
-    const {userLocation} = req.body;
+    const { userLocation } = req.body;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
-        // 전체 모임리스트를 페이지네이션해 조회
-        const preCircle = await Circle.find()
-            .skip((page - 1) * limit)
-            .limit(limit)
-            .exec();
+    // 전체 모임리스트를 페이지네이션해 조회
+    const preCircle = await Circle.find()
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
 
-      let allCircles = await Promise.all(
-          preCircle.map(async (circle) => {
-              if (circle.users.length > 0) {
-                  circle = addFinishTime(circle)
-                  circle = checkDone(circle)
-                  circle = preDate(circle)
-                  circle.mainPet=""
-              }
-              return circle;
-          })
-      );
-
+    let allCircles = await Promise.all(
+      preCircle.map(async (circle) => {
+        if (circle.users.length > 0) {
+          circle = addFinishTime(circle);
+          circle = checkDone(circle);
+          circle = preDate(circle);
+          circle.mainPet = "";
+        }
+        return circle;
+      })
+    );
 
     let circlesByNear = [...allCircles].sort((a, b) => {
       const distA = calculateDistance(userLocation, a.startLoc.coordinates);
@@ -179,11 +177,13 @@ circleRouter.post("/:userId", async (req, res) => {
       (a, b) => new Date(a.startTime) - new Date(b.startTime)
     );
 
+    const userCircleByTime = circlesByNear.filter((Circle) =>
+      Circle.users.some((user) => user.toString() === userId)
+    );
 
-    const userCircleByTime = circlesByNear.filter(Circle => Circle.users.some(user => user.toString() === userId));
-
-    const userCircleByDist = circlesByNear.filter(Circle => Circle.users.some(user => user.toString() === userId));
-
+    const userCircleByDist = circlesByNear.filter((Circle) =>
+      Circle.users.some((user) => user.toString() === userId)
+    );
 
     const temp = {
       byDist: circlesByNear,
@@ -199,6 +199,7 @@ circleRouter.post("/:userId", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
 
 // 모임정보 수정 => 클라이언트로부터 자료를 받아와 db에 덮어쓴다.
 circleRouter.put("/:circleId", async (req, res) => {
@@ -263,81 +264,74 @@ circleRouter.delete("/:circleid", async (req, res) => {
   }
 });
 
-
 //모임참석을 누른 사용자의 정보를 추가해야한다.
 circleRouter.post("/:circleid/join", async (req, res) => {
   try {
     const { circleid } = req.params;
     const { userid } = req.body;
 
-
-        // 모임 정보 찾기
-        const circle = await Circle.findById(circleId);
-
+    // 모임 정보 찾기
+    const circle = await Circle.findById(circleId);
 
     if (!circle) {
       return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
     }
 
-        if (circle.complete) {
-            return res.status(400).send({ message: "이미 완료된 모임입니다." });
-        }
-
-        if (circle.users.length >= circle.peoples) {
-            return res.status(400).send({ message: "모임의 정원이 가득 찼습니다." });
-        }
-
-
-
-        if (circle.users.includes(userId)) {
-            return res.status(400).send({ message: "이미 모임에 참석했습니다." });
-        }
-
-        circle.users.push(userId);
-
-        const newCircle =await circle.save();
-
-
-        const temp = {
-            message: "모임 참석.",
-            circleData : newCircle
-        };
-        return res.status(200).send(temp);
-    } catch (error) {
-        res.status(500).send({ message: error.message });
+    if (circle.complete) {
+      return res.status(400).send({ message: "이미 완료된 모임입니다." });
     }
+
+    if (circle.users.length >= circle.peoples) {
+      return res.status(400).send({ message: "모임의 정원이 가득 찼습니다." });
+    }
+
+    if (circle.users.includes(userId)) {
+      return res.status(400).send({ message: "이미 모임에 참석했습니다." });
+    }
+
+    circle.users.push(userId);
+
+    const newCircle = await circle.save();
+
+    const temp = {
+      message: "모임 참석.",
+      circleData: newCircle,
+    };
+    return res.status(200).send(temp);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 });
 
 //해당 사용자가 모임에 참여중이라면, 해당 기록을 삭제한다. 참여중이 아니라면, false
 circleRouter.post("/:circleId/cancel", async (req, res) => {
-    try {
-        const { circleId } = req.params;
-        const { userId } = req.body;
+  try {
+    const { circleId } = req.params;
+    const { userId } = req.body;
 
-        // 모임 정보 찾기
-        const circle = await Circle.findById(circleId);
-        if (!circle) {
-            return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
-        }
-
-        if(!circle.users.includes(userId)){
-            return res.status(400).send({ message: "유저가 모임에 참석하지 않았습니다." });
-        }
-        else{
-            circle.users.remove(userId)
-            }
-            await circle.save();
-
-            const temp = {
-                message: "모임 취소.",
-                circleData: circle
-            };
-            return res.status(200).send(temp);
-    } catch (error) {
-        res.status(500).send({ message: error.message });
+    // 모임 정보 찾기
+    const circle = await Circle.findById(circleId);
+    if (!circle) {
+      return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
     }
 
+    if (!circle.users.includes(userId)) {
+      return res
+        .status(400)
+        .send({ message: "유저가 모임에 참석하지 않았습니다." });
+    } else {
+      circle.users.remove(userId);
+    }
+    await circle.save();
 
+    const temp = {
+      message: "모임 취소.",
+      circleData: circle,
+    };
+    return res.status(200).send(temp);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 });
 
 // ======== ked 새로운 모임 생성 post
@@ -349,27 +343,29 @@ circleRouter.post("/new/:userId", async (req, res) => {
     const endCoordinates = req.body.endLoc.endCoordinates; // 수정된 부분
     console.log("coordinates==========", coordinates);
     console.log("endCoordinates==========", endCoordinates);
-    let circle =false
-    // if((req.body.startTime).getTime() > Date.now()&& (req.body.peoples>1)) {
-        circle = await new Circle({
-            user: userId,
-            users: [userId,],
-            name: req.body.name,
-            text: req.body.text,
-            startLoc: {coordinates},
-            endLoc: {endCoordinates: endCoordinates},
-            startTime: req.body.startTime,
-            startAdd: req.body.startAdd,
-            usingTime: req.body.usingTime,
-            peoples: req.body.peoples,
-            complete: false
-        }).save()
-    // }
+    // let circle = "";
+    // if (req.body.startTime.getTime() > Date.now() && req.body.peoples > 1) {
+    console.log("if 시작!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    const circle = await new Circle({
+      user: userId,
+      users: [userId],
+      name: req.body.name,
+      text: req.body.text,
+      startLoc: { coordinates },
+      // endLoc: { endCoordinates: endCoordinates },
+      endLoc: { endCoordinates },
+      startTime: req.body.startTime,
+      startAdd: req.body.startAdd,
+      usingTime: req.body.usingTime,
+      peoples: req.body.peoples,
+      complete: false,
+    }).save();
     const temp = {
       message: "모임 생성.",
-      circleData : circle
-          };
-    return res.status(200).send({temp});
+      circleData: circle,
+    };
+    return res.status(200).send(temp);
+    // }
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -396,25 +392,28 @@ circleRouter.post("/:circleId/comment", async (req, res) => {
 circleRouter.get("/:circleId/comment", async (req, res) => {
   try {
     const { circleId } = req.params;
-    let circleComment
-      try{
-          circleComment = await circleComment.find({
-              Circle: circleId,
-          }).populate([
-              {
-                  path: "user",
-                  select: "nickName",
-              },
-          ])
-              .sort({ createdAt: 1 });
-      }catch (e){
-          circleComment= false;
-      }
+    let circleComment;
+    try {
+      circleComment = await circleComment
+        .find({
+          Circle: circleId,
+        })
+        .populate([
+          {
+            path: "user",
+            select: "nickName",
+          },
+        ])
+        .sort({ createdAt: 1 });
+    } catch (e) {
+      circleComment = false;
+    }
     return res.status(200).send(circleComment);
   } catch (error) {
     return res.status(500).send(error.message);
   }
 });
+
 
 
 // 모임 상세 정보 get -> 선택한 모임의 상세 정보를 보여줘야 한다. => 보여줘야할 정보는 ()이다.
@@ -460,6 +459,7 @@ circleRouter.get("/detail/:circleId", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
 
 // circleRouter.delete("/:circleId", async (req, res) => {
 //     try {
@@ -565,4 +565,3 @@ circleRouter.get("/detail/:circleId", async (req, res) => {
 // });
 
 module.exports = circleRouter;
-

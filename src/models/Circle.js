@@ -6,7 +6,6 @@ const CircleSchema = new mongoose.Schema(
       type: Types.ObjectId,
       ref: "user",
     },
-
   users:[
     {
       type: Types.ObjectId,
@@ -70,7 +69,6 @@ const CircleSchema = new mongoose.Schema(
     createAt: Date,
   },
   { timestamps: true }
-
 );
 
 const Circle = mongoose.model("circle", CircleSchema);
