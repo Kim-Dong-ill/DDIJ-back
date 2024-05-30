@@ -1,32 +1,35 @@
 const { mongoose, Types } = require("mongoose");
-const CircleSchema = new mongoose.Schema({
-  user: {
+
+const CircleSchema = new mongoose.Schema(
+  {
+    user: {
       type: Types.ObjectId,
       ref: "user",
     },
-  name: {
-    type: String,
-    required: true,
-    default: "empty"
-  },
-  text: {
-    type: String,
-    required: true,
-    default: "empty"
-  },
-  startAdd:{
-    type:String,
-    default: "주소가 없습니다."
-  },
-  startLoc: {
-    type: {
+    name: {
       type: String,
-      enum: ["Point"],
-      default: "Point",
+      required: true,
+      default: "empty",
     },
-    coordinates: {
-      type: [Number],
+    text: {
+      type: String,
+      required: true,
+      default: "empty",
+    },
+    startAdd: {
+      type: String,
+      default: "주소가 없습니다.",
+    },
+    startLoc: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number],
         index: "2dsphere",
+      },
     },
     endLoc: {
       type: {
@@ -40,15 +43,15 @@ const CircleSchema = new mongoose.Schema({
       },
     },
     startTime: {
-    type: Date,
-    //required: true,
-    default:Date.now
-  },
+      type: Date,
+      //required: true,
+      default: Date.now,
+    },
     usingTime: {
-    type: Date,
-    required: true,
-    default:0
-  },
+      type: Date,
+      required: true,
+      default: 0,
+    },
     peoples: {
       type: Number,
       default: 0,
@@ -60,9 +63,8 @@ const CircleSchema = new mongoose.Schema({
     },
     createAt: Date,
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
+
 const Circle = mongoose.model("circle", CircleSchema);
 module.exports = Circle;
