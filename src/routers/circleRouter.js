@@ -3,7 +3,7 @@ const Pet = require("../models/Pet"); //나중에 pet으로 변경
 const User = require("../models/User"); //나중에 user로 변경
 const { default: mongoose } = require("mongoose");
 const Circle = require("../models/Circle");
-const circleComment = require("../models/CircleComment");
+const CircleComment = require("../models/CircleComment");
 const circleRouter = express.Router();
 
 function addFinishTime(circle) {
@@ -411,45 +411,104 @@ circleRouter.post("/new/:userId", async (req, res) => {
 // 모임 댓글 -Post
 circleRouter.post("/:circleId/comment", async (req, res) => {
   try {
-    const { content, circleId, userId } = req.body;
+    const { circleId } = req.params;
+    const { userId, content } = req.body;
 
-    const circleComment = await new circleComment({
-      circle: circleId,
+    // if (!mongoose.isValidObjectId(circleId))
+    //   return res.status(400).send({ message: "circleId is 없음" });
+    // if (!mongoose.isValidObjectId(userId))
+    //   return res.status(400).send({ message: "userId is 없음" });
+    // if (typeof content !== "string")
+    //   return res.status(400).send({ message: "내용이 없네~~~" });
+
+    // const [circle, user] = await Promise.all([
+    //   CircleComment.findById(circleId),
+    //   User.findById(userId),
+    // ]);
+    const comment = await new CircleComment({
       user: userId,
+      circle: circleId,
       content: content,
-      createdAt: new Date.now(),
     }).save();
-    return res.status(200).send(circleComment);
+    // const comment = await new CircleComment({ content, circle, user }).save();
+    return res.status(200).send({ comment });
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.status(400).send({ error: error.message });
   }
 });
+
+// circleRouter.post("/:circleId/comment", async (req, res) => {
+//   try {
+//     const { circleId } = req.params;
+//     const { content, userId } = req.body;
+
+//     const circleComment = await new CircleComment({
+//       circle: circleId,
+//       user: userId,
+//       content: content,
+//       createdAt: new Date(),
+//     }).save();
+//     return res.status(200).send({ circleComment });
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
+
+// circleRouter.post("/:circleId/comment", async (req, res) => {
+//   try {
+//     const { content, circleId, userId } = req.body;
+
+//     const circleComment = await new circleComment({
+//       circle: circleId,
+//       user: userId,
+//       content: content,
+//       createdAt: new Date.now(),
+//     }).save();
+//     return res.status(200).send(circleComment);
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
 
 // 모임 댓글 - Get
 circleRouter.get("/:circleId/comment", async (req, res) => {
   try {
     const { circleId } = req.params;
-    let circleComment;
-    try {
-      circleComment = await circleComment
-        .find({
-          Circle: circleId,
-        })
-        .populate([
-          {
-            path: "user",
-            select: "nickName",
-          },
-        ])
-        .sort({ createdAt: 1 });
-    } catch (e) {
-      circleComment = false;
-    }
-    return res.status(200).send(circleComment);
+    if (!mongoose.isValidObjectId(circleId))
+      return res.status(400).send({ message: "circleId 없음" });
+    const comment = await CircleComment.find({ circle: circleId })
+      .populate([{ path: "user", select: "nickName" }])
+      .sort({ createAt: 1 });
+    return res.status(200).send({ comment });
   } catch (error) {
-    return res.status(500).send(error.message);
+    return res.status(400).send({ error: error.message });
   }
 });
+
+// circleRouter.get("/:circleId/comment", async (req, res) => {
+//   try {
+//     const { circleId } = req.params;
+//     let circleComment;
+//     try {
+//       circleComment = await circleComment
+//         .find({
+//           Circle: circleId,
+//         })
+//         .populate([
+//           {
+//             path: "user",
+//             select: "nickName",
+//           },
+//         ])
+//         .sort({ createdAt: 1 });
+//     } catch (e) {
+//       circleComment = false;
+//     }
+//     return res.status(200).send(circleComment);
+//   } catch (error) {
+//     return res.status(500).send(error.message);
+//   }
+// });
 
 // circleRouter.delete("/:circleId", async (req, res) => {
 //     try {
