@@ -37,8 +37,9 @@ const CircleSchema = new mongoose.Schema(
         enum: ["Point"],
         default: "Point",
       },
-      coordinates: {
+      endCoordinates: {
         type: [Number],
+        index: "2dsphere",
       },
     },
     startTime: {
