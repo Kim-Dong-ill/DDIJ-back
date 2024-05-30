@@ -6,6 +6,7 @@ const CircleSchema = new mongoose.Schema(
       type: Types.ObjectId,
       ref: "user",
     },
+
   users:[
     {
       type: Types.ObjectId,
@@ -26,6 +27,7 @@ const CircleSchema = new mongoose.Schema(
     type:String,
     default: "주소가 없습니다."
   },
+
     startLoc: {
       type: {
         type: String,
