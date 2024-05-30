@@ -382,27 +382,29 @@ circleRouter.post("/new/:userId", async (req, res) => {
     const endCoordinates = req.body.endLoc.endCoordinates; // 수정된 부분
     console.log("coordinates==========", coordinates);
     console.log("endCoordinates==========", endCoordinates);
-    let circle = "";
-    if (req.body.startTime.getTime() > Date.now() && req.body.peoples > 1) {
-      circle = await new Circle({
-        user: userId,
-        users: [userId],
-        name: req.body.name,
-        text: req.body.text,
-        startLoc: { coordinates },
-        endLoc: { endCoordinates: endCoordinates },
-        startTime: req.body.startTime,
-        startAdd: req.body.startAdd,
-        usingTime: req.body.usingTime,
-        peoples: req.body.peoples,
-        complete: false,
-      }).save();
-    }
+    // let circle = "";
+    // if (req.body.startTime.getTime() > Date.now() && req.body.peoples > 1) {
+    console.log("if 시작!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    const circle = await new Circle({
+      user: userId,
+      users: [userId],
+      name: req.body.name,
+      text: req.body.text,
+      startLoc: { coordinates },
+      // endLoc: { endCoordinates: endCoordinates },
+      endLoc: { endCoordinates },
+      startTime: req.body.startTime,
+      startAdd: req.body.startAdd,
+      usingTime: req.body.usingTime,
+      peoples: req.body.peoples,
+      complete: false,
+    }).save();
     const temp = {
       message: "모임 생성.",
       circleData: circle,
     };
     return res.status(200).send(temp);
+    // }
   } catch (error) {
     res.status(500).send(error.message);
   }
