@@ -344,7 +344,6 @@ circleRouter.post("/new/:userId", async (req, res) => {
     console.log("endCoordinates==========", endCoordinates);
     // let circle = "";
     // if (req.body.startTime.getTime() > Date.now() && req.body.peoples > 1) {
-    console.log("if 시작!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     const circle = await new Circle({
       user: userId,
       users: [userId],
