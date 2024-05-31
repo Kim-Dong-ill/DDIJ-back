@@ -322,12 +322,13 @@ circleRouter.patch("/:circleId/join", async (req, res) => {
 });
 
 //해당 사용자가 모임에 참여중이라면, 해당 기록을 삭제한다. 참여중이 아니라면, false
-circleRouter.patch(`/circles/:circleId/leave`, async (req, res) => {
+circleRouter.patch(`/:circleId/leave`, async (req, res) => {
   try {
     const { circleId } = req.params;
     const { userId } = req.body;
 
     // 모임 정보 찾기
+    console.log("circle찾아올거에요")
     const circle = await Circle.findById(circleId);
     if (!circle) {
       return res.status(404).send({ message: "모임을 찾을 수 없습니다." });
@@ -347,6 +348,7 @@ circleRouter.patch(`/circles/:circleId/leave`, async (req, res) => {
     };
     return res.status(200).send(temp);
   } catch (error) {
+    console.log(error.stack)
     res.status(500).send({ message: error.message });
   }
 });
