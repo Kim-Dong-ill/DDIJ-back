@@ -4,6 +4,7 @@ const User = require("../models/User"); //나중에 user로 변경
 const { default: mongoose } = require("mongoose");
 const Circle = require("../models/Circle");
 const circleComment = require("../models/CircleComment");
+const CircleComment = require("../models/CircleComment");
 const circleRouter = express.Router();
 
 function addFinishTime(circle) {
@@ -373,45 +374,67 @@ circleRouter.post("/new/:userId", async (req, res) => {
 // 모임 댓글 -Post
 circleRouter.post("/:circleId/comment", async (req, res) => {
   try {
-    const { content, circleId, userId } = req.body;
+    const { content, userId } = req.body;
+    const { circleId } = req.params;
 
-    const circleComment = await new circleComment({
-      circle: circleId,
+    const circleComment = await new CircleComment({
+      // circle: circleId,
       user: userId,
       content: content,
-      createdAt: new Date.now(),
+      createdAt: new Date(),
     }).save();
-    return res.status(200).send(circleComment);
+    return res.status(200).send({ circleComment });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
-// 모임 댓글 - Get
+// // 모임 댓글 - Get
+// circleRouter.get("/:circleId/comment", async (req, res) => {
+//   try {
+//     const { circleId } = req.params;
+//     let circleComment;
+//     try {
+//       circleComment = await CircleComment.find({
+//         Circle: circleId,
+//       })
+//         .populate([
+//           {
+//             path: "user",
+//             select: "nickName",
+//           },
+//         ])
+//         .sort({ createdAt: 1 });
+//     } catch (e) {
+//       circleComment = false;
+//     }
+//     return res.status(200).send({ circleComment });
+//   } catch (error) {
+//     return res.status(500).send(error.message);
+//   }
+// });
+
+// 모임 댓글 get ====== KED작성
 circleRouter.get("/:circleId/comment", async (req, res) => {
   try {
-    const { circleId } = req.params;
-    let circleComment;
-    try {
-      circleComment = await circleComment
-        .find({
-          Circle: circleId,
-        })
-        .populate([
-          {
-            path: "user",
-            select: "nickName",
-          },
-        ])
-        .sort({ createdAt: 1 });
-    } catch (e) {
-      circleComment = false;
-    }
-    return res.status(200).send(circleComment);
+    const { circleId } = req.query;
+    const circleComment = await CircleComment.find({
+      circle: circleId,
+    })
+      .populate([
+        {
+          path: "user",
+          select: "nickName", // 사용자 데이터 중 'email'과 'name' 필드만 선택
+        },
+      ])
+      .sort({ createdAt: -1 });
+    return res.status(200).send({ circleComment });
   } catch (error) {
-    return res.status(500).send(error.message);
+    res.status(500).send(error.message);
   }
 });
+
+// ===================================================================
 
 // 모임 상세 정보 get -> 선택한 모임의 상세 정보를 보여줘야 한다. => 보여줘야할 정보는 ()이다.
 circleRouter.get("/detail/:circleId", async (req, res) => {
