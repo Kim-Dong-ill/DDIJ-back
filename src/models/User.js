@@ -43,12 +43,12 @@ const UserSchema = new mongoose.Schema(
     },
     mainPet: {
       type: mongoose.Types.ObjectId,
-      ref: "Pet",
+      ref: "pet",
     },
     pets: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "Pet",
+        ref: "pet",
       },
     ], //index라우터 호환때문에 냅둠 수정후 삭제해야함
   },
